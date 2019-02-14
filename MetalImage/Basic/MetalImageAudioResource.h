@@ -8,6 +8,8 @@
 #import "MetalImageResource.h"
 #import <CoreMedia/CoreMedia.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface MetalImageAudioResource : MetalImageResource
 @property (nonatomic, assign, readonly) CMSampleBufferRef audioBuffer;
 
@@ -21,3 +23,5 @@
  */
 - (MetalImageResource *)newResourceFromSelf;
 @end
+
+NS_ASSUME_NONNULL_END

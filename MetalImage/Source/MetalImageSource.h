@@ -9,6 +9,8 @@
 #import "MetalImageProtocol.h"
 #import "MetalImageDevice.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface MetalImageSource : NSObject
 @property (nonatomic, strong) id<MetalImageTarget> target;
 @property (nonatomic, assign, readonly) BOOL haveTarget;
@@ -48,3 +50,4 @@
 - (void)send:(MetalImageResource *)resource withTime:(CMTime)time;
 @end
 
+NS_ASSUME_NONNULL_END

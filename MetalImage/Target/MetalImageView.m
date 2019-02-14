@@ -65,7 +65,7 @@
     [textureResource endRenderProcess];
     
     __weak typeof(self) weakSelf = self;
-    dispatch_barrier_async(_displayQueue, ^{
+    dispatch_async(_displayQueue, ^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
         
         @autoreleasepool {

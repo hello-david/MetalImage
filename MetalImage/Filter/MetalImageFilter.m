@@ -21,6 +21,8 @@
         [self commonInitWithVertexFunction:vertexFunction
                           fragmentFunction:fragmentFunction
                                    library:library];
+        
+        _source = [[MetalImageSource alloc] init];
     }
     return self;
 }
@@ -36,13 +38,12 @@
     if (error) {
         assert(!"Create piplinstate failed");
     }
-    
-    _source = [[MetalImageSource alloc] init];
 }
 
 #pragma mark - Target Protocol
 /**
  *  内部渲染处理不应该切换线程，需要并发渲染使用MTLParallelRenderCommandEncoder实现
+ *  默认实现draw-call后交换纹理指针传给下一级
  */
 - (void)receive:(MetalImageResource *)resource withTime:(CMTime)time {
     if (resource.type != kMetalImageResourceTypeImage) {
@@ -73,16 +74,18 @@
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageTextureResource *)resource {
     CGSize renderSize = CGSizeEqualToSize(_renderSize, CGSizeZero) ? resource.texture.size : _renderSize;
-    MetalImageTexture *processTexture = [[MetalImageDevice shared].textureCache fetchTexture:renderSize
-                                                                                     pixelFormat:resource.texture.metalTexture.pixelFormat];
-    processTexture.orientation = resource.texture.orientation;
-    resource.renderPassDecriptor.colorAttachments[0].texture = processTexture.metalTexture;
+    MetalImageTexture *targetTexture = [[MetalImageDevice shared].textureCache fetchTexture:renderSize
+                                                                                    pixelFormat:resource.texture.metalTexture.pixelFormat];
+    targetTexture.orientation = resource.texture.orientation;
+    resource.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;
     
-    // 渲染Draw-Call
-    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderPassDecriptor];
-    [self renderToEncoder:renderEncoder withResource:resource];
-    [renderEncoder endEncoding];
-    [resource swapTexture:processTexture];
+    // 实现一个renderEncoder流程(可能有多个Draw-Call)
+    @autoreleasepool {
+        id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderPassDecriptor];
+        [self renderToEncoder:renderEncoder withResource:resource];
+        [renderEncoder endEncoding];
+        [resource swapTexture:targetTexture];
+    }
 }
 
 - (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {

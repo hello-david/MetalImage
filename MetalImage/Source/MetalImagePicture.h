@@ -12,6 +12,8 @@
 
 typedef void(^MetalImagePictureProcessCompletion)(UIImage *processedImage);
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface MetalImagePicture : NSObject <MetalImageSource>
 @property (nonatomic, strong) UIImage *originImage;
 @property (nonatomic, strong, readonly) MetalImageSource *source;
@@ -20,3 +22,5 @@ typedef void(^MetalImagePictureProcessCompletion)(UIImage *processedImage);
 - (void)processImage;
 - (void)processImageByFilters:(NSArray<MetalImageFilter *> *)filters completion:(MetalImagePictureProcessCompletion)completion;
 @end
+
+NS_ASSUME_NONNULL_END

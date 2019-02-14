@@ -10,8 +10,13 @@
 #import "MetalImageSource.h"
 #import "MetalImageTextureResource.h"
 
+#define METAL_SHADER_STRING(text) @ #text
+
+NS_ASSUME_NONNULL_BEGIN
+
 @interface MetalImageFilter : NSObject <MetalImageSource, MetalImageTarget>
 @property (nonatomic, strong) id<MTLRenderPipelineState> renderPielineState;
+@property (nonatomic, assign, readonly) CGSize renderSize;
 @property (nonatomic, strong, readonly) MetalImageSource *source;
 
 - (instancetype)initWithVertexFunction:(NSString *)vertexFunction
@@ -25,7 +30,7 @@
 - (void)setRenderSize:(CGSize)renderSize;
 
 /**
- *  CommandBuffer由外部管理(不生成也不Commit），内部每次生成一个RenderEncoder并渲染交换纹理
+ *  CommandBuffer由外部管理(不生成也不Commit），内部包含一个或多个RenderEncoder并渲染后交换纹理保证输入输出有序，是一个完整的渲染流程
  *
  *  @param commandBuffer    外部生成的commandBuffer
  *  @param resource         待渲染的资源
@@ -33,11 +38,12 @@
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageTextureResource *)resource;
 
 /**
- *  RenderEncoder由外部管理(不生成也不Encode)，内部实现Draw-Call渲染
+ *  RenderEncoder由外部管理(不生成也不Encoder)，内部包含一个或多个Draw-Call渲染不会进行结果纹理交换，不是一个完整的渲染流程
  *
- *  @param renderEncoder    外部生成的commandBuffer
+ *  @param renderEncoder    外部生成的renderEncoder
  *  @param resource         待渲染的资源
  */
 - (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource;
 @end
 
+NS_ASSUME_NONNULL_END

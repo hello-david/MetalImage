@@ -12,6 +12,8 @@
 #import <MetalKit/MTKTextureLoader.h>
 #import "MetalImageTextureCache.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface MetalImageDevice : NSObject
 @property (nonatomic, readonly) id<MTLDevice> device;
 @property (nonatomic, readonly) id<MTLCommandQueue> commandQueue;
@@ -24,3 +26,4 @@
 + (instancetype)shared;
 @end
 
+NS_ASSUME_NONNULL_END

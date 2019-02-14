@@ -12,6 +12,8 @@
 #import "MetalImageAudioResource.h"
 #import "MetalImageTextureResource.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface MetalImageCamera : NSObject <MetalImageSource>
 @property (nonatomic, strong, readonly) MetalImageSource *source;
 
@@ -21,3 +23,5 @@
 - (void)startCapture;
 - (void)stopCapture;
 @end
+
+NS_ASSUME_NONNULL_END

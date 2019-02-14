@@ -13,14 +13,17 @@
 #import "MetalImageTextureResource.h"
 #import "MetalImageAudioResource.h"
 
-#define kMTMIMovieWriterCancelError [NSError errorWithDomain:@"MoiveWriterWriterError" code:-9001 userInfo:@{@"message" : @"WriterCanceled"}]
+#define kMetalImageMovieWriterCancelError [NSError errorWithDomain:@"MoiveWriterWriterError" code:-9001 userInfo:@{@"message" : @"WriterCanceled"}]
 
-typedef void(^MetalImageMovieWriterCompleteHandlle)(NSError *error);
-typedef void(^MetalImageMovieWriterStartHandlle)(NSError *error);
+typedef void(^__nullable MetalImageMovieWriterCompleteHandlle)(NSError *error);
+typedef void(^__nullable MetalImageMovieWriterStartHandlle)(NSError *error);
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface MetalImageMovieWriter : NSObject <MetalImageTarget>
 @property (nonatomic, assign) MetalImageContentMode fillMode;
 @property (nonatomic, assign) MetalImagContentBackground backgroundType;
+@property (nonatomic, strong) id<MetalImageTarget, MetalImageSource> __nullable backgroundFilter;
 @property (nonatomic, strong) UIColor *backgroudColor;
 @property (nonatomic, assign) BOOL haveAudioTrack;
 
@@ -46,3 +49,5 @@ typedef void(^MetalImageMovieWriterStartHandlle)(NSError *error);
  */
 - (void)finishRecording;
 @end
+
+NS_ASSUME_NONNULL_END

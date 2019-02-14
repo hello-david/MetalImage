@@ -12,9 +12,13 @@ typedef NS_ENUM(NSUInteger, MetalImageResourceType) {
     kMetalImageResourceTypeAudio
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface MetalImageResource : NSObject 
 @property (nonatomic, assign) MetalImageResourceType type;
 @property (nonatomic, weak) dispatch_queue_t processingQueue;
 
 - (nullable MetalImageResource *)newResourceFromSelf;
 @end
+
+NS_ASSUME_NONNULL_END

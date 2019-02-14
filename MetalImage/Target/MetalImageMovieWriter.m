@@ -27,6 +27,9 @@
 @property (nonatomic, assign) CMTime lastAudioTime;
 
 @property (nonatomic, strong) MetalImageTarget *renderTarget;
+@property (nonatomic, strong) MetalImageTextureResource *backgroundTextureResource;
+@property (nonatomic, assign) CGSize lastBackgroundSise;
+@property (nonatomic, strong) id<MTLBuffer> backgroundPostionBuffer;
 @end
 
 @implementation MetalImageMovieWriter
@@ -58,8 +61,9 @@
     
     _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:@"oneInputVertex"
                                                                         fragment:@"passthroughFragment"];
-    _renderTarget.fillMode = kMetalImageContentModeScaleAspectFit;
-
+    _renderTarget.fillMode = kMetalImageContentModeScaleAspectFill;
+    _lastBackgroundSise = CGSizeZero;
+    
     [self initAssetWriter];
     [self initImageWirterInput];
 }
@@ -83,6 +87,13 @@
         _backgroudColor = [UIColor blackColor];
     }
     return _backgroudColor;
+}
+
+- (id<MetalImageTarget,MetalImageSource>)backgroundFilter {
+    if (!_backgroundFilter) {
+        _backgroundFilter = (id<MetalImageTarget,MetalImageSource>)([[MetalImageFilter alloc] init]);
+    }
+    return _backgroundFilter;
 }
 
 - (void)initAssetWriter {
@@ -138,7 +149,7 @@
                             AVSampleRateKey         : @(sampleRate),
                             AVChannelLayoutKey      : aclData,
                             AVEncoderBitRateKey     : @(64000)};
-
+    
     _audioWriterInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:audioOutputSettings];
     _audioWriterInput.expectsMediaDataInRealTime = YES;
     
@@ -151,7 +162,7 @@
 - (void)startRecording {
     NSError *error = self.assetWriter.error;
     if (self.assetWriter.status == AVAssetWriterStatusCancelled) {
-        error = kMTMIMovieWriterCancelError;
+        error = kMetalImageMovieWriterCancelError;
     }
     
     if (_assetWriter.status != AVAssetWriterStatusUnknown) {
@@ -165,8 +176,8 @@
     }
     
     _haveAppedImage = NO;
-     __weak typeof(self) weakSelf = self;
-    dispatch_barrier_async(_writerQueue, ^{
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(_writerQueue, ^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
         
         [strongSelf.assetWriter startWriting];
@@ -180,11 +191,13 @@
 - (void)cancelRecording {
     NSError *error = self.assetWriter.error;
     if (self.assetWriter.status == AVAssetWriterStatusCancelled) {
-        error = kMTMIMovieWriterCancelError;
+        error = kMetalImageMovieWriterCancelError;
     }
     
     if (_assetWriter.status != AVAssetWriterStatusWriting) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self freeRenderResource];
+            
             if (self.completeHandle) {
                 self.completeHandle(error);
             }
@@ -194,7 +207,7 @@
     }
     
     __weak typeof(self) weakSelf = self;
-    dispatch_barrier_async(_writerQueue, ^{
+    dispatch_async(_writerQueue, ^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
         
         if (strongSelf.assetWriter.status == AVAssetWriterStatusWriting) {
@@ -207,19 +220,22 @@
                 [strongSelf.audioWriterInput markAsFinished];
             }
         }
-
+        
         [strongSelf.assetWriter cancelWriting];
+        [strongSelf freeRenderResource];
     });
 }
 
 - (void)finishRecording {
     NSError *error = self.assetWriter.error;
     if (self.assetWriter.status == AVAssetWriterStatusCancelled) {
-        error = kMTMIMovieWriterCancelError;
+        error = kMetalImageMovieWriterCancelError;
     }
     
     if (self.assetWriter.status != AVAssetWriterStatusWriting) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self freeRenderResource];
+            
             if (self.completeHandle) {
                 self.completeHandle(error);
             }
@@ -229,9 +245,9 @@
     }
     
     __weak typeof(self) weakSelf = self;
-    dispatch_barrier_async(_writerQueue, ^{
+    dispatch_async(_writerQueue, ^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
-
+        
         if (strongSelf.assetWriter.status == AVAssetWriterStatusWriting) {
             if (!strongSelf.imageWriteFinish) {
                 strongSelf.imageWriteFinish = YES;
@@ -247,6 +263,8 @@
         [strongSelf.assetWriter endSessionAtSourceTime:strongSelf.lastImageTime];
         [strongSelf.assetWriter finishWritingWithCompletionHandler:^{
             dispatch_async(dispatch_get_main_queue(), ^{
+                [strongSelf freeRenderResource];
+                
                 if (strongSelf.completeHandle) {
                     strongSelf.completeHandle(nil);
                 }
@@ -254,6 +272,14 @@
             });
         }];
     });
+}
+
+- (void)freeRenderResource {
+    self.backgroundTextureResource = nil;
+    self.backgroundFilter = nil;
+    self.backgroundPostionBuffer = nil;
+    self.lastBackgroundSise = CGSizeZero;
+    [[MetalImageDevice shared].textureCache freeAllTexture];
 }
 
 #pragma mark - Target Protocol
@@ -270,21 +296,30 @@
         return;
     }
     
+    // 之前的效果提交了
+    if (resource.type == kMetalImageResourceTypeImage) {
+        [(MetalImageTextureResource *)resource endRenderProcess];
+    }
+    
     __weak typeof(self) weakSelf = self;
     dispatch_async(_writerQueue, ^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
         
-        switch (resource.type) {
-            case kMetalImageResourceTypeImage:
-                [strongSelf imageProcess:(MetalImageTextureResource *)resource time:time];
-                [[MetalImageDevice shared].textureCache cacheTexture:((MetalImageTextureResource *)resource).texture];
-                break;
-                
-            case kMetalImageResourceTypeAudio:
-                [strongSelf audioProcess:(MetalImageAudioResource *)resource time:time];
-                break;
-            default:
-                break;
+        @autoreleasepool {
+            switch (resource.type) {
+                case kMetalImageResourceTypeImage:
+                    [strongSelf imageProcess:(MetalImageTextureResource *)resource time:time];
+                    [[MetalImageDevice shared].textureCache cacheTexture:((MetalImageTextureResource *)resource).texture];
+                    break;
+                    
+                case kMetalImageResourceTypeAudio:
+                    if (strongSelf.haveAudioTrack) {
+                        [strongSelf audioProcess:(MetalImageAudioResource *)resource time:time];
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     });
 }
@@ -308,99 +343,90 @@
     // 从目标纹理提取CVPixelBufferRef
     [MetalImageTexture textureCVPixelBufferProcess:resource.texture.metalTexture
                                              process:^(CVPixelBufferRef pixelBuffer) {
-        CVPixelBufferRef pixel = pixelBuffer;
-        if (!pixel) {
-            return;
-        }
-        
-        CVPixelBufferLockBaseAddress(pixel, 0);
-        
-        // 等待上一次写入结束
-        while(!self.imageWirterInput.readyForMoreMediaData && !self.imageWriteFinish) {
-            NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:0.1];
-            [[NSRunLoop currentRunLoop] runUntilDate:maxDate];
-        }
-        
-        NSError *error = nil;
-        switch (self.assetWriter.status) {
-            case AVAssetWriterStatusWriting: {
-                // 忽略写入时Cancel的情况
-                BOOL suceccsed = [self.pixelbufferAdaptor appendPixelBuffer:pixel withPresentationTime:time];
-                if (!suceccsed && self.assetWriter.status == AVAssetWriterStatusFailed) {
-                    error = self.assetWriter.error;
-                } else {
-                    self.haveAppedImage = YES;
-                }
-                break;
-            }
-                
-            case AVAssetWriterStatusUnknown:
-            case AVAssetWriterStatusCompleted:
-            case AVAssetWriterStatusFailed: {
-                error = self.assetWriter.error;
-                break;
-            }
-            case AVAssetWriterStatusCancelled: {
-                error = kMTMIMovieWriterCancelError;
-                break;
-            }
-            default:
-                break;
-        }
-        
-        CVPixelBufferUnlockBaseAddress(pixel, 0);
-        
-        if (error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (self.completeHandle) {
-                    self.completeHandle(error);
-                }
-                self.completeHandle = nil;
-            });
-        }
-    }];
+                                                 CVPixelBufferRef pixel = pixelBuffer;
+                                                 if (!pixel) {
+                                                     return;
+                                                 }
+                                                 
+                                                 CVPixelBufferLockBaseAddress(pixel, 0);
+                                                 
+                                                 // 等待上一次写入结束
+                                                 while(!self.imageWirterInput.readyForMoreMediaData && !self.imageWriteFinish) {
+                                                     NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:0.1];
+                                                     [[NSRunLoop currentRunLoop] runUntilDate:maxDate];
+                                                 }
+                                                 
+                                                 NSError *error = nil;
+                                                 switch (self.assetWriter.status) {
+                                                     case AVAssetWriterStatusWriting: {
+                                                         // 忽略写入时Cancel的情况
+                                                         BOOL suceccsed = [self.pixelbufferAdaptor appendPixelBuffer:pixel withPresentationTime:time];
+                                                         if (!suceccsed && self.assetWriter.status == AVAssetWriterStatusFailed) {
+                                                             error = self.assetWriter.error;
+                                                         } else {
+                                                             self.haveAppedImage = YES;
+                                                         }
+                                                         break;
+                                                     }
+                                                         
+                                                     case AVAssetWriterStatusUnknown:
+                                                     case AVAssetWriterStatusCompleted:
+                                                     case AVAssetWriterStatusFailed: {
+                                                         error = self.assetWriter.error;
+                                                         break;
+                                                     }
+                                                     case AVAssetWriterStatusCancelled: {
+                                                         error = kMetalImageMovieWriterCancelError;
+                                                         break;
+                                                     }
+                                                     default:
+                                                         break;
+                                                 }
+                                                 
+                                                 CVPixelBufferUnlockBaseAddress(pixel, 0);
+                                                 
+                                                 if (error) {
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         if (self.completeHandle) {
+                                                             self.completeHandle(error);
+                                                         }
+                                                         self.completeHandle = nil;
+                                                     });
+                                                 }
+                                             }];
 }
 
 - (void)imageRenderProcess:(MetalImageTextureResource *)resource {
-    // 生成CommandBuffer和目标纹理
+    // 自定义背景滤镜
+    if (self.backgroundType == kMetalImagContentBackgroundFilter && self.fillMode == kMetalImageContentModeScaleAspectFit &&
+        (_renderSize.width / _renderSize.height != resource.texture.size.width / resource.texture.size.height)) {
+        MetalImageTextureResource *backgroundTextureResource = (MetalImageTextureResource *)[resource newResourceFromSelf];
+        
+        id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
+        [commandBuffer enqueue];
+        [(MetalImageFilter *)self.backgroundFilter encodeToCommandBuffer:commandBuffer withResource:backgroundTextureResource];
+        [commandBuffer commit];
+        [commandBuffer waitUntilCompleted];
+        self.backgroundTextureResource = backgroundTextureResource;
+    }
+    
+    // 生成最终目标纹理
+    MetalImageTexture *targetTexture = [[MetalImageDevice shared].textureCache fetchTexture:_renderSize pixelFormat:resource.texture.metalTexture.pixelFormat];
+    targetTexture.orientation = resource.texture.orientation;
+    resource.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;      // 设置目标纹理
+    resource.renderPassDecriptor.colorAttachments[0].clearColor = [self getMTLbackgroundColor]; // 调整目标纹理背景色
+    [self.renderTarget updateBufferIfNeed:resource.texture targetSize:_renderSize];             // 调整输入纹理绘制到目标纹理时的比例和方向
+    
     id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
-    MetalImageTexture *processTexture = [[MetalImageDevice shared].textureCache fetchTexture:_renderSize
-                                                                                     pixelFormat:resource.texture.metalTexture.pixelFormat];
-    processTexture.orientation = resource.texture.orientation;
-    resource.renderPassDecriptor.colorAttachments[0].texture = processTexture.metalTexture;
-    
-    // 调整目标纹理背景
-    if (self.backgroundType == kMetalImagContentBackgroundColor) {
-        CGFloat components[4];
-        CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
-        unsigned char resultingPixel[4];
-        CGContextRef context = CGBitmapContextCreate(&resultingPixel, 1, 1, 8, 4, rgbColorSpace, kCGImageAlphaNoneSkipLast);
-        CGContextSetFillColorWithColor(context, [self.backgroudColor CGColor]);
-        CGContextFillRect(context, CGRectMake(0, 0, 1, 1));
-        CGContextRelease(context);
-        CGColorSpaceRelease(rgbColorSpace);
-        for (int component = 0; component < 3; component++) {
-            components[component] = resultingPixel[component] / 255.0f;
-        }
-        
-        // 不支持alpha调整，还有问题未解决
-        resource.renderPassDecriptor.colorAttachments[0].clearColor = MTLClearColorMake(components[0], components[1], components[2], 1.0);
-    }
-    else if (self.backgroundType == kMetalImagContentBackgroundFilter) {
-        
-    }
-    
-    // 调整纹理比例和方向的Buffer
-    [self.renderTarget updateBufferIfNeed:resource.texture targetSize:_renderSize];
-    
-    // 渲染
-    [commandBuffer enqueue];
     id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderPassDecriptor];
     [self renderToEncoder:renderEncoder withResource:resource];
     [renderEncoder endEncoding];
-    [resource swapTexture:processTexture];
+    [resource swapTexture:targetTexture];
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
+    
+    // 背景纹理用完返回缓存
+    [[MetalImageDevice shared].textureCache cacheTexture:self.backgroundTextureResource.texture];
 }
 
 - (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
@@ -408,8 +434,20 @@
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"MovieWriter Draw"];
 #endif
-    
     [renderEncoder setRenderPipelineState:_renderTarget.pielineState];
+    
+    if (self.backgroundType == kMetalImagContentBackgroundFilter && self.backgroundTextureResource) {
+        if (!CGSizeEqualToSize(resource.texture.size, _renderSize) && !CGSizeEqualToSize(_lastBackgroundSise, _renderSize)) {
+            _lastBackgroundSise = CGSizeMake(_renderSize.width, _renderSize.height);
+            MetalImageCoordinate positionCoor = [self.backgroundTextureResource.texture texturePositionToSize:_renderSize contentMode:kMetalImageContentModeScaleAspectFill];
+            _backgroundPostionBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&positionCoor length:sizeof(positionCoor) options:0];
+        }
+        [renderEncoder setVertexBuffer:_backgroundPostionBuffer offset:0 atIndex:0];
+        [renderEncoder setVertexBuffer:_renderTarget.textureCoord offset:0 atIndex:1];
+        [renderEncoder setFragmentTexture:_backgroundTextureResource.texture.metalTexture atIndex:0];
+        [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];
+    }
+    
     [renderEncoder setVertexBuffer:_renderTarget.position offset:0 atIndex:0];
     [renderEncoder setVertexBuffer:_renderTarget.textureCoord offset:0 atIndex:1];
     [renderEncoder setFragmentTexture:resource.texture.metalTexture atIndex:0];
@@ -418,6 +456,27 @@
 #if DEBUG
     [renderEncoder popDebugGroup];
 #endif
+}
+
+- (MTLClearColor)getMTLbackgroundColor {
+    if (CGColorEqualToColor(self.backgroudColor.CGColor, [UIColor blackColor].CGColor)) {
+        return MTLClearColorMake(0, 0, 0, 1);
+    }
+    
+    CGFloat components[4];
+    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+    unsigned char resultingPixel[4];
+    CGContextRef context = CGBitmapContextCreate(&resultingPixel, 1, 1, 8, 4, rgbColorSpace, kCGImageAlphaNoneSkipLast);
+    CGContextSetFillColorWithColor(context, [self.backgroudColor CGColor]);
+    CGContextFillRect(context, CGRectMake(0, 0, 1, 1));
+    CGContextRelease(context);
+    CGColorSpaceRelease(rgbColorSpace);
+    for (int component = 0; component < 3; component++) {
+        components[component] = resultingPixel[component] / 255.0f;
+    }
+    
+    // 不支持alpha调整，还有问题未解决
+    return MTLClearColorMake(components[0], components[1], components[2], 1.0);
 }
 
 #pragma mark - Audio Write Process
@@ -456,7 +515,7 @@
             break;
         }
         case AVAssetWriterStatusCancelled: {
-            error = kMTMIMovieWriterCancelError;
+            error = kMetalImageMovieWriterCancelError;
             break;
         }
         default:
