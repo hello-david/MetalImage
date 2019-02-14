@@ -1,0 +1,71 @@
+{
+  "name": "MetalImage",
+  "version": "0.0.1",
+  "summary": "A short description of MetalImage.",
+  "description": "MTGPUMetal 为 iOS 平台上一个简单的Metal滤镜处理框架",
+  "homepage": "https://github.com/hello-david/MetalImage.git",
+  "license": {
+    "type": "Copyright",
+    "text": "      © 2008-2018 David.Dai. All rights reserved.\n"
+  },
+  "authors": {
+    "David": "hello.david.me@gmail.com"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "",
+    "tag": "0.0.1"
+  },
+  "source_files": "MetalImage/MetalImage.h",
+  "subspecs": [
+    {
+      "name": "Core",
+      "source_files": "MetalImage/MetalImage.h",
+      "resource_bundles": {
+        "MetalImageBundle": [
+          "MetalImage/Library/*.metal"
+        ]
+      },
+      "frameworks": [
+        "Metal",
+        "MetalKit",
+        "CoreVideo",
+        "AVFoundation"
+      ],
+      "subspecs": [
+        {
+          "name": "Basic",
+          "public_header_files": "MetalImage/Basic/**/*.{h}",
+          "source_files": "MetalImage/Basic/**/*.{h,m,cpp,mm}"
+        },
+        {
+          "name": "Source",
+          "public_header_files": "MetalImage/Source/**/*.{h}",
+          "source_files": "MetalImage/Source/**/*.{h,m,cpp,mm}"
+        },
+        {
+          "name": "Filter",
+          "public_header_files": "MetalImage/Filter/**/*.{h}",
+          "source_files": "MetalImage/Filter/**/*.{h,m,cpp,mm}"
+        },
+        {
+          "name": "Target",
+          "public_header_files": "MetalImage/Target/**/*.{h}",
+          "source_files": "MetalImage/Target/**/*.{h,m,cpp,mm}"
+        }
+      ]
+    },
+    {
+      "name": "ExtensionFilter",
+      "public_header_files": "MetalImage/ExtensionFilter/**/*.{h}",
+      "source_files": "MetalImage/ExtensionFilter/**/*.{h,m,cpp,mm}"
+    },
+    {
+      "name": "Bridge",
+      "public_header_files": "MetalImage/Bridge/**/*.{h}",
+      "source_files": "MetalImage/Bridge/**/*.{h,m,cpp,mm}"
+    }
+  ]
+}
