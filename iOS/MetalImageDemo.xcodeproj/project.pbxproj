@@ -171,7 +171,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MetalImage/MetalImageBundle.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -182,7 +182,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B54CE5FB0A8D2A2B96BB48EC /* [CP] Check Pods Manifest.lock */ = {
