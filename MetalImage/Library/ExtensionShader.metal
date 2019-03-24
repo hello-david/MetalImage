@@ -43,6 +43,16 @@ fragment half4 luminanceRangeFragment(SingleInputVertexIO fragmentInput [[stage_
     return color;
 }
 
+#pragma mark - 对比度
+fragment half4 contrastFragment(SingleInputVertexIO fragmentInput [[stage_in]],
+                                constant float &contrast [[buffer(2)]],
+                                texture2d<half> inputTexture [[texture(0)]]) {
+    constexpr sampler quadSampler;
+    half4 textureColor = inputTexture.sample(quadSampler, fragmentInput.textureCoordinate);
+    half4 color = half4(((textureColor.rgb - half3(0.5)) * contrast + half3(0.5)), textureColor.w);
+    return color;
+}
+
 #pragma mark - 锐化
 struct SharpenVertexOutput {
     float4 position [[position]];
