@@ -95,11 +95,16 @@
 }
 
 - (void)endRenderProcess {
+    [self endRenderProcessUntilCompleted:NO];
+}
+
+- (void)endRenderProcessUntilCompleted:(BOOL)waitUntilCompleted {
     if (!_renderCommandBuffer || _renderCommandBuffer.status > MTLCommandBufferStatusEnqueued) {
         _renderCommandBuffer = nil;
         return;
     }
     [_renderCommandBuffer commit];
+    waitUntilCompleted ? [_renderCommandBuffer waitUntilCompleted] : 0;
     
     _renderEncoder = nil;
     _renderCommandBuffer = nil;

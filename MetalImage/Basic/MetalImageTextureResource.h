@@ -57,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  将会Commit内部的Commandbuffer，在独立使用一个新的commandBuffer假如有enqueue需要先把resource内置CommandBuffer的提交了
  */
 - (void)endRenderProcess;
+- (void)endRenderProcessUntilCompleted:(BOOL)waitUntilCompleted ;
 @end
 
 NS_ASSUME_NONNULL_END

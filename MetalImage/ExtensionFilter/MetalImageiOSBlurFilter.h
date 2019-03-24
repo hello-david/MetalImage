@@ -10,7 +10,7 @@
 #import "MetalImageSaturationFilter.h"
 #import "MetalImageGaussianBlurFilter.h"
 
-@interface MetalImageiOSBlurFilter : NSObject <MetalImageTarget, MetalImageSource>
+@interface MetalImageiOSBlurFilter : NSObject <MetalImageTarget, MetalImageSource, MetalImageRender>
 @property (nonatomic, assign) float blurRadiusInPixels;
 @property (nonatomic, assign) float texelSpacingMultiplier;
 @property (nonatomic, assign) float saturation;

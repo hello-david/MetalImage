@@ -13,10 +13,17 @@
 
 @protocol MetalImageTarget;
 @protocol MetalImageSource;
+@protocol MetalImageRender;
 
 @protocol MetalImageSource <NSObject>
+/**
+ *  转发资源
+ */
 - (void)send:(MetalImageResource *)resource withTime:(CMTime)time;
 
+/**
+ *  资源接收对象管理
+ */
 - (void)setTarget:(id<MetalImageTarget>)target;
 - (void)addAsyncTarget:(id<MetalImageTarget>)target;
 - (void)removeTarget:(id<MetalImageTarget>)target;
@@ -24,6 +31,16 @@
 @end
 
 @protocol MetalImageTarget <NSObject>
+/**
+ *  接收资源
+ */
 - (void)receive:(MetalImageResource *)resource withTime:(CMTime)time;
+@end
+
+@protocol MetalImageRender <NSObject>
+/**
+ *  独立完整的渲染流程
+ */
+- (void)renderToResource:(MetalImageTextureResource *)resource;
 @end
 

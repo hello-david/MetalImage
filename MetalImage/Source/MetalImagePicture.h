@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param filters      一组滤镜
  *  @param completion   滤镜处理结果
  */
-- (void)processImageByFilters:(NSArray<MetalImageFilter *> *)filters completion:(MetalImagePictureProcessCompletion)completion;
+- (void)processImageByFilters:(NSArray<id<MetalImageRender>> *)filters completion:(MetalImagePictureProcessCompletion)completion;
 @end
 
 NS_ASSUME_NONNULL_END

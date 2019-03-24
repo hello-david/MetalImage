@@ -123,7 +123,7 @@ typedef struct MetalImageGaussianParameter {
         // 水平方向来一次
         _currentParam = _horizontalParam;
         MetalImageTexture *horizontalTargetTexture = [[MetalImageDevice shared].textureCache fetchTexture:renderSize
-                                                                                                  pixelFormat:resource.texture.metalTexture.pixelFormat];
+                                                                                              pixelFormat:resource.texture.metalTexture.pixelFormat];
         horizontalTargetTexture.orientation = resource.texture.orientation;
         resource.renderPassDecriptor.colorAttachments[0].texture = horizontalTargetTexture.metalTexture;
         
@@ -135,7 +135,7 @@ typedef struct MetalImageGaussianParameter {
         // 垂直方向再来一次
         _currentParam = _verticalParam;
         MetalImageTexture *verticalTargetTexture = [[MetalImageDevice shared].textureCache fetchTexture:renderSize
-                                                                                                pixelFormat:resource.texture.metalTexture.pixelFormat];
+                                                                                            pixelFormat:resource.texture.metalTexture.pixelFormat];
         verticalTargetTexture.orientation = resource.texture.orientation;
         resource.renderPassDecriptor.colorAttachments[0].texture = verticalTargetTexture.metalTexture;
         

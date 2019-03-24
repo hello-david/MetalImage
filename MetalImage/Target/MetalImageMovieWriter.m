@@ -89,9 +89,9 @@
     return _backgroudColor;
 }
 
-- (id<MetalImageTarget,MetalImageSource>)backgroundFilter {
+- (id<MetalImageRender>)backgroundFilter {
     if (!_backgroundFilter) {
-        _backgroundFilter = (id<MetalImageTarget,MetalImageSource>)([[MetalImageFilter alloc] init]);
+        _backgroundFilter = (id<MetalImageRender>)([[MetalImageFilter alloc] init]);
     }
     return _backgroundFilter;
 }
@@ -401,22 +401,8 @@
     if (self.backgroundType == kMetalImagContentBackgroundFilter && self.fillMode == kMetalImageContentModeScaleAspectFit &&
         (_renderSize.width / _renderSize.height != resource.texture.size.width / resource.texture.size.height)) {
         MetalImageTextureResource *backgroundTextureResource = (MetalImageTextureResource *)[resource newResourceFromSelf];
-        
-#ifdef ExtensionFilter_Pod_Enable
-        if ([self.backgroundFilter isKindOfClass:[MetalImageiOSBlurFilter class]]) {
-            [(MetalImageiOSBlurFilter*)self.backgroundFilter renderToResource:backgroundTextureResource];
-            self.backgroundTextureResource = backgroundTextureResource;
-        }
-#else
-        if ([self.backgroundFilter isKindOfClass:[MetalImageFilter class]]) {
-            id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
-            [commandBuffer enqueue];
-            [(MetalImageFilter *)self.backgroundFilter encodeToCommandBuffer:commandBuffer withResource:backgroundTextureResource];
-            [commandBuffer commit];
-            [commandBuffer waitUntilCompleted];
-            self.backgroundTextureResource = backgroundTextureResource;
-        }
-#endif
+        [self.backgroundFilter renderToResource:backgroundTextureResource];
+        self.backgroundTextureResource = backgroundTextureResource;
     }
     
     // 生成最终目标纹理

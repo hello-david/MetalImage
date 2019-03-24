@@ -47,7 +47,7 @@
 }
 
 - (void)processImage {
-    if (!self.source.haveTarget) {
+    if (!self.source.haveTarget || !_originImage) {
         return;
     }
     
@@ -63,8 +63,8 @@
     });
 }
 
-- (void)processImageByFilters:(NSArray<MetalImageFilter *> *)filters completion:(MetalImagePictureProcessCompletion)completion {
-    if (!filters || !filters.count) {
+- (void)processImageByFilters:(NSArray<id<MetalImageRender>> *)filters completion:(MetalImagePictureProcessCompletion)completion {
+    if (!filters || !filters.count || !_originImage) {
         return;
     }
     
@@ -77,12 +77,17 @@
             return;
         }
         
-        for (MetalImageFilter *filter in filters) {
-            [strongSelf.resource startRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
-                [filter renderToEncoder:renderEncoder withResource:strongSelf.resource];
-            } completion:nil];
+        for (id<MetalImageRender>filter in filters) {
+            if ([filter isKindOfClass:[MetalImageFilter class]]) {
+                [strongSelf.resource startRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
+                    [(MetalImageFilter*)filter renderToEncoder:renderEncoder withResource:strongSelf.resource];
+                } completion:nil];
+            } else {
+                [strongSelf.resource endRenderProcessUntilCompleted:YES];
+                [filter renderToResource:strongSelf.resource];
+            }
         }
-        [strongSelf.resource endRenderProcess];
+        [strongSelf.resource endRenderProcessUntilCompleted:YES];
         !completion ? : completion([strongSelf.resource.texture imageFromTexture]);
     });
 }

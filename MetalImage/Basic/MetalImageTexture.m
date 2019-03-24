@@ -201,9 +201,11 @@ static void MetalImageReleaseDataCallback(void *info, const void *data, size_t s
     __block UIImage *image = nil;
     [[self class] texutreDataProviderProcess:texture process:^(CGDataProviderRef provider, CGSize imageSize, NSUInteger bytesPerRow) {
         int bitsPerComponent = 8;
-        int bitsPerPixel = 32;// BGRA
+        int bitsPerPixel = 32;
         CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-        CGBitmapInfo bitmapInfo = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big;
+        CGBitmapInfo bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;// BGRA
+//        kCGBitmapByteOrder32Big | kCGImageAlphaNoneSkipFirst//ARGB
+        
         CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
         CGImageRef imageRef = CGImageCreate(imageSize.width,
                                             imageSize.height,

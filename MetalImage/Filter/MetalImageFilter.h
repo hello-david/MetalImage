@@ -14,7 +14,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MetalImageFilter : NSObject <MetalImageSource, MetalImageTarget>
+@interface MetalImageFilter : NSObject <MetalImageSource, MetalImageTarget, MetalImageRender>
 @property (nonatomic, strong) id<MTLRenderPipelineState> renderPielineState;
 @property (nonatomic, assign, readonly) CGSize renderSize;
 @property (nonatomic, strong, readonly) MetalImageSource *source;

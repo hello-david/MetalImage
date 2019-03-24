@@ -75,7 +75,7 @@
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageTextureResource *)resource {
     CGSize renderSize = CGSizeEqualToSize(_renderSize, CGSizeZero) ? resource.texture.size : _renderSize;
     MetalImageTexture *targetTexture = [[MetalImageDevice shared].textureCache fetchTexture:renderSize
-                                                                                    pixelFormat:resource.texture.metalTexture.pixelFormat];
+                                                                                pixelFormat:resource.texture.metalTexture.pixelFormat];
     targetTexture.orientation = resource.texture.orientation;
     resource.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;
     
@@ -103,6 +103,15 @@
 #if DEBUG
     [renderEncoder popDebugGroup];
 #endif
+}
+
+#pragma mark - Render Protocol
+-(void)renderToResource:(MetalImageTextureResource *)resource {
+    id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
+    [commandBuffer enqueue];
+    [self encodeToCommandBuffer:commandBuffer withResource:resource];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
 }
 
 #pragma mark - Source Protocol
