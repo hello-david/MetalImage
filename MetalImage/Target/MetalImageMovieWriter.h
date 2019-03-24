@@ -13,6 +13,10 @@
 #import "MetalImageTextureResource.h"
 #import "MetalImageAudioResource.h"
 
+#ifdef ExtensionFilter_Pod_Enable
+#import "MetalImageiOSBlurFilter.h"
+#endif
+
 #define kMetalImageMovieWriterCancelError [NSError errorWithDomain:@"MoiveWriterWriterError" code:-9001 userInfo:@{@"message" : @"WriterCanceled"}]
 
 typedef void(^__nullable MetalImageMovieWriterCompleteHandlle)(NSError *error);
@@ -23,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MetalImageMovieWriter : NSObject <MetalImageTarget>
 @property (nonatomic, assign) MetalImageContentMode fillMode;
 @property (nonatomic, assign) MetalImagContentBackground backgroundType;
-@property (nonatomic, strong) id<MetalImageTarget, MetalImageSource> __nullable backgroundFilter;
+@property (nonatomic, strong, nullable) id<MetalImageTarget, MetalImageSource> backgroundFilter;
 @property (nonatomic, strong) UIColor *backgroudColor;
 @property (nonatomic, assign) BOOL haveAudioTrack;
 

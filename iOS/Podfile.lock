@@ -23,7 +23,7 @@ EXTERNAL SOURCES:
     :path: "../MetalImage.podspec"
 
 SPEC CHECKSUMS:
-  MetalImage: 7b6e6c8cef8e49ecf1fd6241fdfbae84c8532c2d
+  MetalImage: 30543de0e48d1d14e3239b5a98505d0f35d0d721
 
 PODFILE CHECKSUM: c898ed1ff85fabf8bfc9e6d1f63600d14abb8213
 

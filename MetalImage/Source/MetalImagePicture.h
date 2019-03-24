@@ -19,7 +19,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) MetalImageSource *source;
 
 - (instancetype)initWithImage:(UIImage *)image;
+/**
+ *  触发图像分发链路
+ */
 - (void)processImage;
+
+/**
+ *  使用一组滤镜处理图像
+ *
+ *  @param filters      一组滤镜
+ *  @param completion   滤镜处理结果
+ */
 - (void)processImageByFilters:(NSArray<MetalImageFilter *> *)filters completion:(MetalImagePictureProcessCompletion)completion;
 @end
 

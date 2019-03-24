@@ -59,6 +59,7 @@
         }
         
         [strongSelf send:strongSelf.resource withTime:kCMTimeInvalid];
+        strongSelf.resource = nil;
     });
 }
 
@@ -83,9 +84,6 @@
         }
         [strongSelf.resource endRenderProcess];
         !completion ? : completion([strongSelf.resource.texture imageFromTexture]);
-        
-        // 滤镜效果渲染完后扔到Picture的链路中
-        [strongSelf send:strongSelf.resource withTime:kCMTimeInvalid];
     });
 }
 

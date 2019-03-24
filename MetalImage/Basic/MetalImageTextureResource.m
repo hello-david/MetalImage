@@ -50,7 +50,7 @@
     __block MetalImageTextureResource *newResource = nil;
     @autoreleasepool {
         MetalImageTexture *copyTexture = [[MetalImageDevice shared].textureCache fetchTexture:_texture.size
-                                                                                      pixelFormat:_texture.metalTexture.pixelFormat];
+                                                                                  pixelFormat:_texture.metalTexture.pixelFormat];
         copyTexture.orientation = _texture.orientation;
         newResource = [[MetalImageTextureResource alloc] initWithTexture:copyTexture];
         [copyTexture replaceTexture:_texture.metalTexture];
