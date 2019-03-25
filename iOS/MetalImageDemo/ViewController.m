@@ -14,6 +14,7 @@
 #import "MetalImageiOSBlurFilter.h"
 #import "MetalImageSharpenFilter.h"
 #import "MetalImageContrastFilter.h"
+#import "MetalImageHueFilter.h"
 #import "MetalImagePicture.h"
 
 @interface ViewController ()
@@ -35,8 +36,11 @@
     
     MetalImageContrastFilter *contrast = [[MetalImageContrastFilter alloc] init];
     contrast.contrast = 0.3;
-    [self.camera setTarget:contrast];
-    [contrast setTarget:view];
+    
+    MetalImageHueFilter *hue = [[MetalImageHueFilter alloc] init];
+    hue.hue = 1.0;
+    [self.camera setTarget:hue];
+    [hue setTarget:view];
     
 //    [self.picture processImageByFilters:@[sharpen] completion:^(UIImage *processedImage) {
 //

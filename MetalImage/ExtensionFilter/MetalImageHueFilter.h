@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MetalImageHueFilter : MetalImageFilter
-
+@property (assign, nonatomic) float hue;
 @end
 
 NS_ASSUME_NONNULL_END
