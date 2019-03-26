@@ -82,11 +82,4 @@ Pod::Spec.new do |s|
       sp.source_files = 'MetalImage/ExtensionFilter/**/*.{h,m,cpp,mm}'
       sp.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'ExtensionFilter_Pod_Enable=1'}
   end
-  
-  # ―――--------- GPUImage兼容桥接 ―――---------
-  s.subspec 'Bridge' do |sp|
-      sp.public_header_files = 'MetalImage/Bridge/**/*.{h}'
-      sp.source_files = 'MetalImage/Bridge/**/*.{h,m,cpp,mm}'
-  end
-
 end

@@ -1,1 +1,1 @@
-../../../../../MetalImage/ExtensionFilter/MetalImageGaussianBlurFilter.h
+../../../../../MetalImage/ExtensionFilter/Convolution/MetalImageGaussianBlurFilter.h

@@ -1,1 +1,1 @@
-../../../../../MetalImage/ExtensionFilter/MetalImageLuminanceFilter.h
+../../../../../MetalImage/ExtensionFilter/Pixel/MetalImageLuminanceFilter.h
