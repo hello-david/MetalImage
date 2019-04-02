@@ -1,9 +1,7 @@
 PODS:
   - MetalImage (0.0.1):
-    - MetalImage/Bridge (= 0.0.1)
     - MetalImage/Core (= 0.0.1)
     - MetalImage/ExtensionFilter (= 0.0.1)
-  - MetalImage/Bridge (0.0.1)
   - MetalImage/Core (0.0.1):
     - MetalImage/Core/Basic (= 0.0.1)
     - MetalImage/Core/Filter (= 0.0.1)
@@ -23,7 +21,7 @@ EXTERNAL SOURCES:
     :path: "../MetalImage.podspec"
 
 SPEC CHECKSUMS:
-  MetalImage: 30543de0e48d1d14e3239b5a98505d0f35d0d721
+  MetalImage: 2081ccf69172d25d071d1d872988d3886711f873
 
 PODFILE CHECKSUM: c898ed1ff85fabf8bfc9e6d1f63600d14abb8213
 
