@@ -43,11 +43,11 @@
     return _textureCache;
 }
 
-- (dispatch_queue_t)commonProcessQueue {
-    if (!_commonProcessQueue) {
-        _commonProcessQueue = dispatch_queue_create("com.MetalImage.CommonProcess", NULL);
+- (dispatch_queue_t)concurrentQueue {
+    if (!_concurrentQueue) {
+        _concurrentQueue = dispatch_queue_create("com.MetalImage.globalProcess", DISPATCH_QUEUE_CONCURRENT);
     }
-    return _commonProcessQueue;
+    return _concurrentQueue;
 }
 
 - (MTKTextureLoader *)textureLoader {

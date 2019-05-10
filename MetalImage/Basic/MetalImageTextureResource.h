@@ -9,10 +9,9 @@
 #import "MetalImageDevice.h"
 #import "MetalImageTexture.h"
 
+NS_ASSUME_NONNULL_BEGIN
 typedef void(^MetalImageResourceRenderProcess)(id<MTLRenderCommandEncoder> renderEncoder);
 typedef void(^__nullable MetalImageResourceRenderCompletion)(void);
-
-NS_ASSUME_NONNULL_BEGIN
 
 @interface MetalImageTextureResource : MetalImageResource
 @property (nonatomic, readonly) MetalImageTexture *texture;

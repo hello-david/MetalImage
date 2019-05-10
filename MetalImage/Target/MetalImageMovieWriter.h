@@ -15,10 +15,9 @@
 
 #define kMetalImageMovieWriterCancelError [NSError errorWithDomain:@"MoiveWriterWriterError" code:-9001 userInfo:@{@"message" : @"WriterCanceled"}]
 
-typedef void(^__nullable MetalImageMovieWriterCompleteHandlle)(NSError *error);
-typedef void(^__nullable MetalImageMovieWriterStartHandlle)(NSError *error);
-
 NS_ASSUME_NONNULL_BEGIN
+typedef void(^_Nullable MetalImageMovieWriterCompleteHandlle)(NSError *_Nullable error);
+typedef void(^_Nullable MetalImageMovieWriterStartHandlle)(NSError *_Nullable error);
 
 @interface MetalImageMovieWriter : NSObject <MetalImageTarget>
 @property (nonatomic, assign) MetalImageContentMode fillMode;

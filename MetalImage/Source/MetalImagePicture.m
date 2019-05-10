@@ -26,7 +26,7 @@
     _originImage = originImage;
     if (_originImage != nil) {
         __weak typeof(self) weakSelf = self;
-         dispatch_barrier_async([MetalImageDevice shared].commonProcessQueue, ^{
+         dispatch_barrier_async([MetalImageDevice shared].concurrentQueue, ^{
              weakSelf.resource = nil;
          });
     }
@@ -52,7 +52,7 @@
     }
     
     __weak typeof(self) weakSelf = self;
-    dispatch_async([MetalImageDevice shared].commonProcessQueue, ^{
+    dispatch_async([MetalImageDevice shared].concurrentQueue, ^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (!strongSelf) {
             return;
@@ -69,7 +69,7 @@
     }
     
     __weak typeof(self) weakSelf = self;
-    dispatch_async([MetalImageDevice shared].commonProcessQueue, ^{
+    dispatch_async([MetalImageDevice shared].concurrentQueue, ^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
         
         if (!strongSelf) {

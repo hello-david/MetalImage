@@ -58,7 +58,7 @@
         return;
     }
     
-    dispatch_queue_t processQueue = resource.processingQueue ? resource.processingQueue : [MetalImageDevice shared].commonProcessQueue;
+    dispatch_queue_t processQueue = resource.processingQueue ? resource.processingQueue : [MetalImageDevice shared].concurrentQueue;
     NSUInteger startAsncIndex = 0;
     id<MetalImageTarget> snycTarget = _target;
     if (!_target) {
