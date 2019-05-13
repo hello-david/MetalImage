@@ -11,6 +11,7 @@
 @property (nonatomic, strong) CAMetalLayer *metalLayer;
 @property (nonatomic, strong) dispatch_queue_t displayQueue;
 @property (nonatomic, strong) MetalImageTarget *renderTarget;
+@property (nonatomic, strong) UIColor *metalBackgroundColor;
 @end
 
 @implementation MetalImageView
@@ -55,6 +56,11 @@
     _renderTarget.fillMode = fillMode;
 }
 
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+    [super setBackgroundColor:backgroundColor];
+    self.metalBackgroundColor = backgroundColor;
+}
+
 #pragma mark - Target Protocol
 - (void)receive:(MetalImageResource *)resource withTime:(CMTime)time {
     if (!resource || resource.type != kMetalImageResourceTypeImage) {
@@ -71,10 +77,15 @@
         @autoreleasepool {
             id <CAMetalDrawable> drawable = [strongSelf.metalLayer nextDrawable];
             if (drawable) {
+                MTLClearColor color = [strongSelf getMTLbackgroundColor];
                 textureResource.renderPassDecriptor.colorAttachments[0].texture = [drawable texture];
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    textureResource.renderPassDecriptor.colorAttachments[0].clearColor = [strongSelf getMTLbackgroundColor];
-                });
+                textureResource.renderPassDecriptor.colorAttachments[0].clearColor = color;
+                if (self.metalLayer.opaque && color.alpha != 1.0) {
+                    self.metalLayer.opaque = NO;
+                } else if (color.alpha == 1.0) {
+                    self.metalLayer.opaque = YES;
+                }
+                
                 [strongSelf.renderTarget updateBufferIfNeed:textureResource.texture targetSize:strongSelf.metalLayer.frame.size];
                 
                 id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
@@ -92,23 +103,21 @@
 }
 
 - (MTLClearColor)getMTLbackgroundColor {
-    if (!self.backgroundColor || CGColorEqualToColor([self.backgroundColor CGColor], [UIColor blackColor].CGColor)) {
-        return MTLClearColorMake(0, 0, 0, 1);
-    }
+    UIColor *backgroundColor = self.metalBackgroundColor;
     
     CGFloat components[4];
     CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
     unsigned char resultingPixel[4];
     CGContextRef context = CGBitmapContextCreate(&resultingPixel, 1, 1, 8, 4, rgbColorSpace, kCGImageAlphaNoneSkipLast);
-    CGContextSetFillColorWithColor(context, [self.backgroundColor CGColor]);
+    CGContextSetFillColorWithColor(context, [backgroundColor CGColor]);
     CGContextFillRect(context, CGRectMake(0, 0, 1, 1));
     CGContextRelease(context);
     CGColorSpaceRelease(rgbColorSpace);
-    for (int component = 0; component < 3; component++) {
+    for (int component = 0; component < 4; component++) {
         components[component] = resultingPixel[component] / 255.0f;
     }
     
-    return MTLClearColorMake(components[0], components[1], components[2], 1.0);
+    return MTLClearColorMake(components[0], components[1], components[2], components[3]);
 }
 
 #pragma mark - Render Process

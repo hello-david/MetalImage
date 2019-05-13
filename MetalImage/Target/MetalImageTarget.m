@@ -20,12 +20,20 @@
             assert(!"Create library failed");
         }
         
-        MTLRenderPipelineDescriptor *des = [[MTLRenderPipelineDescriptor alloc] init];
-        des.vertexFunction = [library newFunctionWithName:vertexFunctionName];
-        des.fragmentFunction = [library newFunctionWithName:fragmentFunctionName];
-        des.colorAttachments[0].pixelFormat = [MetalImageDevice shared].pixelFormat;
+        MTLRenderPipelineDescriptor *renderPipelineDesc = [[MTLRenderPipelineDescriptor alloc] init];
+        renderPipelineDesc.vertexFunction = [library newFunctionWithName:vertexFunctionName];
+        renderPipelineDesc.fragmentFunction = [library newFunctionWithName:fragmentFunctionName];
+        renderPipelineDesc.colorAttachments[0].pixelFormat = [MetalImageDevice shared].pixelFormat;
         
-        _pielineState = [[MetalImageDevice shared].device newRenderPipelineStateWithDescriptor:des error:&error];
+//        renderPipelineDesc.colorAttachments[0].blendingEnabled = YES;
+//        renderPipelineDesc.colorAttachments[0].rgbBlendOperation = MTLBlendOperationAdd;
+//        renderPipelineDesc.colorAttachments[0].alphaBlendOperation = MTLBlendOperationAdd;
+//        renderPipelineDesc.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactorOne;
+//        renderPipelineDesc.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactorOne;
+//        renderPipelineDesc.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+//        renderPipelineDesc.colorAttachments[0].destinationAlphaBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+        
+        _pielineState = [[MetalImageDevice shared].device newRenderPipelineStateWithDescriptor:renderPipelineDesc error:&error];
         if (error) {
             assert(!"Create piplinstate failed");
         }
