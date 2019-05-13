@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BasicViewController">
+            <connections>
+                <outlet property="firstFrameView" destination="Lfb-vp-Foi" id="cck-vd-SJ8"/>
+                <outlet property="secondFrameView" destination="yoF-eS-YWc" id="1BL-Dy-M0U"/>
+                <outlet property="thirdFrameView" destination="ZNh-l9-HoD" id="222-Ki-Msc"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yoF-eS-YWc" customClass="MetalImageView">
+                    <rect key="frame" x="20" y="373" width="374" height="150"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="0.57686750860000002" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="150" id="YUA-WZ-hOx"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZNh-l9-HoD" customClass="MetalImageView">
+                    <rect key="frame" x="20" y="543" width="374" height="150"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="0.57686750860000002" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="150" id="c9F-oZ-hy8"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lfb-vp-Foi" customClass="MetalImageView">
+                    <rect key="frame" x="20" y="203" width="374" height="150"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="0.57686750860000002" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="150" id="4g8-rY-zVL"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="yoF-eS-YWc" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="0Ht-Ru-YE9"/>
+                <constraint firstItem="yoF-eS-YWc" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="NaH-P4-AcY"/>
+                <constraint firstItem="yoF-eS-YWc" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="aHo-4x-QPI"/>
+                <constraint firstItem="Lfb-vp-Foi" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="bCn-HY-zcT"/>
+                <constraint firstItem="ZNh-l9-HoD" firstAttribute="top" secondItem="yoF-eS-YWc" secondAttribute="bottom" constant="20" id="bzr-v3-TDi"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="yoF-eS-YWc" secondAttribute="trailing" constant="20" id="gMh-S1-2da"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="Lfb-vp-Foi" secondAttribute="trailing" constant="20" id="kym-bI-taL"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="ZNh-l9-HoD" secondAttribute="trailing" constant="20" id="tLU-vK-Tgv"/>
+                <constraint firstItem="ZNh-l9-HoD" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="tdP-te-4bO"/>
+                <constraint firstItem="yoF-eS-YWc" firstAttribute="top" secondItem="Lfb-vp-Foi" secondAttribute="bottom" constant="20" id="zEl-b8-Dvb"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="131.8840579710145" y="112.5"/>
+        </view>
+    </objects>
+</document>

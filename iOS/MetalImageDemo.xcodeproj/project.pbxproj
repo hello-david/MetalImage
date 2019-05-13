@@ -14,6 +14,12 @@
 		9537A97921AFA17200AE2586 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9537A97821AFA17200AE2586 /* Assets.xcassets */; };
 		9537A97C21AFA17200AE2586 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9537A97A21AFA17200AE2586 /* LaunchScreen.storyboard */; };
 		9537A97F21AFA17200AE2586 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9537A97E21AFA17200AE2586 /* main.m */; };
+		95B8ECDC228964E8008BC11C /* BasicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B8ECDA228964E8008BC11C /* BasicViewController.m */; };
+		95B8ECDD228964E8008BC11C /* BasicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95B8ECDB228964E8008BC11C /* BasicViewController.xib */; };
+		95B8ECE122896506008BC11C /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B8ECDF22896506008BC11C /* FilterViewController.m */; };
+		95B8ECE222896506008BC11C /* FilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95B8ECE022896506008BC11C /* FilterViewController.xib */; };
+		95B8ECE6228981DC008BC11C /* RecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B8ECE4228981DC008BC11C /* RecordViewController.m */; };
+		95B8ECE7228981DC008BC11C /* RecordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95B8ECE5228981DC008BC11C /* RecordViewController.xib */; };
 		95E412AC22475F5500DAC583 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 95E412AB22475F5400DAC583 /* 1.jpg */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +36,15 @@
 		9537A97B21AFA17200AE2586 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9537A97D21AFA17200AE2586 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9537A97E21AFA17200AE2586 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		95B8ECD9228964E8008BC11C /* BasicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicViewController.h; sourceTree = "<group>"; };
+		95B8ECDA228964E8008BC11C /* BasicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BasicViewController.m; sourceTree = "<group>"; };
+		95B8ECDB228964E8008BC11C /* BasicViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BasicViewController.xib; sourceTree = "<group>"; };
+		95B8ECDE22896506008BC11C /* FilterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
+		95B8ECDF22896506008BC11C /* FilterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
+		95B8ECE022896506008BC11C /* FilterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterViewController.xib; sourceTree = "<group>"; };
+		95B8ECE3228981DC008BC11C /* RecordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecordViewController.h; sourceTree = "<group>"; };
+		95B8ECE4228981DC008BC11C /* RecordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecordViewController.m; sourceTree = "<group>"; };
+		95B8ECE5228981DC008BC11C /* RecordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecordViewController.xib; sourceTree = "<group>"; };
 		95E412AB22475F5400DAC583 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		F606AA5CFBF44EB4E573EFC6 /* libPods-MetalImageDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MetalImageDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -86,6 +101,15 @@
 				9537A97D21AFA17200AE2586 /* Info.plist */,
 				9537A97E21AFA17200AE2586 /* main.m */,
 				95E412AB22475F5400DAC583 /* 1.jpg */,
+				95B8ECD9228964E8008BC11C /* BasicViewController.h */,
+				95B8ECDA228964E8008BC11C /* BasicViewController.m */,
+				95B8ECDB228964E8008BC11C /* BasicViewController.xib */,
+				95B8ECDE22896506008BC11C /* FilterViewController.h */,
+				95B8ECDF22896506008BC11C /* FilterViewController.m */,
+				95B8ECE022896506008BC11C /* FilterViewController.xib */,
+				95B8ECE3228981DC008BC11C /* RecordViewController.h */,
+				95B8ECE4228981DC008BC11C /* RecordViewController.m */,
+				95B8ECE5228981DC008BC11C /* RecordViewController.xib */,
 			);
 			path = MetalImageDemo;
 			sourceTree = "<group>";
@@ -161,6 +185,9 @@
 				95E412AC22475F5500DAC583 /* 1.jpg in Resources */,
 				9537A97921AFA17200AE2586 /* Assets.xcassets in Resources */,
 				9537A97721AFA17200AE2586 /* Main.storyboard in Resources */,
+				95B8ECE7228981DC008BC11C /* RecordViewController.xib in Resources */,
+				95B8ECE222896506008BC11C /* FilterViewController.xib in Resources */,
+				95B8ECDD228964E8008BC11C /* BasicViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +246,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9537A97421AFA17200AE2586 /* ViewController.m in Sources */,
+				95B8ECDC228964E8008BC11C /* BasicViewController.m in Sources */,
+				95B8ECE122896506008BC11C /* FilterViewController.m in Sources */,
+				95B8ECE6228981DC008BC11C /* RecordViewController.m in Sources */,
 				9537A97F21AFA17200AE2586 /* main.m in Sources */,
 				9537A97121AFA17200AE2586 /* AppDelegate.m in Sources */,
 			);

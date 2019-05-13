@@ -7,86 +7,100 @@
 //
 
 #import "ViewController.h"
-#import "MetalImageCamera.h"
-#import "MetalImageView.h"
-#import "MetalImageFilter.h"
-#import "MetalImageMovieWriter.h"
-#import "MetalImageiOSBlurFilter.h"
-#import "MetalImageSharpenFilter.h"
-#import "MetalImageContrastFilter.h"
-#import "MetalImageHueFilter.h"
-#import "MetalImagePicture.h"
+#import "BasicViewController.h"
+#import "RecordViewController.h"
+#import "FilterViewController.h"
 
-@interface ViewController ()
-@property (nonatomic, strong) MetalImageCamera *camera;
-@property (nonatomic, strong) MetalImagePicture *picture;
+@interface ViewController () <UITableViewDelegate, UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) NSArray<NSArray *> *dataSource;
 @end
 
 @implementation ViewController
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.camera = [[MetalImageCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
-    MetalImageView *view = [[MetalImageView alloc] initWithFrame:CGRectMake(0, 0, 750 / 2, 1334 / 2)];
-    self.picture = [[MetalImagePicture alloc] initWithImage:[UIImage imageNamed:@"1.jpg"]];
-    
-    MetalImageSharpenFilter *sharpen = [[MetalImageSharpenFilter alloc] init];
-    sharpen.sharpness = 2.0;
-    
-    MetalImageContrastFilter *contrast = [[MetalImageContrastFilter alloc] init];
-    contrast.contrast = 0.3;
-    
-    MetalImageHueFilter *hue = [[MetalImageHueFilter alloc] init];
-    hue.hue = 1.0;
-    [self.camera setTarget:hue];
-    [hue setTarget:view];
-    
-//    [self.picture processImageByFilters:@[sharpen] completion:^(UIImage *processedImage) {
-//
-//    }];
-    
-//    MetalImageFilter *firstFilter = [[MetalImageFilter alloc] init];
-//    MetalImageFilter *lastFilter = nil;
-//    [self.camera setTarget:firstFilter];
-//    for (int i = 0; i < 100; i++) {
-//        lastFilter = [[MetalImageFilter alloc] init];
-//        [firstFilter setTarget:lastFilter];
-//        firstFilter = lastFilter;
-//    }
-//    [firstFilter setTarget:view];
-    
-//    NSString *videoFileDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-//    NSString *videoFilePath = [videoFileDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"video_%d.mp4",0]];
-//    NSLog(@"videoFilePath = %@",videoFilePath);
-//    NSURL *outputURL = [[NSURL alloc] initFileURLWithPath:videoFilePath];
-//    [self removeFile:outputURL];
-//
-//    MetalImageMovieWriter *movieWriter = [[MetalImageMovieWriter alloc] initWithStorageUrl:outputURL size:CGSizeMake(1080, 640)];
-//    [self.camera setTarget:view];
-//    [self.camera addAsyncTarget:movieWriter];
-//    movieWriter.fillMode = kMetalImageContentModeScaleAspectFit;
-//    movieWriter.backgroundType = kMetalImagContentBackgroundFilter;
-//    movieWriter.backgroundFilter = [[MetalImageiOSBlurFilter alloc] init];
-//    ((MetalImageiOSBlurFilter *)movieWriter.backgroundFilter).blurRadiusInPixels = 10.0;
-//    ((MetalImageiOSBlurFilter *)movieWriter.backgroundFilter).texelSpacingMultiplier = 2.0;
-//    ((MetalImageiOSBlurFilter *)movieWriter.backgroundFilter).saturation = 1.0;
-//
-//    [movieWriter startRecording];
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(60 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [movieWriter finishRecording];
-//    });
-    
-    [self.camera startCapture];
-    [self.view addSubview:view];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
 }
 
-- (void)removeFile:(NSURL *)fileURL {
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *filePath = [fileURL path];
-    if ([fileManager fileExistsAtPath:filePath]) {
-        NSError *error;
-        [fileManager removeItemAtPath:filePath error:&error];
+- (NSArray<NSArray *> *)dataSource {
+    if (!_dataSource) {
+        _dataSource = @[@[@"相机/图片显示", @"录制"],
+                        @[@"饱和度", @"对比度", @"亮度", @"色调", @"锐化", @"高斯模糊", @"浮雕化", @"边缘检测", @"裁剪", @"毛玻璃"],
+                        @[@""]];
+    }
+    return _dataSource;
+}
+
+#pragma mark - 选择列表回调
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return @"基础功能";
+    }
+    
+    if (section == 1) {
+        return @"拓展滤镜效果";
+    }
+    
+    if (section == 2) {
+        return @"MPS滤镜效果";
+    }
+    
+    return @"";
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return self.dataSource.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.dataSource objectAtIndex:section].count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"OptionCell"];
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    cell.textLabel.font = [UIFont fontWithName:@"PingFangSC-Regular" size:14];
+    cell.textLabel.text = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self tableViewOptionEvent:indexPath.row section:indexPath.section];
+}
+
+#pragma mark - 选择事件内部逻辑
+- (void)tableViewOptionEvent:(NSInteger)index section:(NSInteger)section {
+    // 基础功能
+    if (section == 0) {
+        switch (index) {
+            case 0: {
+                BasicViewController *vc = [[BasicViewController alloc] initWithNibName:@"BasicViewController" bundle:nil];
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+                
+            case 1: {
+                RecordViewController *vc = [[RecordViewController alloc] initWithNibName:@"RecordViewController" bundle:nil];
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    
+    // 拓展滤镜
+    if (section == 1) {
+        
+    }
+    
+    // MPS滤镜
+    if (section == 2) {
+        
     }
 }
+
 @end
