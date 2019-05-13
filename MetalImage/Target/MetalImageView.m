@@ -38,7 +38,7 @@
     
     _displayQueue = dispatch_queue_create("com.MetalImage.DisplayView", NULL);
     _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:@"oneInputVertex"
-                                                                        fragment:@"passthroughFragment"];
+                                                                      fragment:@"passthroughFragment"];
     _renderTarget.fillMode = kMetalImageContentModeScaleAspectFill;
 }
 
@@ -72,6 +72,9 @@
             id <CAMetalDrawable> drawable = [strongSelf.metalLayer nextDrawable];
             if (drawable) {
                 textureResource.renderPassDecriptor.colorAttachments[0].texture = [drawable texture];
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    textureResource.renderPassDecriptor.colorAttachments[0].clearColor = [strongSelf getMTLbackgroundColor];
+                });
                 [strongSelf.renderTarget updateBufferIfNeed:textureResource.texture targetSize:strongSelf.metalLayer.frame.size];
                 
                 id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
@@ -86,6 +89,26 @@
             }
         }
     });
+}
+
+- (MTLClearColor)getMTLbackgroundColor {
+    if (!self.backgroundColor || CGColorEqualToColor([self.backgroundColor CGColor], [UIColor blackColor].CGColor)) {
+        return MTLClearColorMake(0, 0, 0, 1);
+    }
+    
+    CGFloat components[4];
+    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+    unsigned char resultingPixel[4];
+    CGContextRef context = CGBitmapContextCreate(&resultingPixel, 1, 1, 8, 4, rgbColorSpace, kCGImageAlphaNoneSkipLast);
+    CGContextSetFillColorWithColor(context, [self.backgroundColor CGColor]);
+    CGContextFillRect(context, CGRectMake(0, 0, 1, 1));
+    CGContextRelease(context);
+    CGColorSpaceRelease(rgbColorSpace);
+    for (int component = 0; component < 3; component++) {
+        components[component] = resultingPixel[component] / 255.0f;
+    }
+    
+    return MTLClearColorMake(components[0], components[1], components[2], 1.0);
 }
 
 #pragma mark - Render Process

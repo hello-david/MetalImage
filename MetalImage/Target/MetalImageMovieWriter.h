@@ -23,7 +23,7 @@ typedef void(^_Nullable MetalImageMovieWriterStartHandlle)(NSError *_Nullable er
 @property (nonatomic, assign) MetalImageContentMode fillMode;
 @property (nonatomic, assign) MetalImagContentBackground backgroundType;
 @property (nonatomic, strong, nullable) id<MetalImageRender> backgroundFilter;
-@property (nonatomic, strong) UIColor *backgroudColor;
+@property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, assign) BOOL haveAudioTrack;
 
 @property (nonatomic, strong, readonly) NSURL *storageUrl;

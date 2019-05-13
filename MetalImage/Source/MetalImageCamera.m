@@ -86,6 +86,10 @@
     return self;
 }
 
+- (void)dealloc {
+    [self stopCapture];
+}
+
 - (void)startCapture {
     if (!self.session.isRunning) {
         [self.session startRunning];

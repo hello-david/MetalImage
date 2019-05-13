@@ -34,7 +34,7 @@
 - (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
-    [renderEncoder pushDebugGroup:@"Saturation Draw"];
+    [renderEncoder pushDebugGroup:@"Hue Draw"];
 #endif
     
     [renderEncoder setRenderPipelineState:self.renderPielineState];
