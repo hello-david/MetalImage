@@ -26,7 +26,6 @@
     [super viewDidLoad];
     
     self.secondFrameView.fillMode = kMetalImageContentModeScaleAspectFit;
-//    self.secondFrameView.backgroundColor = [UIColor whiteColor];
     
     [self.camera setTarget:self.firstFrameView];
     [self.camera addAsyncTarget:self.secondFrameView];

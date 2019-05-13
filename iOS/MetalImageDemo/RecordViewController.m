@@ -13,8 +13,7 @@
 #import "MetalImageiOSBlurFilter.h"
 
 @interface RecordViewController ()
-@property (weak, nonatomic) IBOutlet UIButton *startRecordBtn;
-@property (weak, nonatomic) IBOutlet UIButton *stopRecordBtn;
+@property (weak, nonatomic) IBOutlet UIButton *recordBtn;
 @property (weak, nonatomic) IBOutlet MetalImageView *frameView;
 @property (nonatomic, strong) MetalImageCamera *camera;
 @property (nonatomic, strong) MetalImageMovieWriter *movieWriter;
@@ -25,30 +24,28 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.camera setTarget:self.frameView];
-    self.movieWriter.fillMode = kMetalImageContentModeScaleAspectFit;
     [self.camera startCapture];
-    self.startRecordBtn.enabled = YES;
-    self.stopRecordBtn.enabled = NO;
 }
 
-- (IBAction)actionStart:(id)sender {
-    [self.camera addAsyncTarget:self.movieWriter];
-    [self.movieWriter startRecording];
-    self.startRecordBtn.enabled = NO;
-    self.stopRecordBtn.enabled = YES;
-}
-
-- (IBAction)actionStop:(id)sender {
-    [self.movieWriter finishRecording];
-    [self.camera removeTarget:self.movieWriter];
-    self.movieWriter = nil;
-    self.startRecordBtn.enabled = YES;
-    self.stopRecordBtn.enabled = NO;
+- (IBAction)actionRecord:(id)sender {
+    if ([sender isSelected]) {
+        [self.movieWriter finishRecording];
+        [self.camera removeTarget:self.movieWriter];
+        self.movieWriter = nil;
+        [self.recordBtn setTitle:@"开始录制" forState:UIControlStateNormal];
+        [sender setSelected:NO];
+    }
+    else {
+        [self.camera addAsyncTarget:self.movieWriter];
+        [self.movieWriter startRecording];
+        [self.recordBtn setTitle:@"停止录制" forState:UIControlStateNormal];
+        [sender setSelected:YES];
+    }
 }
 
 - (MetalImageCamera *)camera {
     if (!_camera) {
-        _camera = [[MetalImageCamera alloc] initWithSessionPreset:AVCaptureSessionPresetMedium cameraPosition:AVCaptureDevicePositionBack];
+        _camera = [[MetalImageCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1920x1080 cameraPosition:AVCaptureDevicePositionBack];
     }
     return _camera;
 }

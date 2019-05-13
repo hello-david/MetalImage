@@ -13,8 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RecordViewController">
             <connections>
                 <outlet property="frameView" destination="17l-IL-fRp" id="F55-PN-8uK"/>
-                <outlet property="startRecordBtn" destination="yAn-5Q-WWy" id="paO-Ph-S1T"/>
-                <outlet property="stopRecordBtn" destination="jSr-hA-mTx" id="lVP-lF-Nac"/>
+                <outlet property="recordBtn" destination="jSr-hA-mTx" id="St8-K6-CAj"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -27,35 +26,15 @@
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yAn-5Q-WWy">
-                    <rect key="frame" x="262" y="640" width="82" height="40"/>
-                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="82" id="ABn-Um-pGo"/>
-                        <constraint firstAttribute="height" constant="40" id="EHx-mc-T9P"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="13"/>
-                    <state key="normal" title="开始录制">
-                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="20"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="actionStart:" destination="-1" eventType="touchUpInside" id="53o-or-eJv"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jSr-hA-mTx">
-                    <rect key="frame" x="70" y="640" width="82" height="40"/>
+                    <rect key="frame" x="167" y="682" width="80" height="40"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="QeT-Vn-8T2"/>
-                        <constraint firstAttribute="width" constant="82" id="gr3-aJ-4dj"/>
+                        <constraint firstAttribute="width" constant="80" id="gr3-aJ-4dj"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="13"/>
-                    <state key="normal" title="停止录制">
+                    <state key="normal" title="开始录制">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <userDefinedRuntimeAttributes>
@@ -64,20 +43,18 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="actionStop:" destination="-1" eventType="touchUpInside" id="wuh-TO-zOG"/>
+                        <action selector="actionRecord:" destination="-1" eventType="touchUpInside" id="guw-8Z-bjH"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="17l-IL-fRp" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="0Gm-ja-yfQ"/>
-                <constraint firstItem="jSr-hA-mTx" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="70" id="Drn-NT-wMG"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="jSr-hA-mTx" secondAttribute="bottom" constant="182" id="P0m-ol-geb"/>
+                <constraint firstItem="jSr-hA-mTx" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="8Re-wM-FNu"/>
                 <constraint firstItem="17l-IL-fRp" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="Wv8-Wd-EGN"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="yAn-5Q-WWy" secondAttribute="trailing" constant="70" id="f2t-Sx-3lL"/>
                 <constraint firstItem="17l-IL-fRp" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="lsR-Zl-7xJ"/>
                 <constraint firstItem="17l-IL-fRp" firstAttribute="bottom" secondItem="Q5M-cg-NOt" secondAttribute="bottom" id="ok9-pE-q2f"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="yAn-5Q-WWy" secondAttribute="bottom" constant="182" id="q15-cB-TSY"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="jSr-hA-mTx" secondAttribute="bottom" constant="140" id="uU6-5x-eQT"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="131.8840579710145" y="101.78571428571428"/>
