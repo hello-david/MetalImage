@@ -68,10 +68,12 @@
     
     for (NSUInteger index = startAsncIndex; index < _asncTargets.count; index++) {
         id<MetalImageTarget> asyncTarget = [_asncTargets objectAtIndex:index];
-        MetalImageResource *newResource = [resource newResourceFromSelf];
-        dispatch_async(processQueue, ^{
-            [asyncTarget receive:newResource withTime:time];
-        });
+        @autoreleasepool {
+            MetalImageResource *newResource = [resource newResourceFromSelf];
+            dispatch_async(processQueue, ^{
+                [asyncTarget receive:newResource withTime:time];
+            });
+        }
     }
     
     [snycTarget receive:resource withTime:time];

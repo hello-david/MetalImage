@@ -96,6 +96,10 @@
     return _backgroundFilter;
 }
 
+- (AVAssetWriterStatus)status {
+    return self.assetWriter.status;
+}
+
 - (void)initAssetWriter {
     NSError *error = nil;
     _assetWriter = [[AVAssetWriter alloc] initWithURL:_storageUrl fileType:_fileType error:&error];

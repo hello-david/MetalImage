@@ -77,7 +77,7 @@
             return;
         }
         
-        for (id<MetalImageRender>filter in filters) {
+        for (id<MetalImageRender> filter in filters) {
             if ([filter isKindOfClass:[MetalImageFilter class]]) {
                 [strongSelf.resource startRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
                     [(MetalImageFilter*)filter renderToEncoder:renderEncoder withResource:strongSelf.resource];
@@ -88,7 +88,10 @@
             }
         }
         [strongSelf.resource endRenderProcessUntilCompleted:YES];
-        !completion ? : completion([strongSelf.resource.texture imageFromTexture]);
+        
+        UIImage *processedImage = [strongSelf.resource.texture imageFromTexture];
+        strongSelf.resource = nil;
+        !completion ? : completion(processedImage);
     });
 }
 
