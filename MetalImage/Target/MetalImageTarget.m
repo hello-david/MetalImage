@@ -9,8 +9,13 @@
 
 @implementation MetalImageTarget
 
+- (instancetype)initWithDefaultLibraryWithVertex:(NSString *)vertexFunctionName fragment:(NSString *)fragmentFunctionName {
+    return [self initWithDefaultLibraryWithVertex:vertexFunctionName fragment:fragmentFunctionName enableBlend:NO];
+}
+
 - (instancetype)initWithDefaultLibraryWithVertex:(NSString *)vertexFunctionName
-                                        fragment:(NSString *)fragmentFunctionName {
+                                        fragment:(NSString *)fragmentFunctionName
+                                     enableBlend:(BOOL)enableBlend {
     if (self = [super init]) {
         NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"MetalImageBundle" ofType:@"bundle"];
         NSString *defaultMetalFile = [bundlePath stringByAppendingPathComponent:@"default.metallib"];
@@ -25,13 +30,15 @@
         renderPipelineDesc.fragmentFunction = [library newFunctionWithName:fragmentFunctionName];
         renderPipelineDesc.colorAttachments[0].pixelFormat = [MetalImageDevice shared].pixelFormat;
         
-//        renderPipelineDesc.colorAttachments[0].blendingEnabled = YES;
-//        renderPipelineDesc.colorAttachments[0].rgbBlendOperation = MTLBlendOperationAdd;
-//        renderPipelineDesc.colorAttachments[0].alphaBlendOperation = MTLBlendOperationAdd;
-//        renderPipelineDesc.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactorOne;
-//        renderPipelineDesc.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactorOne;
-//        renderPipelineDesc.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
-//        renderPipelineDesc.colorAttachments[0].destinationAlphaBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+        if (enableBlend) {
+            renderPipelineDesc.colorAttachments[0].blendingEnabled = YES;
+            renderPipelineDesc.colorAttachments[0].rgbBlendOperation = MTLBlendOperationAdd;
+            renderPipelineDesc.colorAttachments[0].alphaBlendOperation = MTLBlendOperationAdd;
+            renderPipelineDesc.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactorOne;
+            renderPipelineDesc.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactorOne;
+            renderPipelineDesc.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+            renderPipelineDesc.colorAttachments[0].destinationAlphaBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+        }
         
         _pielineState = [[MetalImageDevice shared].device newRenderPipelineStateWithDescriptor:renderPipelineDesc error:&error];
         if (error) {

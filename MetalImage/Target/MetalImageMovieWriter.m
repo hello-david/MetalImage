@@ -60,7 +60,9 @@
     _haveAppedImage = NO;
     
     _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:@"oneInputVertex"
-                                                                        fragment:@"passthroughFragment"];
+                                                                      fragment:@"passthroughFragment"
+                                                                   enableBlend:YES];
+    
     _renderTarget.fillMode = kMetalImageContentModeScaleAspectFill;
     _lastBackgroundSise = CGSizeZero;
     
@@ -470,12 +472,11 @@
     CGContextFillRect(context, CGRectMake(0, 0, 1, 1));
     CGContextRelease(context);
     CGColorSpaceRelease(rgbColorSpace);
-    for (int component = 0; component < 3; component++) {
+    for (int component = 0; component < 4; component++) {
         components[component] = resultingPixel[component] / 255.0f;
     }
     
-    // 不支持alpha调整，还有问题未解决
-    return MTLClearColorMake(components[0], components[1], components[2], 1.0);
+    return MTLClearColorMake(components[0], components[1], components[2], components[3]);
 }
 
 #pragma mark - Audio Write Process

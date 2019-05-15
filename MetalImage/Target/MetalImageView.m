@@ -81,10 +81,10 @@
                 textureResource.renderPassDecriptor.colorAttachments[0].texture = [drawable texture];
                 textureResource.renderPassDecriptor.colorAttachments[0].clearColor = color;
                 
-                if (self.metalLayer.opaque && color.alpha != 1.0) {
-                    self.metalLayer.opaque = NO;
+                if (strongSelf.metalLayer.opaque && color.alpha != 1.0) {
+                    strongSelf.metalLayer.opaque = NO;
                 } else if (color.alpha == 1.0) {
-                    self.metalLayer.opaque = YES;
+                    strongSelf.metalLayer.opaque = YES;
                 }
                 
                 [strongSelf.renderTarget updateBufferIfNeed:textureResource.texture targetSize:strongSelf.metalLayer.frame.size];

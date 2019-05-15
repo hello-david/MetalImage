@@ -66,6 +66,7 @@
         
         _movieWriter = [[MetalImageMovieWriter alloc] initWithStorageUrl:outputURL size:CGSizeMake(1080, 640)];
         _movieWriter.fillMode = kMetalImageContentModeScaleAspectFit;
+        _movieWriter.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.5];
     }
     return _movieWriter;
 }

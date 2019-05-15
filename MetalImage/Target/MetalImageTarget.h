@@ -30,6 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithDefaultLibraryWithVertex:(NSString *)vertexFunctionName
                                         fragment:(NSString *)fragmentFunctionName;
 
+- (instancetype)initWithDefaultLibraryWithVertex:(NSString *)vertexFunctionName
+                                        fragment:(NSString *)fragmentFunctionName
+                                     enableBlend:(BOOL)enableBlend;
+
 /**
  *  根据输入纹理更新目标纹理坐标/顶点坐标
  *
