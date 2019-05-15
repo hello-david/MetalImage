@@ -23,8 +23,8 @@
         _gaussinBlurFiter = [[MetalImageGaussianBlurFilter alloc] init];
         _source = [[MetalImageSource alloc] init];
         
-        [_saturationFilter setTarget:_gaussinBlurFiter];
-        [_gaussinBlurFiter setTarget:_luminanceFilter];
+        [_saturationFilter addTarget:_gaussinBlurFiter];
+        [_gaussinBlurFiter addTarget:_luminanceFilter];
         
         self.blurRadiusInPixels = 4.0;
         self.texelSpacingMultiplier = 2.0;
@@ -86,14 +86,9 @@
 }
 
 #pragma mark - 链路协议
-- (void)setTarget:(id<MetalImageTarget>)target {
-    [self.source setTarget:target];
-    [self.luminanceFilter setTarget:target];
-}
-
-- (void)addAsyncTarget:(id<MetalImageTarget>)target {
-    [self.source addAsyncTarget:target];
-    [self.luminanceFilter addAsyncTarget:target];
+- (void)addTarget:(id<MetalImageTarget>)target {
+    [self.source addTarget:target];
+    [self.luminanceFilter addTarget:target];
 }
 
 - (void)removeTarget:(id<MetalImageTarget>)target {

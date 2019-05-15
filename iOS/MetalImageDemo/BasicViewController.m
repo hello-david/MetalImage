@@ -27,11 +27,11 @@
     
     self.secondFrameView.fillMode = kMetalImageContentModeScaleAspectFit;
     
-    [self.camera setTarget:self.firstFrameView];
-    [self.camera addAsyncTarget:self.secondFrameView];
+    [self.camera addTarget:self.firstFrameView];
+    [self.camera addTarget:self.secondFrameView];
     [self.camera startCapture];
     
-    [self.picture setTarget:self.thirdFrameView];
+    [self.picture addTarget:self.thirdFrameView];
     [self.picture processImage];
 }
 

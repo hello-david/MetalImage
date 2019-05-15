@@ -15,7 +15,7 @@ self.camera = [[MetalImageCamera alloc] initWithSessionPreset:AVCaptureSessionPr
 MetalImageView *view = [[MetalImageView alloc] initWithFrame:CGRectMake(0, 0, 750 / 2, 1334 / 2)];
     
 MetalImageFilter *filter = [[MetalImageFilter alloc] init];
-[self.camera setTarget:filter];
+[self.camera addTarget:filter];
     
 [self.camera startCapture];
 [self.view addSubview:view];
@@ -26,8 +26,8 @@ MetalImageFilter *filter = [[MetalImageFilter alloc] init];
 self.camera = [[MetalImageCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
 MetalImageView *view = [[MetalImageView alloc] initWithFrame:CGRectMake(0, 0, 750 / 2, 1334 / 2)];
 MetalImageMovieWriter *movieWriter = [[MetalImageMovieWriter alloc] initWithStorageUrl:outputURL size:CGSizeMake(1080, 640)];
-[self.camera setTarget:view];
-[self.camera addAsyncTarget:movieWriter];
+[self.camera addTarget:view];
+[self.camera addTarget:movieWriter];
 movieWriter.fillMode = kMetalImageContentModeScaleAspectFit;
 movieWriter.backgroundType = kMetalImagContentBackgroundFilter;
 movieWriter.backgroundFilter = [[MetalImageiOSBlurFilter alloc] init];

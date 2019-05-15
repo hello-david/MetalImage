@@ -173,12 +173,8 @@
     [self.source send:resource withTime:time];
 }
 
-- (void)setTarget:(id<MetalImageTarget>)target {
-    [self.source setTarget:target];
-}
-
-- (void)addAsyncTarget:(id<MetalImageTarget>)target {
-    [self.source addAsyncTarget:target];
+- (void)addTarget:(id<MetalImageTarget>)target {
+    [self.source addTarget:target];
 }
 
 - (void)removeTarget:(id<MetalImageTarget>)target {

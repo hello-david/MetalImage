@@ -49,8 +49,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.camera setTarget:(id<MetalImageTarget>)self.filterModel.filter];
-    [self.filterModel.filter setTarget:self.firstFrameView];
+    [self.camera addTarget:(id<MetalImageTarget>)self.filterModel.filter];
+    [self.filterModel.filter addTarget:self.firstFrameView];
     [self.camera startCapture];
     
     for (NSInteger index = 0; index < self.filterModel.propertyName.count; index ++) {

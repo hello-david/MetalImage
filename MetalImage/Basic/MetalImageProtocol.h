@@ -24,8 +24,7 @@
 /**
  *  资源接收对象管理
  */
-- (void)setTarget:(id<MetalImageTarget>)target;
-- (void)addAsyncTarget:(id<MetalImageTarget>)target;
+- (void)addTarget:(id<MetalImageTarget>)target;
 - (void)removeTarget:(id<MetalImageTarget>)target;
 - (void)removeAllTarget;
 @end

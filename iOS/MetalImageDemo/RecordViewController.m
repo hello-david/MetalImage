@@ -23,7 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.camera setTarget:self.frameView];
+    [self.camera addTarget:self.frameView];
     [self.camera startCapture];
 }
 
@@ -40,7 +40,7 @@
     }
     else {
         if (self.movieWriter.status != AVAssetWriterStatusWriting) {
-            [self.camera addAsyncTarget:self.movieWriter];
+            [self.camera addTarget:self.movieWriter];
             [self.movieWriter startRecording];
         }
         
