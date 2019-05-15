@@ -8,5 +8,5 @@
 #import "MetalImageFilter.h"
 
 @interface MetalImageLuminanceFilter : MetalImageFilter
-@property (assign, nonatomic) float rangeReductionFactor;// [0.0, 1.0]
+@property (assign, nonatomic) float rangeReductionFactor;// 建议[-1.0, 1.0]，默认0.0
 @end

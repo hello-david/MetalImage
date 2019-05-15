@@ -8,5 +8,5 @@
 #import "MetalImageFilter.h"
 
 @interface MetalImageSharpenFilter : MetalImageFilter
-@property (assign, nonatomic) float sharpness;// [-4.0, 4.0]
+@property (assign, nonatomic) float sharpness;// 建议[-4.0, 4.0], 默认0.0
 @end

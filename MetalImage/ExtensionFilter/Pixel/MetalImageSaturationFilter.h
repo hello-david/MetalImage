@@ -8,5 +8,5 @@
 #import "MetalImageFilter.h"
 
 @interface MetalImageSaturationFilter : MetalImageFilter
-@property (assign, nonatomic) float saturation; // [0.0, 2.0]
+@property (assign, nonatomic) float saturation; // 建议[0.0, 2.0], 默认1.0
 @end

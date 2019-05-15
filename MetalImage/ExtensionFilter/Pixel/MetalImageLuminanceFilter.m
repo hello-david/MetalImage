@@ -14,7 +14,7 @@
 @implementation MetalImageLuminanceFilter
 - (instancetype)init {
     if (self = [super initWithVertexFunction:@"oneInputVertex" fragmentFunction:@"luminanceRangeFragment" library:[MetalImageDevice shared].library]) {
-        _rangeReductionFactor = 0.6;
+        _rangeReductionFactor = 0.0;
     }
     return self;
 }

@@ -49,6 +49,7 @@ typedef struct MetalImageGaussianParameter {
 @property (nonatomic, assign) float verticalTexelSpacing;
 @property (nonatomic, assign) float horizontalTexelSpacing;
 @property (nonatomic, assign) CGSize lastSize;
+@property (nonatomic, assign) BOOL texelSpacingMultiplierChanged;
 
 @property (nonatomic, strong) id<MTLBuffer> verticalParamBuffer;
 @property (nonatomic, strong) id<MTLBuffer> horizontalParamBuffer;
@@ -107,7 +108,7 @@ typedef struct MetalImageGaussianParameter {
     if (!CGSizeEqualToSize(self.renderSize, CGSizeZero)) {
         [resource setRenderSize:self.renderSize];
     }
-    if (!CGSizeEqualToSize(_lastSize, resource.renderSize)) {
+    if (!CGSizeEqualToSize(_lastSize, resource.renderSize) || _texelSpacingMultiplierChanged) {
         self->_verticalParam.texelWidthOffset = self.verticalTexelSpacing / resource.renderSize.width;
         self->_verticalParam.texelHeightOffset = 0.0;
         
@@ -116,6 +117,7 @@ typedef struct MetalImageGaussianParameter {
         _lastSize = resource.renderSize;
         _verticalParamBuffer = nil;
         _horizontalParamBuffer = nil;
+        _texelSpacingMultiplierChanged = NO;
     }
     CGSize renderSize = CGSizeEqualToSize(self.renderSize, CGSizeZero) ? resource.texture.size : self.renderSize;
     
@@ -186,9 +188,12 @@ typedef struct MetalImageGaussianParameter {
 }
 
 - (void)setTexelSpacingMultiplier:(float)texelSpacingMultiplier {
-    _texelSpacingMultiplier = texelSpacingMultiplier;
-    _verticalTexelSpacing = _texelSpacingMultiplier;
-    _horizontalTexelSpacing = _texelSpacingMultiplier;
+    if (_texelSpacingMultiplier != texelSpacingMultiplier) {
+        _texelSpacingMultiplierChanged = YES;
+        _texelSpacingMultiplier = texelSpacingMultiplier;
+        _verticalTexelSpacing = _texelSpacingMultiplier;
+        _horizontalTexelSpacing = _texelSpacingMultiplier;
+    }
 }
 
 - (void)setBlurRadiusInPixels:(float)blurRadiusInPixels {

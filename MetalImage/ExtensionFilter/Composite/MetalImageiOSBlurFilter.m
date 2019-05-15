@@ -27,8 +27,9 @@
         [_gaussinBlurFiter setTarget:_luminanceFilter];
         
         self.blurRadiusInPixels = 4.0;
+        self.texelSpacingMultiplier = 2.0;
         self.saturation = 1.0;
-        self.luminance = 0.6;
+        self.luminance = 0.0;
     }
     return self;
 }
