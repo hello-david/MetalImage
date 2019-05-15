@@ -29,15 +29,21 @@
 
 - (IBAction)actionRecord:(id)sender {
     if ([sender isSelected]) {
-        [self.movieWriter finishRecording];
-        [self.camera removeTarget:self.movieWriter];
-        self.movieWriter = nil;
+        if (self.movieWriter.status == AVAssetWriterStatusWriting) {
+            [self.movieWriter finishRecording];
+            [self.camera removeTarget:self.movieWriter];
+            self.movieWriter = nil;
+        }
+        
         [self.recordBtn setTitle:@"开始录制" forState:UIControlStateNormal];
         [sender setSelected:NO];
     }
     else {
-        [self.camera addAsyncTarget:self.movieWriter];
-        [self.movieWriter startRecording];
+        if (self.movieWriter.status != AVAssetWriterStatusWriting) {
+            [self.camera addAsyncTarget:self.movieWriter];
+            [self.movieWriter startRecording];
+        }
+        
         [self.recordBtn setTitle:@"停止录制" forState:UIControlStateNormal];
         [sender setSelected:YES];
     }

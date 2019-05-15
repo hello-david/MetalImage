@@ -27,7 +27,7 @@
 - (NSArray<NSArray *> *)dataSource {
     if (!_dataSource) {
         _dataSource = @[@[@"相机/图片显示", @"录制"],
-                        @[@"饱和度", @"对比度", @"亮度", @"色调", @"锐化", @"高斯模糊", @"浮雕化", @"边缘检测", @"裁剪", @"毛玻璃"],
+                        @[@"饱和度", @"对比度", @"亮度", @"色调", @"锐化", @"高斯模糊", @"毛玻璃"],
                         @[@""]];
     }
     return _dataSource;
@@ -94,7 +94,74 @@
     
     // 拓展滤镜
     if (section == 1) {
+        id<MetalImageSource, MetalImageTarget, MetalImageRender> filter = nil;
+        NSArray *effectPropertyName = nil;
+        NSArray *values = nil;
+        switch (index) {
+            case 0: {
+                filter = [[MetalImageSaturationFilter alloc] init];
+                effectPropertyName = @[@"saturation"];
+                FileterNumericalValue value1 = {0.0, 2.0, 1.0};
+                values = @[[NSValue value:&value1 withObjCType:@encode(FileterNumericalValue)]];
+                break;
+            }
+            case 1: {
+                filter = [[MetalImageContrastFilter alloc] init];
+                effectPropertyName = @[@"contrast"];
+                FileterNumericalValue value1 = {0.0, 2.0, 1.0};
+                values = @[[NSValue value:&value1 withObjCType:@encode(FileterNumericalValue)]];
+                break;
+            }
+            case 2: {
+                filter = [[MetalImageLuminanceFilter alloc] init];
+                effectPropertyName = @[@"rangeReductionFactor"];
+                FileterNumericalValue value1 = {-1.0, 1.0, 0.0};
+                values = @[[NSValue value:&value1 withObjCType:@encode(FileterNumericalValue)]];
+                break;
+            }
+            case 3: {
+                filter = [[MetalImageHueFilter alloc] init];
+                effectPropertyName = @[@"hue"];
+                FileterNumericalValue value1 = {-1.0, 1.0, 0.0};
+                values = @[[NSValue value:&value1 withObjCType:@encode(FileterNumericalValue)]];
+                break;
+            }
+            case 4: {
+                filter = [[MetalImageSharpenFilter alloc] init];
+                effectPropertyName = @[@"sharpness"];
+                FileterNumericalValue value1 = {-4.0, 4.0, 0.0};
+                values = @[[NSValue value:&value1 withObjCType:@encode(FileterNumericalValue)]];
+                break;
+            }
+            case 5: {
+                filter = [[MetalImageGaussianBlurFilter alloc] init];
+                effectPropertyName = @[@"blurRadiusInPixels", @"texelSpacingMultiplier"];
+                FileterNumericalValue value1 = {0.0, 8.0, 4.0};
+                FileterNumericalValue value2 = {0.0, 15.0, 2.0};
+                values = @[[NSValue value:&value1 withObjCType:@encode(FileterNumericalValue)],
+                           [NSValue value:&value2 withObjCType:@encode(FileterNumericalValue)]];
+                break;
+            }
+            case 6: {
+                filter = [[MetalImageiOSBlurFilter alloc] init];
+                effectPropertyName = @[@"blurRadiusInPixels", @"saturation", @"luminance"];
+                FileterNumericalValue value1 = {0.0, 15.0, 4.0};
+                FileterNumericalValue value2 = {-1.0, 1.0, 0.0};
+                FileterNumericalValue value3 = {-1.0, 1.0, 0.0};
+                values = @[[NSValue value:&value1 withObjCType:@encode(FileterNumericalValue)],
+                           [NSValue value:&value2 withObjCType:@encode(FileterNumericalValue)],
+                           [NSValue value:&value3 withObjCType:@encode(FileterNumericalValue)]];
+                break;
+            }
+            default:
+                break;
+        }
         
+        if (filter) {
+            FilterModel *model = [FilterModel filter:filter effectProperty:effectPropertyName value:values];
+            FilterViewController *filterVC = [FilterViewController filterVCWithModel:model];
+            [self.navigationController pushViewController:filterVC animated:YES];
+        }
     }
     
     // MPS滤镜
