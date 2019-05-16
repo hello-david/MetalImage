@@ -9,6 +9,7 @@
 
 @interface MetalImageTexture()
 @property (nonatomic, assign) BOOL willCache;
+@property (nonatomic, assign) MTLPixelFormat pixelFormat;
 @end
 
 @implementation MetalImageTexture

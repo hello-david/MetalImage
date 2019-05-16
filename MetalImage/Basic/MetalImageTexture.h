@@ -57,14 +57,15 @@ typedef enum {
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MetalImageTexture : NSObject
-@property (nonatomic, strong) id<MTLTexture> metalTexture;
-@property (nonatomic, assign) NSUInteger width;
-@property (nonatomic, assign) NSUInteger height;
-@property (nonatomic, assign) CGSize size;
-@property (nonatomic, assign) MTLPixelFormat pixelFormat;
+@property (nonatomic, strong, readonly) id<MTLTexture> metalTexture;
+@property (nonatomic, assign, readonly) NSUInteger width;
+@property (nonatomic, assign, readonly) NSUInteger height;
+@property (nonatomic, assign, readonly) CGSize size;
+@property (nonatomic, assign, readonly) MTLPixelFormat pixelFormat;
+@property (nonatomic, assign, readonly) BOOL willCache;
+
 @property (nonatomic, assign) MetalImageOrientation orientation;
 @property (nonatomic, copy) NSString *cacheKey;
-@property (nonatomic, readonly) BOOL willCache;
 
 - (instancetype)initWithTexture:(id<MTLTexture>)texutre orientation:(MetalImageOrientation)orientation willCache:(BOOL)willCache;
 - (MetalImageCoordinate)textureCoordinatesToOrientation:(MetalImageOrientation)orientation;
