@@ -18,9 +18,9 @@ typedef void(^__nullable MetalImageRenderProcessCompleteBlock)(void);
 @interface MetalImageRenderProcess : NSObject
 @property (nonatomic, readonly) MetalImageTexture *texture;
 @property (nonatomic, readonly) MetalImageTexture *renderingTexture;
-
-@property (nonatomic, readonly) MTLRenderPassDescriptor *renderPassDecriptor;
-@property (nonatomic, readonly) CGSize renderSize;
+@property (nonatomic, readonly) CGSize targetSize;
+@property (nonatomic, strong) id<MTLBuffer> positionBuffer;
+@property (nonatomic, strong) id<MTLBuffer> textureCoorBuffer;
 
 - (instancetype)initWithTexture:(MetalImageTexture *)texture;
 

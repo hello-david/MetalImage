@@ -88,6 +88,7 @@
 
 - (void)dealloc {
     [self stopCapture];
+    [[MetalImageDevice shared].textureCache freeAllTexture];
 }
 
 - (void)startCapture {
@@ -145,12 +146,14 @@
             CFRelease(metalTexutre);
             CFRelease(sampleBuffer);
             
-            MetalImageTexture *imageTexture = [[MetalImageTexture alloc] initWithTexture:texture
-                                                                             orientation:MetalImageLandscapeLeft
-                                                                               willCache:NO];
-            MetalImageTextureResource *imageResource = [[MetalImageTextureResource alloc] initWithTexture:imageTexture];
-            imageResource.processingQueue = weakSelf.renderQueue;
-            [weakSelf send:imageResource withTime:sampleTime];
+            @autoreleasepool {
+                MetalImageTexture *imageTexture = [[MetalImageTexture alloc] initWithTexture:texture
+                                                                                 orientation:MetalImageLandscapeLeft
+                                                                                   willCache:NO];
+                MetalImageTextureResource *imageResource = [[MetalImageTextureResource alloc] initWithTexture:imageTexture];
+                imageResource.processingQueue = weakSelf.renderQueue;
+                [weakSelf send:imageResource withTime:sampleTime];
+            }
         });
     }
     // 音频

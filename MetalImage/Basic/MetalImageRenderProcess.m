@@ -11,7 +11,7 @@
 @property (nonatomic, strong) MTLRenderPassDescriptor *renderPassDecriptor;
 @property (nonatomic, strong) id<MTLCommandBuffer> renderCommandBuffer;
 @property (nonatomic, strong) id<MTLRenderCommandEncoder> renderEncoder;
-@property (nonatomic, assign) CGSize renderSize;
+@property (nonatomic, assign) CGSize targetSize;
 
 @property (nonatomic, strong) MetalImageTexture *texture;
 @property (nonatomic, strong) MetalImageTexture *renderingTexture;
@@ -22,9 +22,13 @@
 - (instancetype)initWithTexture:(MetalImageTexture *)texture {
     if (self = [super init]) {
         _texture = texture;
-        _renderSize = CGSizeMake(texture.width, texture.height);
+        _targetSize = CGSizeMake(texture.width, texture.height);
     }
     return self;
+}
+
+- (void)dealloc {
+    [[MetalImageDevice shared].textureCache cacheTexture:self.texture];
 }
 
 - (void)startRender:(MetalImageRenderProcessBlock)processing completion:(MetalImageRenderProcessCompleteBlock)completion {
@@ -33,7 +37,7 @@
             processing(self.renderEncoder);
         }
         _renderingTexture.orientation = _texture.orientation;
-        
+
         [_renderEncoder endEncoding];
         [self swapTexture:_renderingTexture];
         
@@ -68,12 +72,12 @@
     
     self.texture = nil;
     self.texture = texture;
-    _renderSize = CGSizeMake(texture.width, texture.height);
+    _targetSize = CGSizeMake(texture.width, texture.height);
 }
 
 - (void)setRenderTargetSize:(CGSize)size {
     [self endRenderUntilCompleted:YES];
-    _renderSize = size;
+    _targetSize = size;
 }
 
 #pragma mark - Getter
@@ -104,11 +108,29 @@
 
 - (MetalImageTexture *)renderingTexture {
     if (!_renderingTexture) {
-        CGSize targetSize = CGSizeEqualToSize(_renderSize, CGSizeZero) ? _texture.size : _renderSize;
+        CGSize targetSize = CGSizeEqualToSize(_targetSize, CGSizeZero) ? _texture.size : _targetSize;
         _renderingTexture = [[MetalImageDevice shared].textureCache fetchTexture:targetSize
                                                                      pixelFormat:_texture.metalTexture.pixelFormat];
         _renderingTexture.orientation = _texture.orientation;
     }
     return _renderingTexture;
+}
+
+- (id<MTLBuffer>)positionBuffer {
+    if (!_positionBuffer) {
+        MetalImageCoordinate position = [self.texture texturePositionToSize:self.targetSize contentMode:MetalImageContentModeScaleToFill];
+        _positionBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&position length:sizeof(position) options:0];
+        _positionBuffer.label = @"Position";
+    }
+    return _positionBuffer;
+}
+
+- (id<MTLBuffer>)textureCoorBuffer {
+    if (!_textureCoorBuffer) {
+        MetalImageCoordinate textureCoor = [self.texture textureCoordinatesToOrientation:self.texture.orientation];
+        _textureCoorBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&textureCoor length:sizeof(textureCoor) options:0];
+        _textureCoorBuffer.label = @"Texture Coordinates";
+    }
+    return _textureCoorBuffer;
 }
 @end

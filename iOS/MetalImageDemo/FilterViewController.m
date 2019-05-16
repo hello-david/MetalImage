@@ -100,7 +100,7 @@
 
 - (MetalImageCamera *)camera {
     if (!_camera) {
-        _camera = [[MetalImageCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1920x1080 cameraPosition:AVCaptureDevicePositionBack];
+        _camera = [[MetalImageCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
     }
     return _camera;
 }

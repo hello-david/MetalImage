@@ -80,8 +80,8 @@
         _textureCoord = [[MetalImageDevice shared].device newBufferWithBytes:&textureCoor length:sizeof(textureCoor) options:0];
     }
     
-    [renderEncoder setRenderPipelineState:self.renderPielineState];
-    [renderEncoder setVertexBuffer:resource.positionBuffer offset:0 atIndex:0];
+    [renderEncoder setRenderPipelineState:self.target.pielineState];
+    [renderEncoder setVertexBuffer:resource.renderProcess.positionBuffer offset:0 atIndex:0];
     [renderEncoder setVertexBuffer:_textureCoord offset:0 atIndex:1];
     [renderEncoder setFragmentTexture:resource.texture.metalTexture atIndex:0];
     [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];

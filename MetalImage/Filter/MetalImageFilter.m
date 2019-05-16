@@ -8,6 +8,7 @@
 #import "MetalImageFilter.h"
 @interface MetalImageFilter()
 @property (nonatomic, strong) MetalImageSource *source;
+@property (nonatomic, strong) MetalImageTarget *target;
 @end
 
 @implementation MetalImageFilter
@@ -15,30 +16,18 @@
     return [self initWithVertexFunction:@"oneInputVertex" fragmentFunction:@"passthroughFragment" library:[MetalImageDevice shared].library];
 }
 
-- (instancetype)initWithVertexFunction:(NSString *)vertexFunction fragmentFunction:(NSString *)fragmentFunction library:(id<MTLLibrary>)library {
+- (instancetype)initWithVertexFunction:(NSString *)vertexFunction
+                      fragmentFunction:(NSString *)fragmentFunction
+                               library:(id<MTLLibrary>)library {
     if (self = [super init]) {
-        [self commonInitWithVertexFunction:vertexFunction
-                          fragmentFunction:fragmentFunction
-                                   library:library];
-        
+        _target = [[MetalImageTarget alloc] initWithVertexFunction:vertexFunction
+                                                  fragmentFunction:fragmentFunction
+                                                           library:library
+                                                       enableBlend:NO];
         _source = [[MetalImageSource alloc] init];
     }
     return self;
 }
-
-- (void)commonInitWithVertexFunction:(NSString *)vertexFunction fragmentFunction:(NSString *)fragmentFunction library:(id<MTLLibrary>)library {
-    MTLRenderPipelineDescriptor *des = [[MTLRenderPipelineDescriptor alloc] init];
-    des.vertexFunction = [library newFunctionWithName:vertexFunction];
-    des.fragmentFunction = [library newFunctionWithName:fragmentFunction];
-    des.colorAttachments[0].pixelFormat = [MetalImageDevice shared].pixelFormat;
-    
-    NSError *error = nil;
-    _renderPielineState = [[MetalImageDevice shared].device newRenderPipelineStateWithDescriptor:des error:&error];
-    if (error) {
-        assert(!"Create piplinstate failed");
-    }
-}
-
 #pragma mark - Target Protocol
 /**
  *  内部渲染处理不应该切换线程，需要并发渲染使用MTLParallelRenderCommandEncoder实现
@@ -50,29 +39,30 @@
         return;
     }
     
+    __weak typeof(self) weakSelf = self;
     MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
     [textureResource.renderProcess startRender:^(id<MTLRenderCommandEncoder> renderEncoder) {
-        [self renderToEncoder:renderEncoder withResource:textureResource];
+        [weakSelf renderToEncoder:renderEncoder withResource:textureResource];
     } completion:^{
-        if (!self.source.haveTarget) {
+        if (!weakSelf.source.haveTarget) {
             [textureResource.renderProcess endRender];
             return;
         }
-        [self send:resource withTime:time];
+        [weakSelf send:resource withTime:time];
     }];
 }
 
 #pragma mark - Render Process
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageTextureResource *)resource {
-    CGSize targetSize = CGSizeEqualToSize(_targetSize, CGSizeZero) ? resource.renderProcess.renderSize : _targetSize;
+    CGSize targetSize = CGSizeEqualToSize(self.target.size, CGSizeZero) ? resource.texture.size : self.target.size;
     MetalImageTexture *targetTexture = [[MetalImageDevice shared].textureCache fetchTexture:targetSize
                                                                                 pixelFormat:resource.texture.metalTexture.pixelFormat];
     targetTexture.orientation = resource.texture.orientation;
-    resource.renderProcess.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;
+    self.target.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;
     
     // 实现一个renderEncoder流程(可能有多个Draw-Call)
     @autoreleasepool {
-        id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderProcess.renderPassDecriptor];
+        id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:self.target.renderPassDecriptor];
         [self renderToEncoder:renderEncoder withResource:resource];
         [renderEncoder endEncoding];
         [resource.renderProcess swapTexture:targetTexture];
@@ -85,9 +75,9 @@
     [renderEncoder pushDebugGroup:@"Passthrough Draw"];
 #endif
     
-    [renderEncoder setRenderPipelineState:self.renderPielineState];
-    [renderEncoder setVertexBuffer:resource.positionBuffer offset:0 atIndex:0];
-    [renderEncoder setVertexBuffer:resource.textureCoorBuffer offset:0 atIndex:1];
+    [renderEncoder setRenderPipelineState:self.target.pielineState];
+    [renderEncoder setVertexBuffer:resource.renderProcess.positionBuffer offset:0 atIndex:0];
+    [renderEncoder setVertexBuffer:resource.renderProcess.textureCoorBuffer offset:0 atIndex:1];
     [renderEncoder setFragmentTexture:resource.texture.metalTexture atIndex:0];
     [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];
     

@@ -47,25 +47,4 @@
     
     return newResource;
 }
-
-#pragma mark - Custom Acessors
-- (id<MTLBuffer>)positionBuffer {
-    if (!_positionBuffer) {
-        // 默认不做比例调整
-        MetalImageCoordinate position = [self.texture texturePositionToSize:self.renderProcess.renderSize contentMode:MetalImageContentModeScaleToFill];
-        _positionBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&position length:sizeof(position) options:0];
-        _positionBuffer.label = @"Position";
-    }
-    return _positionBuffer;
-}
-
-- (id<MTLBuffer>)textureCoorBuffer {
-    if (!_textureCoorBuffer) {
-        // 默认不做旋转
-        MetalImageCoordinate textureCoor = [self.texture textureCoordinatesToOrientation:self.texture.orientation];
-        _textureCoorBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&textureCoor length:sizeof(textureCoor) options:0];
-        _textureCoorBuffer.label = @"Texture Coordinates";
-    }
-    return _textureCoorBuffer;
-}
 @end

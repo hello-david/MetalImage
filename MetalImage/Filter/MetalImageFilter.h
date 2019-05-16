@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "MetalImageProtocol.h"
 #import "MetalImageSource.h"
+#import "MetalImageTarget.h"
 #import "MetalImageTextureResource.h"
 
 #define METAL_SHADER_STRING(text) @ #text
@@ -15,9 +16,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MetalImageFilter : NSObject <MetalImageSource, MetalImageTarget, MetalImageRender>
-@property (nonatomic, strong) id<MTLRenderPipelineState> renderPielineState;
-@property (nonatomic, assign) CGSize targetSize;
-@property (nonatomic, strong, readonly) MetalImageSource *source;
+@property (nonatomic, readonly) MetalImageSource *source;
+@property (nonatomic, readonly) MetalImageTarget *target;
 
 - (instancetype)initWithVertexFunction:(NSString *)vertexFunction
                       fragmentFunction:(NSString *)fragmentFunction

@@ -6,6 +6,16 @@
 //
 
 #import "MetalImageTarget.h"
+typedef struct {
+    CGSize textureSize;
+    CGSize targetSize;
+    MetalImageOrientation textureOrientation;
+    MetalImageContentMode fillMode;
+} MetalImageBufferReuseInfo;
+
+@interface MetalImageTarget()
+@property (nonatomic, assign) MetalImageBufferReuseInfo bufferReuseInfo;
+@end
 
 @implementation MetalImageTarget
 
@@ -16,18 +26,27 @@
 - (instancetype)initWithDefaultLibraryWithVertex:(NSString *)vertexFunctionName
                                         fragment:(NSString *)fragmentFunctionName
                                      enableBlend:(BOOL)enableBlend {
+
+    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"MetalImageBundle" ofType:@"bundle"];
+    NSString *defaultMetalFile = [bundlePath stringByAppendingPathComponent:@"default.metallib"];
+    NSError *error = nil;
+    id<MTLLibrary>library = [[MetalImageDevice shared].device newLibraryWithFile:defaultMetalFile error:&error];
+    if (error) {
+        assert(!"Create library failed");
+    }
+    
+    return [self initWithVertexFunction:vertexFunctionName fragmentFunction:fragmentFunctionName library:library enableBlend:enableBlend];
+}
+
+- (instancetype)initWithVertexFunction:(NSString *)vertexFunction
+                      fragmentFunction:(NSString *)fragmentFunction
+                               library:(id<MTLLibrary>)library
+                           enableBlend:(BOOL)enableBlend {
     if (self = [super init]) {
-        NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"MetalImageBundle" ofType:@"bundle"];
-        NSString *defaultMetalFile = [bundlePath stringByAppendingPathComponent:@"default.metallib"];
         NSError *error = nil;
-        id<MTLLibrary>library = [[MetalImageDevice shared].device newLibraryWithFile:defaultMetalFile error:&error];
-        if (error) {
-            assert(!"Create library failed");
-        }
-        
         MTLRenderPipelineDescriptor *renderPipelineDesc = [[MTLRenderPipelineDescriptor alloc] init];
-        renderPipelineDesc.vertexFunction = [library newFunctionWithName:vertexFunctionName];
-        renderPipelineDesc.fragmentFunction = [library newFunctionWithName:fragmentFunctionName];
+        renderPipelineDesc.vertexFunction = [library newFunctionWithName:vertexFunction];
+        renderPipelineDesc.fragmentFunction = [library newFunctionWithName:fragmentFunction];
         renderPipelineDesc.colorAttachments[0].pixelFormat = [MetalImageDevice shared].pixelFormat;
         
         if (enableBlend) {
@@ -71,5 +90,15 @@
     
     _position = [[MetalImageDevice shared].device newBufferWithBytes:&position length:sizeof(position) options:0];
     _textureCoord = [[MetalImageDevice shared].device newBufferWithBytes:&textureCoor length:sizeof(textureCoor) options:0];
+}
+
+- (MTLRenderPassDescriptor *)renderPassDecriptor {
+    if (!_renderPassDecriptor) {
+        _renderPassDecriptor = [[MTLRenderPassDescriptor alloc] init];
+        _renderPassDecriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
+        _renderPassDecriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
+        _renderPassDecriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1);
+    }
+    return _renderPassDecriptor;
 }
 @end

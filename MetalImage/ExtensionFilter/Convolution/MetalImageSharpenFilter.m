@@ -42,9 +42,9 @@ typedef struct MetalImageSharpenFilterArg {
 
 - (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
     // 目标大小变了
-    if ((1.0 / resource.renderProcess.renderSize.width != _sharpenArg.imageWidthFactor) || (1.0 / resource.renderProcess.renderSize.height != _sharpenArg.imageHeightFactor)) {
-        _sharpenArg.imageWidthFactor = 1.0 / resource.renderProcess.renderSize.width;
-        _sharpenArg.imageHeightFactor = 1.0 / resource.renderProcess.renderSize.height;
+    if ((1.0 / resource.renderProcess.targetSize.width != _sharpenArg.imageWidthFactor) || (1.0 / resource.renderProcess.targetSize.height != _sharpenArg.imageHeightFactor)) {
+        _sharpenArg.imageWidthFactor = 1.0 / resource.renderProcess.targetSize.width;
+        _sharpenArg.imageHeightFactor = 1.0 / resource.renderProcess.targetSize.height;
         _sharpenBuffer = nil;
     }
     
@@ -53,9 +53,9 @@ typedef struct MetalImageSharpenFilterArg {
     [renderEncoder pushDebugGroup:@"Sharpen Draw"];
 #endif
     
-    [renderEncoder setRenderPipelineState:self.renderPielineState];
-    [renderEncoder setVertexBuffer:resource.positionBuffer offset:0 atIndex:0];
-    [renderEncoder setVertexBuffer:resource.textureCoorBuffer offset:0 atIndex:1];
+    [renderEncoder setRenderPipelineState:self.target.pielineState];
+    [renderEncoder setVertexBuffer:resource.renderProcess.positionBuffer offset:0 atIndex:0];
+    [renderEncoder setVertexBuffer:resource.renderProcess.textureCoorBuffer offset:0 atIndex:1];
     
     if (@available(iOS 8.3, *)) {
         [renderEncoder setVertexBytes:&_sharpenArg length:sizeof(_sharpenArg) atIndex:2];

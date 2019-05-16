@@ -78,7 +78,7 @@ typedef struct MetalImageGaussianParameter {
     des.fragmentFunction = [library newFunctionWithName:@"gaussianFragment"];
     des.colorAttachments[0].pixelFormat = [MetalImageDevice shared].pixelFormat;
     
-    self.renderPielineState = [[MetalImageDevice shared].device newRenderPipelineStateWithDescriptor:des error:&error];
+    self.target.pielineState = [[MetalImageDevice shared].device newRenderPipelineStateWithDescriptor:des error:&error];
     if (error) {
         assert(!"高斯滤镜管线创建失败");
         return ;
@@ -105,7 +105,7 @@ typedef struct MetalImageGaussianParameter {
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageTextureResource *)resource {    
     // 目标大小变了
-    CGSize targetSize = CGSizeEqualToSize(self.targetSize, CGSizeZero) ? resource.renderProcess.renderSize : self.targetSize;
+    CGSize targetSize = CGSizeEqualToSize(self.target.size, CGSizeZero) ? resource.renderProcess.targetSize : self.target.size;
     if (!CGSizeEqualToSize(_lastSize, targetSize) || _texelSpacingMultiplierChanged) {
         self->_verticalParam.texelWidthOffset = self.verticalTexelSpacing / targetSize.width;
         self->_verticalParam.texelHeightOffset = 0.0;
@@ -124,9 +124,9 @@ typedef struct MetalImageGaussianParameter {
         MetalImageTexture *horizontalTargetTexture = [[MetalImageDevice shared].textureCache fetchTexture:targetSize
                                                                                               pixelFormat:resource.texture.metalTexture.pixelFormat];
         horizontalTargetTexture.orientation = resource.texture.orientation;
-        resource.renderProcess.renderPassDecriptor.colorAttachments[0].texture = horizontalTargetTexture.metalTexture;
+        self.target.renderPassDecriptor.colorAttachments[0].texture = horizontalTargetTexture.metalTexture;
         
-        id<MTLRenderCommandEncoder> horizontalRenderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderProcess.renderPassDecriptor];
+        id<MTLRenderCommandEncoder> horizontalRenderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:self.target.renderPassDecriptor];
         [self renderToEncoder:horizontalRenderEncoder withResource:resource];
         [horizontalRenderEncoder endEncoding];
         [resource.renderProcess swapTexture:horizontalTargetTexture];
@@ -136,9 +136,9 @@ typedef struct MetalImageGaussianParameter {
         MetalImageTexture *verticalTargetTexture = [[MetalImageDevice shared].textureCache fetchTexture:targetSize
                                                                                             pixelFormat:resource.texture.metalTexture.pixelFormat];
         verticalTargetTexture.orientation = resource.texture.orientation;
-        resource.renderProcess.renderPassDecriptor.colorAttachments[0].texture = verticalTargetTexture.metalTexture;
+        self.target.renderPassDecriptor.colorAttachments[0].texture = verticalTargetTexture.metalTexture;
         
-        id<MTLRenderCommandEncoder> verticalRenderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderProcess.renderPassDecriptor];
+        id<MTLRenderCommandEncoder> verticalRenderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:self.target.renderPassDecriptor];
         [self renderToEncoder:verticalRenderEncoder withResource:resource];
         [verticalRenderEncoder endEncoding];
         [resource.renderProcess swapTexture:verticalTargetTexture];
@@ -146,9 +146,9 @@ typedef struct MetalImageGaussianParameter {
 }
 
 - (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
-    [renderEncoder setRenderPipelineState:self.renderPielineState];
-    [renderEncoder setVertexBuffer:resource.positionBuffer offset:0 atIndex:0];
-    [renderEncoder setVertexBuffer:resource.textureCoorBuffer offset:0 atIndex:1];
+    [renderEncoder setRenderPipelineState:self.target.pielineState];
+    [renderEncoder setVertexBuffer:resource.renderProcess.positionBuffer offset:0 atIndex:0];
+    [renderEncoder setVertexBuffer:resource.renderProcess.textureCoorBuffer offset:0 atIndex:1];
     [renderEncoder setFragmentTexture:resource.texture.metalTexture atIndex:0];
 
 #if DEBUG

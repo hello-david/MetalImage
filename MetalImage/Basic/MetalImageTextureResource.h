@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MetalImageTextureResource : MetalImageResource
 @property (nonatomic, readonly) MetalImageTexture *texture;
 @property (nonatomic, readonly) MetalImageRenderProcess *renderProcess;
-@property (nonatomic, strong) id<MTLBuffer> positionBuffer;
-@property (nonatomic, strong) id<MTLBuffer> textureCoorBuffer;
 
 - (instancetype)init __attribute__((deprecated("此方法已弃用,请使用initWithTexture:方法")));
 - (instancetype)initWithTexture:(MetalImageTexture *)texture;

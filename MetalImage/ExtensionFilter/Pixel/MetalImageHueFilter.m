@@ -37,9 +37,9 @@
     [renderEncoder pushDebugGroup:@"Hue Draw"];
 #endif
     
-    [renderEncoder setRenderPipelineState:self.renderPielineState];
-    [renderEncoder setVertexBuffer:resource.positionBuffer offset:0 atIndex:0];
-    [renderEncoder setVertexBuffer:resource.textureCoorBuffer offset:0 atIndex:1];
+    [renderEncoder setRenderPipelineState:self.target.pielineState];
+    [renderEncoder setVertexBuffer:resource.renderProcess.positionBuffer offset:0 atIndex:0];
+    [renderEncoder setVertexBuffer:resource.renderProcess.textureCoorBuffer offset:0 atIndex:1];
     if (@available(iOS 8.3, *)) {
         [renderEncoder setFragmentBytes:&_hue length:sizeof(_hue) atIndex:2];
     } else {

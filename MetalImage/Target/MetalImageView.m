@@ -78,8 +78,8 @@
             id <CAMetalDrawable> drawable = [strongSelf.metalLayer nextDrawable];
             if (drawable) {
                 MTLClearColor color = [strongSelf getMTLbackgroundColor];
-                textureResource.renderProcess.renderPassDecriptor.colorAttachments[0].texture = [drawable texture];
-                textureResource.renderProcess.renderPassDecriptor.colorAttachments[0].clearColor = color;
+                strongSelf.renderTarget.renderPassDecriptor.colorAttachments[0].texture = [drawable texture];
+                strongSelf.renderTarget.renderPassDecriptor.colorAttachments[0].clearColor = color;
                 
                 if (strongSelf.metalLayer.opaque && color.alpha != 1.0) {
                     strongSelf.metalLayer.opaque = NO;
@@ -92,7 +92,7 @@
                 id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
                 [commandBuffer enqueue];
                 
-                id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:textureResource.renderProcess.renderPassDecriptor];
+                id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:strongSelf.renderTarget.renderPassDecriptor];
                 [strongSelf renderToEncoder:renderEncoder withResource:textureResource];
                 [commandBuffer presentDrawable:drawable];
                 [commandBuffer commit];

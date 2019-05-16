@@ -414,12 +414,12 @@
     // 生成最终目标纹理
     MetalImageTexture *targetTexture = [[MetalImageDevice shared].textureCache fetchTexture:_renderSize pixelFormat:resource.texture.metalTexture.pixelFormat];
     targetTexture.orientation = resource.texture.orientation;
-    resource.renderProcess.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;      // 设置目标纹理
-    resource.renderProcess.renderPassDecriptor.colorAttachments[0].clearColor = [self getMTLbackgroundColor]; // 调整目标纹理背景色
-    [self.renderTarget updateBufferIfNeed:resource.texture targetSize:_renderSize];             // 调整输入纹理绘制到目标纹理时的比例和方向
+    self.renderTarget.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;      // 设置目标纹理
+    self.renderTarget.renderPassDecriptor.colorAttachments[0].clearColor = [self getMTLbackgroundColor]; // 调整目标纹理背景色
+    [self.renderTarget updateBufferIfNeed:resource.texture targetSize:_renderSize];                      // 调整输入纹理绘制到目标纹理时的比例和方向
     
     id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
-    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderProcess.renderPassDecriptor];
+    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:self.renderTarget.renderPassDecriptor];
     [self renderToEncoder:renderEncoder withResource:resource];
     [renderEncoder endEncoding];
     [resource.renderProcess swapTexture:targetTexture];
