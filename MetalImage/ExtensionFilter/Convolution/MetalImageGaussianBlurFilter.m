@@ -87,7 +87,7 @@ typedef struct MetalImageGaussianParameter {
 
 #pragma mark -
 - (void)receive:(MetalImageResource *)resource withTime:(CMTime)time {
-    if (resource.type != kMetalImageResourceTypeImage) {
+    if (resource.type != MetalImageResourceTypeImage) {
         [self send:resource withTime:time];
         return;
     }

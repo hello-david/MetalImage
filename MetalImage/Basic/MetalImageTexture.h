@@ -24,34 +24,34 @@ typedef struct {
 } MetalImageCoordinate;
 
 typedef enum {
-    kMetalImageNoRotation,            // 不旋转
-    kMetalImageRotateCounterclockwise,// 顺时针旋转90
-    kMetalImageRotateClockwise,       // 逆时针旋转90
-    kMetalImageRotate180,             // 顺时针180
+    MetalImageNoRotation,            // 不旋转
+    MetalImageRotateCounterclockwise,// 顺时针旋转90
+    MetalImageRotateClockwise,       // 逆时针旋转90
+    MetalImageRotate180,             // 顺时针180
     
-    kMetalImageFlipHorizonal,         // 水平对称
-    kMetalImageFlipVertically,        // 垂直对称
+    MetalImageFlipHorizonal,         // 水平对称
+    MetalImageFlipVertically,        // 垂直对称
     
-    kMetalImageRotateClockwiseAndFlipVertically,  // 顺时针并垂直对称
-    kMetalImageRotateClockwiseAndFlipHorizontally,// 顺时针并水平对称
+    MetalImageRotateClockwiseAndFlipVertically,  // 顺时针并垂直对称
+    MetalImageRotateClockwiseAndFlipHorizontally,// 顺时针并水平对称
 } MetalImageRotationMode;
 
 typedef enum {
-    kMetalImagePortrait,
-    kMetalImagePortraitUpsideDown,
-    kMetalImageLandscapeLeft,
-    kMetalImageLandscapeRight
+    MetalImagePortrait,
+    MetalImagePortraitUpsideDown,
+    MetalImageLandscapeLeft,
+    MetalImageLandscapeRight
 } MetalImageOrientation;
 
 typedef enum {
-    kMetalImageContentModeScaleToFill,    // 显示全部图像，铺满全部渲染空间
-    kMetalImageContentModeScaleAspectFit, // 调整图像比例，显示全部图像
-    kMetalImageContentModeScaleAspectFill // 调整图像比例，铺满全部渲染空间
+    MetalImageContentModeScaleToFill,    // 显示全部图像，铺满全部渲染空间
+    MetalImageContentModeScaleAspectFit, // 调整图像比例，显示全部图像
+    MetalImageContentModeScaleAspectFill // 调整图像比例，铺满全部渲染空间
 } MetalImageContentMode;
 
 typedef enum {
-    kMetalImagContentBackgroundColor,
-    kMetalImagContentBackgroundFilter,
+    MetalImagContentBackgroundColor,
+    MetalImagContentBackgroundFilter,
 } MetalImagContentBackground;
 
 NS_ASSUME_NONNULL_BEGIN

@@ -51,7 +51,7 @@
 
 - (void)commitInit {
     _writerQueue = dispatch_queue_create("com.MetalImage.MovieWriter", DISPATCH_QUEUE_SERIAL);
-    _backgroundType = kMetalImagContentBackgroundColor;
+    _backgroundType = MetalImagContentBackgroundColor;
     _fileType = AVFileTypeQuickTimeMovie;
     
     _lastImageTime = kCMTimeZero;
@@ -63,7 +63,7 @@
                                                                       fragment:@"passthroughFragment"
                                                                    enableBlend:YES];
     
-    _renderTarget.fillMode = kMetalImageContentModeScaleAspectFill;
+    _renderTarget.fillMode = MetalImageContentModeScaleAspectFill;
     _lastBackgroundSise = CGSizeZero;
     
     [self initAssetWriter];
@@ -296,14 +296,14 @@
     
     // 不是在写入状态
     if (_assetWriter.status != AVAssetWriterStatusWriting) {
-        if (resource.type == kMetalImageResourceTypeImage) {
+        if (resource.type == MetalImageResourceTypeImage) {
             [[MetalImageDevice shared].textureCache cacheTexture:((MetalImageTextureResource *)resource).texture];
         }
         return;
     }
     
     // 之前的效果提交了
-    if (resource.type == kMetalImageResourceTypeImage) {
+    if (resource.type == MetalImageResourceTypeImage) {
         [(MetalImageTextureResource *)resource endRenderProcess];
     }
     
@@ -313,12 +313,12 @@
         
         @autoreleasepool {
             switch (resource.type) {
-                case kMetalImageResourceTypeImage:
+                case MetalImageResourceTypeImage:
                     [strongSelf imageProcess:(MetalImageTextureResource *)resource time:time];
                     [[MetalImageDevice shared].textureCache cacheTexture:((MetalImageTextureResource *)resource).texture];
                     break;
                     
-                case kMetalImageResourceTypeAudio:
+                case MetalImageResourceTypeAudio:
                     if (strongSelf.haveAudioTrack) {
                         [strongSelf audioProcess:(MetalImageAudioResource *)resource time:time];
                     }
@@ -404,7 +404,7 @@
 
 - (void)imageRenderProcess:(MetalImageTextureResource *)resource {
     // 自定义背景滤镜
-    if (self.backgroundType == kMetalImagContentBackgroundFilter && self.fillMode == kMetalImageContentModeScaleAspectFit &&
+    if (self.backgroundType == MetalImagContentBackgroundFilter && self.fillMode == MetalImageContentModeScaleAspectFit &&
         (_renderSize.width / _renderSize.height != resource.texture.size.width / resource.texture.size.height)) {
         MetalImageTextureResource *backgroundTextureResource = (MetalImageTextureResource *)[resource newResourceFromSelf];
         [self.backgroundFilter renderToResource:backgroundTextureResource];
@@ -437,10 +437,10 @@
 #endif
     [renderEncoder setRenderPipelineState:_renderTarget.pielineState];
     
-    if (self.backgroundType == kMetalImagContentBackgroundFilter && self.backgroundTextureResource) {
+    if (self.backgroundType == MetalImagContentBackgroundFilter && self.backgroundTextureResource) {
         if (!CGSizeEqualToSize(resource.texture.size, _renderSize) && !CGSizeEqualToSize(_lastBackgroundSise, _renderSize)) {
             _lastBackgroundSise = CGSizeMake(_renderSize.width, _renderSize.height);
-            MetalImageCoordinate positionCoor = [self.backgroundTextureResource.texture texturePositionToSize:_renderSize contentMode:kMetalImageContentModeScaleAspectFill];
+            MetalImageCoordinate positionCoor = [self.backgroundTextureResource.texture texturePositionToSize:_renderSize contentMode:MetalImageContentModeScaleAspectFill];
             _backgroundPostionBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&positionCoor length:sizeof(positionCoor) options:0];
         }
         [renderEncoder setVertexBuffer:_backgroundPostionBuffer offset:0 atIndex:0];

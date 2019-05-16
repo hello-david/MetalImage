@@ -45,7 +45,7 @@
             assert(!"Create piplinstate failed");
         }
         
-        _fillMode = kMetalImageContentModeScaleToFill;
+        _fillMode = MetalImageContentModeScaleToFill;
     }
     return self;
 }
@@ -67,7 +67,7 @@
     
     // 将纹理旋转到正上方向再绘制到目标纹理中
     MetalImageCoordinate position = [texture texturePositionToSize:targetSize contentMode:_fillMode];
-    MetalImageCoordinate textureCoor = [texture textureCoordinatesToOrientation:kMetalImagePortrait];
+    MetalImageCoordinate textureCoor = [texture textureCoordinatesToOrientation:MetalImagePortrait];
     
     _position = [[MetalImageDevice shared].device newBufferWithBytes:&position length:sizeof(position) options:0];
     _textureCoord = [[MetalImageDevice shared].device newBufferWithBytes:&textureCoor length:sizeof(textureCoor) options:0];

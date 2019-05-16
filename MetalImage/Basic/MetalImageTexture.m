@@ -41,27 +41,27 @@
 }
 
 - (MetalImageCoordinate)textureCoordinatesToOrientation:(MetalImageOrientation)orientation {
-    MetalImageRotationMode rotationMode = kMetalImageNoRotation;
+    MetalImageRotationMode rotationMode = MetalImageNoRotation;
     if (self.orientation == orientation) {
-        rotationMode = kMetalImageNoRotation;
+        rotationMode = MetalImageNoRotation;
     }
-    else if ((self.orientation == kMetalImagePortrait && orientation == kMetalImagePortraitUpsideDown) ||
-             (self.orientation == kMetalImagePortraitUpsideDown && orientation == kMetalImagePortrait) ||
-             (self.orientation == kMetalImageLandscapeLeft && orientation == kMetalImageLandscapeRight)||
-             (self.orientation == kMetalImageLandscapeRight && orientation == kMetalImageLandscapeLeft)) {
-        rotationMode = kMetalImageRotate180;
+    else if ((self.orientation == MetalImagePortrait && orientation == MetalImagePortraitUpsideDown) ||
+             (self.orientation == MetalImagePortraitUpsideDown && orientation == MetalImagePortrait) ||
+             (self.orientation == MetalImageLandscapeLeft && orientation == MetalImageLandscapeRight)||
+             (self.orientation == MetalImageLandscapeRight && orientation == MetalImageLandscapeLeft)) {
+        rotationMode = MetalImageRotate180;
     }
-    else if ((self.orientation == kMetalImagePortrait && orientation == kMetalImageLandscapeLeft) ||
-             (self.orientation == kMetalImageLandscapeRight && orientation == kMetalImagePortrait) ||
-             (self.orientation == kMetalImageLandscapeLeft && orientation == kMetalImagePortraitUpsideDown) ||
-             (self.orientation == kMetalImagePortraitUpsideDown && orientation == kMetalImageLandscapeRight)) {
-        rotationMode = kMetalImageRotateCounterclockwise;
+    else if ((self.orientation == MetalImagePortrait && orientation == MetalImageLandscapeLeft) ||
+             (self.orientation == MetalImageLandscapeRight && orientation == MetalImagePortrait) ||
+             (self.orientation == MetalImageLandscapeLeft && orientation == MetalImagePortraitUpsideDown) ||
+             (self.orientation == MetalImagePortraitUpsideDown && orientation == MetalImageLandscapeRight)) {
+        rotationMode = MetalImageRotateCounterclockwise;
     }
-    else if ((self.orientation == kMetalImageLandscapeLeft && orientation == kMetalImagePortrait) ||
-             (self.orientation == kMetalImagePortrait && orientation == kMetalImageLandscapeRight) ||
-             (self.orientation == kMetalImagePortraitUpsideDown && orientation == kMetalImageLandscapeLeft) ||
-             (self.orientation == kMetalImageLandscapeRight && orientation == kMetalImagePortraitUpsideDown)) {
-        rotationMode = kMetalImageRotateClockwise;
+    else if ((self.orientation == MetalImageLandscapeLeft && orientation == MetalImagePortrait) ||
+             (self.orientation == MetalImagePortrait && orientation == MetalImageLandscapeRight) ||
+             (self.orientation == MetalImagePortraitUpsideDown && orientation == MetalImageLandscapeLeft) ||
+             (self.orientation == MetalImageLandscapeRight && orientation == MetalImagePortraitUpsideDown)) {
+        rotationMode = MetalImageRotateClockwise;
     }
     
     /**
@@ -79,28 +79,28 @@
     static const MetalImageCoordinate rotateClockwiseAndFlipHorizontallyCoordinates = {0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f};
     
     switch (rotationMode) {
-        case kMetalImageNoRotation:
+        case MetalImageNoRotation:
             return noRotationCoordinates;
             
-        case kMetalImageRotateCounterclockwise:
+        case MetalImageRotateCounterclockwise:
             return rotateCounterclockwiseCoordinates;
             
-        case kMetalImageRotateClockwise:
+        case MetalImageRotateClockwise:
             return rotateClockwiseCoordinates;
             
-        case kMetalImageRotate180:
+        case MetalImageRotate180:
             return rotate180Coordinates;
             
-        case kMetalImageFlipHorizonal:
+        case MetalImageFlipHorizonal:
             return flipHorizontallyCoordinates;
             
-        case kMetalImageFlipVertically:
+        case MetalImageFlipVertically:
             return flipVerticallyCoordinates;
             
-        case kMetalImageRotateClockwiseAndFlipVertically:
+        case MetalImageRotateClockwiseAndFlipVertically:
             return rotateClockwiseAndFlipVerticallyCoordinates;
             
-        case kMetalImageRotateClockwiseAndFlipHorizontally:
+        case MetalImageRotateClockwiseAndFlipHorizontally:
             return rotateClockwiseAndFlipHorizontallyCoordinates;
             
         default:
@@ -111,7 +111,7 @@
 
 - (MetalImageCoordinate)texturePositionToSize:(CGSize)targetSize contentMode:(MetalImageContentMode)contentMode {
     CGSize texturePortraitSize = CGSizeZero;
-    if (self.orientation == kMetalImagePortrait || self.orientation == kMetalImagePortraitUpsideDown) {
+    if (self.orientation == MetalImagePortrait || self.orientation == MetalImagePortraitUpsideDown) {
         texturePortraitSize = CGSizeMake(self.width, self.height);
     }
     else {
@@ -122,17 +122,17 @@
     CGSize insetSize = [self makeRectWithAspectRatio:texturePortraitSize destSize:targetSize].size;
     MetalImageCoordinate position;
     switch (contentMode) {
-        case kMetalImageContentModeScaleToFill:
+        case MetalImageContentModeScaleToFill:
             widthScaling = 1.0;
             heightScaling = 1.0;
             break;
             
-        case kMetalImageContentModeScaleAspectFit:
+        case MetalImageContentModeScaleAspectFit:
             widthScaling = insetSize.width / targetSize.width;
             heightScaling = insetSize.height / targetSize.height;
             break;
             
-        case kMetalImageContentModeScaleAspectFill:
+        case MetalImageContentModeScaleAspectFill:
             widthScaling = targetSize.height / insetSize.height;
             heightScaling = targetSize.width / insetSize.width;
             break;

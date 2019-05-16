@@ -46,7 +46,7 @@
  *  默认实现draw-call后交换纹理指针传给下一级
  */
 - (void)receive:(MetalImageResource *)resource withTime:(CMTime)time {
-    if (resource.type != kMetalImageResourceTypeImage) {
+    if (resource.type != MetalImageResourceTypeImage) {
         [self send:resource withTime:time];
         return;
     }

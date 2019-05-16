@@ -146,7 +146,7 @@
             CFRelease(sampleBuffer);
             
             MetalImageTexture *imageTexture = [[MetalImageTexture alloc] initWithTexture:texture
-                                                                             orientation:kMetalImageLandscapeLeft
+                                                                             orientation:MetalImageLandscapeLeft
                                                                                willCache:NO];
             MetalImageTextureResource *imageResource = [[MetalImageTextureResource alloc] initWithTexture:imageTexture];
             imageResource.processingQueue = weakSelf.renderQueue;

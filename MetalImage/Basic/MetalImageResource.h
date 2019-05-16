@@ -8,8 +8,8 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, MetalImageResourceType) {
-    kMetalImageResourceTypeImage,
-    kMetalImageResourceTypeAudio
+    MetalImageResourceTypeImage,
+    MetalImageResourceTypeAudio
 };
 
 NS_ASSUME_NONNULL_BEGIN

@@ -28,8 +28,8 @@ MetalImageView *view = [[MetalImageView alloc] initWithFrame:CGRectMake(0, 0, 75
 MetalImageMovieWriter *movieWriter = [[MetalImageMovieWriter alloc] initWithStorageUrl:outputURL size:CGSizeMake(1080, 640)];
 [self.camera addTarget:view];
 [self.camera addTarget:movieWriter];
-movieWriter.fillMode = kMetalImageContentModeScaleAspectFit;
-movieWriter.backgroundType = kMetalImagContentBackgroundFilter;
+movieWriter.fillMode = MetalImageContentModeScaleAspectFit;
+movieWriter.backgroundType = MetalImagContentBackgroundFilter;
 movieWriter.backgroundFilter = [[MetalImageiOSBlurFilter alloc] init];
 ((MetalImageiOSBlurFilter *)movieWriter.backgroundFilter).blurRadiusInPixels = 10.0;
 ((MetalImageiOSBlurFilter *)movieWriter.backgroundFilter).texelSpacingMultiplier = 2.0;

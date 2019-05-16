@@ -40,7 +40,7 @@
     _displayQueue = dispatch_queue_create("com.MetalImage.DisplayView", NULL);
     _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:@"oneInputVertex"
                                                                       fragment:@"passthroughFragment"];
-    _renderTarget.fillMode = kMetalImageContentModeScaleAspectFill;
+    _renderTarget.fillMode = MetalImageContentModeScaleAspectFill;
 }
 
 - (void)layoutSubviews {
@@ -63,7 +63,7 @@
 
 #pragma mark - Target Protocol
 - (void)receive:(MetalImageResource *)resource withTime:(CMTime)time {
-    if (!resource || resource.type != kMetalImageResourceTypeImage) {
+    if (!resource || resource.type != MetalImageResourceTypeImage) {
         return;
     }
     

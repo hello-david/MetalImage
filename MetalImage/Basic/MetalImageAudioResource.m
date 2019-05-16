@@ -18,14 +18,14 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.type = kMetalImageResourceTypeAudio;
+        self.type = MetalImageResourceTypeAudio;
     }
     return self;
 }
 
 - (instancetype)initWithBuffer:(CMSampleBufferRef)audioBuffer {
     if (self = [super init]) {
-        self.type = kMetalImageResourceTypeAudio;
+        self.type = MetalImageResourceTypeAudio;
         _audioBuffer = audioBuffer;
         CFRetain(_audioBuffer);
     }

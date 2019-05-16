@@ -15,20 +15,19 @@
 @property (nonatomic, strong) id<MTLCommandBuffer> renderCommandBuffer;
 @property (nonatomic, strong) id<MTLRenderCommandEncoder> renderEncoder;
 @property (nonatomic, assign) CGSize renderSize;
-@property (nonatomic, assign) BOOL rendering;
 @end
 
 @implementation MetalImageTextureResource
 - (instancetype)init {
     if (self = [super init]) {
-        self.type = kMetalImageResourceTypeImage;
+        self.type = MetalImageResourceTypeImage;
     }
     return self;
 }
 
 - (instancetype)initWithTexture:(MetalImageTexture *)texture {
     if (self = [super init]) {
-        self.type = kMetalImageResourceTypeImage;
+        self.type = MetalImageResourceTypeImage;
         _texture = texture;
         _renderSize = CGSizeMake(texture.width, texture.height);
     }
@@ -43,7 +42,6 @@
         _renderEncoder = nil;
         _renderCommandBuffer = nil;
         _renderingTexture = nil;
-        _rendering = NO;
     }
     
     // 拷贝当前的纹理
@@ -109,14 +107,13 @@
     _renderEncoder = nil;
     _renderCommandBuffer = nil;
     _renderingTexture = nil;
-    _rendering = NO;
 }
 
 #pragma mark - Custom Acessors
 - (id<MTLBuffer>)positionBuffer {
     if (!_positionBuffer) {
         // 默认不做比例调整
-        MetalImageCoordinate position = [self.texture texturePositionToSize:self.renderSize contentMode:kMetalImageContentModeScaleToFill];
+        MetalImageCoordinate position = [self.texture texturePositionToSize:self.renderSize contentMode:MetalImageContentModeScaleToFill];
         _positionBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&position length:sizeof(position) options:0];
         _positionBuffer.label = @"Position";
     }

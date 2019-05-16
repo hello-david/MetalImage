@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.secondFrameView.fillMode = kMetalImageContentModeScaleAspectFit;
+    self.secondFrameView.fillMode = MetalImageContentModeScaleAspectFit;
     
     [self.camera addTarget:self.firstFrameView];
     [self.camera addTarget:self.secondFrameView];

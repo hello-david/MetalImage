@@ -41,7 +41,7 @@
         } else {
             texutre = [MetalImageTexture textureFromImage:_originImage device:[MetalImageDevice shared].device];
         }
-        _resource = [[MetalImageTextureResource alloc] initWithTexture:[[MetalImageTexture alloc] initWithTexture:texutre orientation:kMetalImagePortrait willCache:NO]];
+        _resource = [[MetalImageTextureResource alloc] initWithTexture:[[MetalImageTexture alloc] initWithTexture:texutre orientation:MetalImagePortrait willCache:NO]];
     }
     return _resource;
 }

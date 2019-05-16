@@ -85,7 +85,7 @@ typedef struct {
             }
             
             id<MTLTexture> metalTexture = [self.device newTextureWithDescriptor:textureDesc];
-            texture = [[MetalImageTexture alloc] initWithTexture:metalTexture orientation:kMetalImagePortrait willCache:YES];
+            texture = [[MetalImageTexture alloc] initWithTexture:metalTexture orientation:MetalImagePortrait willCache:YES];
             texture.cacheKey = key;
         }
     });
