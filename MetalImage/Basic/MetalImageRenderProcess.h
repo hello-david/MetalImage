@@ -18,7 +18,7 @@ typedef void(^__nullable MetalImageRenderProcessCompleteBlock)(void);
 @interface MetalImageRenderProcess : NSObject
 @property (nonatomic, readonly) MetalImageTexture *texture;
 @property (nonatomic, readonly) MetalImageTexture *renderingTexture;
-@property (nonatomic, readonly) CGSize targetSize;
+@property (nonatomic, assign) CGSize targetSize;
 @property (nonatomic, strong) id<MTLBuffer> positionBuffer;
 @property (nonatomic, strong) id<MTLBuffer> textureCoorBuffer;
 
@@ -51,13 +51,6 @@ typedef void(^__nullable MetalImageRenderProcessCompleteBlock)(void);
  *  @param texture 目标纹理
  */
 - (void)swapTexture:(MetalImageTexture *)texture;
-
-/**
- *  设置渲染过程中目标纹理的大小
- *
- *  @param size 目标纹理大小
- */
-- (void)setRenderTargetSize:(CGSize)size;
 @end
 
 NS_ASSUME_NONNULL_END

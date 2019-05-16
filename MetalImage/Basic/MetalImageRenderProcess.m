@@ -11,7 +11,6 @@
 @property (nonatomic, strong) MTLRenderPassDescriptor *renderPassDecriptor;
 @property (nonatomic, strong) id<MTLCommandBuffer> renderCommandBuffer;
 @property (nonatomic, strong) id<MTLRenderCommandEncoder> renderEncoder;
-@property (nonatomic, assign) CGSize targetSize;
 
 @property (nonatomic, strong) MetalImageTexture *texture;
 @property (nonatomic, strong) MetalImageTexture *renderingTexture;
@@ -75,9 +74,11 @@
     _targetSize = CGSizeMake(texture.width, texture.height);
 }
 
-- (void)setRenderTargetSize:(CGSize)size {
-    [self endRenderUntilCompleted:YES];
-    _targetSize = size;
+- (void)setTargetSize:(CGSize)targetSize {
+    if (!CGSizeEqualToSize(_targetSize, targetSize)) {
+        [self endRenderUntilCompleted:YES];
+        _targetSize = targetSize;
+    }
 }
 
 #pragma mark - Getter
@@ -120,7 +121,7 @@
     if (!_positionBuffer) {
         MetalImageCoordinate position = [self.texture texturePositionToSize:self.targetSize contentMode:MetalImageContentModeScaleToFill];
         _positionBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&position length:sizeof(position) options:0];
-        _positionBuffer.label = @"Position";
+        _positionBuffer.label = @"Internal Position";
     }
     return _positionBuffer;
 }
@@ -129,7 +130,7 @@
     if (!_textureCoorBuffer) {
         MetalImageCoordinate textureCoor = [self.texture textureCoordinatesToOrientation:self.texture.orientation];
         _textureCoorBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&textureCoor length:sizeof(textureCoor) options:0];
-        _textureCoorBuffer.label = @"Texture Coordinates";
+        _textureCoorBuffer.label = @"Internal Texture Coordinates";
     }
     return _textureCoorBuffer;
 }

@@ -69,10 +69,10 @@ typedef struct {
     return self;
 }
 
-- (void)updateBufferIfNeed:(MetalImageTexture *)texture targetSize:(CGSize)targetSize {
+- (void)updateCoordinateIfNeed:(MetalImageTexture *)texture {
     BOOL textureSizeChange = !CGSizeEqualToSize(CGSizeMake(texture.width, texture.height), _bufferReuseInfo.textureSize);
     BOOL textureOritationChange = texture.orientation != _bufferReuseInfo.textureOrientation;
-    BOOL targetSizeChange = !CGSizeEqualToSize(targetSize, _bufferReuseInfo.targetSize);
+    BOOL targetSizeChange = !CGSizeEqualToSize(self.size, _bufferReuseInfo.targetSize);
     BOOL fillModeChange = _fillMode != _bufferReuseInfo.fillMode;
     
     if (!textureSizeChange && !textureOritationChange && !targetSizeChange && !fillModeChange) {
@@ -80,12 +80,12 @@ typedef struct {
     }
     
     _bufferReuseInfo.fillMode = _fillMode;
-    _bufferReuseInfo.targetSize = targetSize;
+    _bufferReuseInfo.targetSize = self.size;
     _bufferReuseInfo.textureOrientation = texture.orientation;
     _bufferReuseInfo.textureSize = CGSizeMake(texture.width, texture.height);
     
     // 将纹理旋转到正上方向再绘制到目标纹理中
-    MetalImageCoordinate position = [texture texturePositionToSize:targetSize contentMode:_fillMode];
+    MetalImageCoordinate position = [texture texturePositionToSize:self.size contentMode:_fillMode];
     MetalImageCoordinate textureCoor = [texture textureCoordinatesToOrientation:MetalImagePortrait];
     
     _position = [[MetalImageDevice shared].device newBufferWithBytes:&position length:sizeof(position) options:0];

@@ -62,6 +62,7 @@
     _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:@"oneInputVertex"
                                                                       fragment:@"passthroughFragment"
                                                                    enableBlend:YES];
+    _renderTarget.size = _renderSize;
     
     _renderTarget.fillMode = MetalImageContentModeScaleAspectFill;
     _lastBackgroundSise = CGSizeZero;
@@ -114,7 +115,12 @@
 
 - (void)initImageWirterInput {
     CGSize outputSize = _renderSize;
-    NSDictionary *frameEncoderSettings =@{ AVVideoCodecKey  :   AVVideoCodecH264,
+    
+    NSString *codec = AVVideoCodecH264;
+    if (@available(iOS 11.0, *)) {
+        codec = AVVideoCodecHEVC;
+    }
+    NSDictionary *frameEncoderSettings =@{ AVVideoCodecKey  :   codec,
                                            AVVideoWidthKey  :   @(outputSize.width),
                                            AVVideoHeightKey :   @(outputSize.height)};
     _imageWirterInput = [[AVAssetWriterInput alloc] initWithMediaType:AVMediaTypeVideo outputSettings:frameEncoderSettings];
@@ -347,59 +353,60 @@
     [self imageRenderProcess:resource];
     
     // 从目标纹理提取CVPixelBufferRef
+    __weak typeof(self) weakSelf = self;
     [MetalImageTexture textureCVPixelBufferProcess:resource.texture.metalTexture
-                                             process:^(CVPixelBufferRef pixelBuffer) {
-                                                 CVPixelBufferRef pixel = pixelBuffer;
-                                                 if (!pixel) {
-                                                     return;
-                                                 }
-                                                 
-                                                 CVPixelBufferLockBaseAddress(pixel, 0);
-                                                 
-                                                 // 等待上一次写入结束
-                                                 while(!self.imageWirterInput.readyForMoreMediaData && !self.imageWriteFinish) {
-                                                     NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:0.1];
-                                                     [[NSRunLoop currentRunLoop] runUntilDate:maxDate];
-                                                 }
-                                                 
-                                                 NSError *error = nil;
-                                                 switch (self.assetWriter.status) {
-                                                     case AVAssetWriterStatusWriting: {
-                                                         // 忽略写入时Cancel的情况
-                                                         BOOL suceccsed = [self.pixelbufferAdaptor appendPixelBuffer:pixel withPresentationTime:time];
-                                                         if (!suceccsed && self.assetWriter.status == AVAssetWriterStatusFailed) {
-                                                             error = self.assetWriter.error;
-                                                         } else {
-                                                             self.haveAppedImage = YES;
-                                                         }
-                                                         break;
-                                                     }
-                                                         
-                                                     case AVAssetWriterStatusUnknown:
-                                                     case AVAssetWriterStatusCompleted:
-                                                     case AVAssetWriterStatusFailed: {
-                                                         error = self.assetWriter.error;
-                                                         break;
-                                                     }
-                                                     case AVAssetWriterStatusCancelled: {
-                                                         error = kMetalImageMovieWriterCancelError;
-                                                         break;
-                                                     }
-                                                     default:
-                                                         break;
-                                                 }
-                                                 
-                                                 CVPixelBufferUnlockBaseAddress(pixel, 0);
-                                                 
-                                                 if (error) {
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         if (self.completeHandle) {
-                                                             self.completeHandle(error);
-                                                         }
-                                                         self.completeHandle = nil;
-                                                     });
-                                                 }
-                                             }];
+                                           process:^(CVPixelBufferRef pixelBuffer) {
+                                               CVPixelBufferRef pixel = pixelBuffer;
+                                               if (!pixel) {
+                                                   return;
+                                               }
+                                               
+                                               CVPixelBufferLockBaseAddress(pixel, 0);
+                                               
+                                               // 等待上一次写入结束
+                                               while(!weakSelf.imageWirterInput.readyForMoreMediaData && !weakSelf.imageWriteFinish) {
+                                                   NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:0.1];
+                                                   [[NSRunLoop currentRunLoop] runUntilDate:maxDate];
+                                               }
+                                               
+                                               NSError *error = nil;
+                                               switch (weakSelf.assetWriter.status) {
+                                                   case AVAssetWriterStatusWriting: {
+                                                       // 忽略写入时Cancel的情况
+                                                       BOOL suceccsed = [weakSelf.pixelbufferAdaptor appendPixelBuffer:pixel withPresentationTime:time];
+                                                       if (!suceccsed && weakSelf.assetWriter.status == AVAssetWriterStatusFailed) {
+                                                           error = weakSelf.assetWriter.error;
+                                                       } else {
+                                                           weakSelf.haveAppedImage = YES;
+                                                       }
+                                                       break;
+                                                   }
+                                                       
+                                                   case AVAssetWriterStatusUnknown:
+                                                   case AVAssetWriterStatusCompleted:
+                                                   case AVAssetWriterStatusFailed: {
+                                                       error = weakSelf.assetWriter.error;
+                                                       break;
+                                                   }
+                                                   case AVAssetWriterStatusCancelled: {
+                                                       error = kMetalImageMovieWriterCancelError;
+                                                       break;
+                                                   }
+                                                   default:
+                                                       break;
+                                               }
+                                               
+                                               CVPixelBufferUnlockBaseAddress(pixel, 0);
+                                               
+                                               if (error) {
+                                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                       if (weakSelf.completeHandle) {
+                                                           weakSelf.completeHandle(error);
+                                                       }
+                                                       weakSelf.completeHandle = nil;
+                                                   });
+                                               }
+                                           }];
 }
 
 - (void)imageRenderProcess:(MetalImageTextureResource *)resource {
@@ -414,9 +421,9 @@
     // 生成最终目标纹理
     MetalImageTexture *targetTexture = [[MetalImageDevice shared].textureCache fetchTexture:_renderSize pixelFormat:resource.texture.metalTexture.pixelFormat];
     targetTexture.orientation = resource.texture.orientation;
-    self.renderTarget.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;      // 设置目标纹理
-    self.renderTarget.renderPassDecriptor.colorAttachments[0].clearColor = [self getMTLbackgroundColor]; // 调整目标纹理背景色
-    [self.renderTarget updateBufferIfNeed:resource.texture targetSize:_renderSize];                      // 调整输入纹理绘制到目标纹理时的比例和方向
+    _renderTarget.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;      // 设置目标纹理
+    _renderTarget.renderPassDecriptor.colorAttachments[0].clearColor = [self getMTLbackgroundColor]; // 调整目标纹理背景色
+    [_renderTarget updateCoordinateIfNeed:resource.texture];// 调整输入纹理绘制到目标纹理时的比例和方向
     
     id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
     id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:self.renderTarget.renderPassDecriptor];

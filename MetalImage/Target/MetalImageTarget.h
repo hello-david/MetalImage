@@ -36,9 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  根据输入纹理更新目标纹理坐标/顶点坐标
  *
  *  @param  texture     输入纹理
- *  @param  targetSize  目标纹理大小
  */
-- (void)updateBufferIfNeed:(MetalImageTexture *)texture targetSize:(CGSize)targetSize;
+- (void)updateCoordinateIfNeed:(MetalImageTexture *)texture;
 @end
 
 NS_ASSUME_NONNULL_END

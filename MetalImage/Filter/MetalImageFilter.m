@@ -28,6 +28,7 @@
     }
     return self;
 }
+
 #pragma mark - Target Protocol
 /**
  *  内部渲染处理不应该切换线程，需要并发渲染使用MTLParallelRenderCommandEncoder实现

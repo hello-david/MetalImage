@@ -40,7 +40,7 @@
     MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
     float width = CGRectGetWidth(_cropRegion) > textureResource.texture.width ? textureResource.texture.width : CGRectGetWidth(_cropRegion);
     float height = CGRectGetHeight(_cropRegion) > textureResource.texture.height ? textureResource.texture.height : CGRectGetHeight(_cropRegion);
-    [textureResource.renderProcess setRenderTargetSize:CGSizeMake(width, height)];
+    textureResource.renderProcess.targetSize = CGSizeMake(width, height);
     
     [super receive:resource withTime:time];
 }

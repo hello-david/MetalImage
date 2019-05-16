@@ -46,6 +46,9 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.metalLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    if (!CGSizeEqualToSize(self.renderTarget.size, self.metalLayer.frame.size)) {
+        self.renderTarget.size = self.metalLayer.frame.size;
+    }
 }
 
 - (MetalImageContentMode)fillMode {
@@ -78,20 +81,18 @@
             id <CAMetalDrawable> drawable = [strongSelf.metalLayer nextDrawable];
             if (drawable) {
                 MTLClearColor color = [strongSelf getMTLbackgroundColor];
-                strongSelf.renderTarget.renderPassDecriptor.colorAttachments[0].texture = [drawable texture];
-                strongSelf.renderTarget.renderPassDecriptor.colorAttachments[0].clearColor = color;
-                
                 if (strongSelf.metalLayer.opaque && color.alpha != 1.0) {
                     strongSelf.metalLayer.opaque = NO;
                 } else if (color.alpha == 1.0) {
                     strongSelf.metalLayer.opaque = YES;
                 }
                 
-                [strongSelf.renderTarget updateBufferIfNeed:textureResource.texture targetSize:strongSelf.metalLayer.frame.size];
+                strongSelf.renderTarget.renderPassDecriptor.colorAttachments[0].texture = [drawable texture];
+                strongSelf.renderTarget.renderPassDecriptor.colorAttachments[0].clearColor = color;
+                [strongSelf.renderTarget updateCoordinateIfNeed:textureResource.texture];// 调整输入纹理绘制到目标纹理时的比例和方向
                 
                 id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
                 [commandBuffer enqueue];
-                
                 id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:strongSelf.renderTarget.renderPassDecriptor];
                 [strongSelf renderToEncoder:renderEncoder withResource:textureResource];
                 [commandBuffer presentDrawable:drawable];
