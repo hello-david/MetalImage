@@ -68,7 +68,7 @@
     }
     
     MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
-    [textureResource endRenderProcess];
+    [textureResource.renderProcess endRender];
     
     __weak typeof(self) weakSelf = self;
     dispatch_async(_displayQueue, ^{
@@ -78,8 +78,8 @@
             id <CAMetalDrawable> drawable = [strongSelf.metalLayer nextDrawable];
             if (drawable) {
                 MTLClearColor color = [strongSelf getMTLbackgroundColor];
-                textureResource.renderPassDecriptor.colorAttachments[0].texture = [drawable texture];
-                textureResource.renderPassDecriptor.colorAttachments[0].clearColor = color;
+                textureResource.renderProcess.renderPassDecriptor.colorAttachments[0].texture = [drawable texture];
+                textureResource.renderProcess.renderPassDecriptor.colorAttachments[0].clearColor = color;
                 
                 if (strongSelf.metalLayer.opaque && color.alpha != 1.0) {
                     strongSelf.metalLayer.opaque = NO;
@@ -92,7 +92,7 @@
                 id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
                 [commandBuffer enqueue];
                 
-                id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:textureResource.renderPassDecriptor];
+                id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:textureResource.renderProcess.renderPassDecriptor];
                 [strongSelf renderToEncoder:renderEncoder withResource:textureResource];
                 [commandBuffer presentDrawable:drawable];
                 [commandBuffer commit];

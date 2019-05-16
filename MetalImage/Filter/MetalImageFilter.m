@@ -7,7 +7,6 @@
 
 #import "MetalImageFilter.h"
 @interface MetalImageFilter()
-@property (nonatomic, assign) CGSize renderSize;
 @property (nonatomic, strong) MetalImageSource *source;
 @end
 
@@ -52,15 +51,11 @@
     }
     
     MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
-    if (!CGSizeEqualToSize(_renderSize, CGSizeZero)) {
-        [textureResource setRenderSize:_renderSize];
-    }
-    
-    [textureResource startRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
+    [textureResource.renderProcess startRender:^(id<MTLRenderCommandEncoder> renderEncoder) {
         [self renderToEncoder:renderEncoder withResource:textureResource];
     } completion:^{
         if (!self.source.haveTarget) {
-            [textureResource endRenderProcess];
+            [textureResource.renderProcess endRender];
             return;
         }
         [self send:resource withTime:time];
@@ -68,23 +63,19 @@
 }
 
 #pragma mark - Render Process
-- (void)setRenderSize:(CGSize)renderSize {
-    _renderSize = renderSize;
-}
-
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageTextureResource *)resource {
-    CGSize renderSize = CGSizeEqualToSize(_renderSize, CGSizeZero) ? resource.texture.size : _renderSize;
-    MetalImageTexture *targetTexture = [[MetalImageDevice shared].textureCache fetchTexture:renderSize
+    CGSize targetSize = CGSizeEqualToSize(_targetSize, CGSizeZero) ? resource.renderProcess.renderSize : _targetSize;
+    MetalImageTexture *targetTexture = [[MetalImageDevice shared].textureCache fetchTexture:targetSize
                                                                                 pixelFormat:resource.texture.metalTexture.pixelFormat];
     targetTexture.orientation = resource.texture.orientation;
-    resource.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;
+    resource.renderProcess.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;
     
     // 实现一个renderEncoder流程(可能有多个Draw-Call)
     @autoreleasepool {
-        id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderPassDecriptor];
+        id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderProcess.renderPassDecriptor];
         [self renderToEncoder:renderEncoder withResource:resource];
         [renderEncoder endEncoding];
-        [resource swapTexture:targetTexture];
+        [resource.renderProcess swapTexture:targetTexture];
     }
 }
 

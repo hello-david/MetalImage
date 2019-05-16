@@ -42,9 +42,9 @@ typedef struct MetalImageSharpenFilterArg {
 
 - (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
     // 目标大小变了
-    if ((1.0 / resource.renderSize.width != _sharpenArg.imageWidthFactor) || (1.0 / resource.renderSize.height != _sharpenArg.imageHeightFactor)) {
-        _sharpenArg.imageWidthFactor = 1.0 / resource.renderSize.width;
-        _sharpenArg.imageHeightFactor = 1.0 / resource.renderSize.height;
+    if ((1.0 / resource.renderProcess.renderSize.width != _sharpenArg.imageWidthFactor) || (1.0 / resource.renderProcess.renderSize.height != _sharpenArg.imageHeightFactor)) {
+        _sharpenArg.imageWidthFactor = 1.0 / resource.renderProcess.renderSize.width;
+        _sharpenArg.imageHeightFactor = 1.0 / resource.renderProcess.renderSize.height;
         _sharpenBuffer = nil;
     }
     

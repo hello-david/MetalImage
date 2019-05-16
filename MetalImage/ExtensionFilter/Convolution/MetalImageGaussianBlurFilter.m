@@ -93,7 +93,7 @@ typedef struct MetalImageGaussianParameter {
     }
     
     MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
-    [textureResource endRenderProcess];// 先把之前的提交了
+    [textureResource.renderProcess endRender];// 先把之前的提交了
     
     id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
     [commandBuffer enqueue];
@@ -105,46 +105,43 @@ typedef struct MetalImageGaussianParameter {
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageTextureResource *)resource {    
     // 目标大小变了
-    if (!CGSizeEqualToSize(self.renderSize, CGSizeZero)) {
-        [resource setRenderSize:self.renderSize];
-    }
-    if (!CGSizeEqualToSize(_lastSize, resource.renderSize) || _texelSpacingMultiplierChanged) {
-        self->_verticalParam.texelWidthOffset = self.verticalTexelSpacing / resource.renderSize.width;
+    CGSize targetSize = CGSizeEqualToSize(self.targetSize, CGSizeZero) ? resource.renderProcess.renderSize : self.targetSize;
+    if (!CGSizeEqualToSize(_lastSize, targetSize) || _texelSpacingMultiplierChanged) {
+        self->_verticalParam.texelWidthOffset = self.verticalTexelSpacing / targetSize.width;
         self->_verticalParam.texelHeightOffset = 0.0;
         
         self->_horizontalParam.texelWidthOffset = 0.0;
-        self->_horizontalParam.texelHeightOffset = self.horizontalTexelSpacing / resource.renderSize.height;
-        _lastSize = resource.renderSize;
+        self->_horizontalParam.texelHeightOffset = self.horizontalTexelSpacing / targetSize.height;
+        _lastSize = targetSize;
         _verticalParamBuffer = nil;
         _horizontalParamBuffer = nil;
         _texelSpacingMultiplierChanged = NO;
     }
-    CGSize renderSize = CGSizeEqualToSize(self.renderSize, CGSizeZero) ? resource.texture.size : self.renderSize;
     
     @autoreleasepool {
         // 水平方向来一次
         _currentParam = _horizontalParam;
-        MetalImageTexture *horizontalTargetTexture = [[MetalImageDevice shared].textureCache fetchTexture:renderSize
+        MetalImageTexture *horizontalTargetTexture = [[MetalImageDevice shared].textureCache fetchTexture:targetSize
                                                                                               pixelFormat:resource.texture.metalTexture.pixelFormat];
         horizontalTargetTexture.orientation = resource.texture.orientation;
-        resource.renderPassDecriptor.colorAttachments[0].texture = horizontalTargetTexture.metalTexture;
+        resource.renderProcess.renderPassDecriptor.colorAttachments[0].texture = horizontalTargetTexture.metalTexture;
         
-        id<MTLRenderCommandEncoder> horizontalRenderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderPassDecriptor];
+        id<MTLRenderCommandEncoder> horizontalRenderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderProcess.renderPassDecriptor];
         [self renderToEncoder:horizontalRenderEncoder withResource:resource];
         [horizontalRenderEncoder endEncoding];
-        [resource swapTexture:horizontalTargetTexture];
+        [resource.renderProcess swapTexture:horizontalTargetTexture];
         
         // 垂直方向再来一次
         _currentParam = _verticalParam;
-        MetalImageTexture *verticalTargetTexture = [[MetalImageDevice shared].textureCache fetchTexture:renderSize
+        MetalImageTexture *verticalTargetTexture = [[MetalImageDevice shared].textureCache fetchTexture:targetSize
                                                                                             pixelFormat:resource.texture.metalTexture.pixelFormat];
         verticalTargetTexture.orientation = resource.texture.orientation;
-        resource.renderPassDecriptor.colorAttachments[0].texture = verticalTargetTexture.metalTexture;
+        resource.renderProcess.renderPassDecriptor.colorAttachments[0].texture = verticalTargetTexture.metalTexture;
         
-        id<MTLRenderCommandEncoder> verticalRenderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderPassDecriptor];
+        id<MTLRenderCommandEncoder> verticalRenderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:resource.renderProcess.renderPassDecriptor];
         [self renderToEncoder:verticalRenderEncoder withResource:resource];
         [verticalRenderEncoder endEncoding];
-        [resource swapTexture:verticalTargetTexture];
+        [resource.renderProcess swapTexture:verticalTargetTexture];
     };
 }
 

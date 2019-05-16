@@ -44,7 +44,7 @@
 }
 
 - (void)renderToResource:(MetalImageTextureResource *)resource {
-    [resource endRenderProcess];
+    [resource.renderProcess endRender];
     id <MTLCommandBuffer> commandBuffer1 = [[MetalImageDevice shared].commandQueue commandBuffer];
     [commandBuffer1 enqueue];
     [self.saturationFilter encodeToCommandBuffer:commandBuffer1 withResource:resource];

@@ -79,15 +79,15 @@
         
         for (id<MetalImageRender> filter in filters) {
             if ([filter isKindOfClass:[MetalImageFilter class]]) {
-                [strongSelf.resource startRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
+                [strongSelf.resource.renderProcess startRender:^(id<MTLRenderCommandEncoder> renderEncoder) {
                     [(MetalImageFilter*)filter renderToEncoder:renderEncoder withResource:strongSelf.resource];
                 } completion:nil];
             } else {
-                [strongSelf.resource endRenderProcessUntilCompleted:YES];
+                [strongSelf.resource.renderProcess endRenderUntilCompleted:YES];
                 [filter renderToResource:strongSelf.resource];
             }
         }
-        [strongSelf.resource endRenderProcessUntilCompleted:YES];
+        [strongSelf.resource.renderProcess endRenderUntilCompleted:YES];
         
         UIImage *processedImage = [strongSelf.resource.texture imageFromTexture];
         strongSelf.resource = nil;
