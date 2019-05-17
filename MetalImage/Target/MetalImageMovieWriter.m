@@ -487,7 +487,7 @@
                                                                
     CGFloat rgbColor[3] = { targetR, targetG, targetB };
     
-    NSLog(@"R:%f, G:%f, B:%f", rgbColor[0], rgbColor[1], rgbColor[2]);
+//    NSLog(@"R:%f, G:%f, B:%f", rgbColor[0], rgbColor[1], rgbColor[2]);
     return MTLClearColorMake(rgbColor[0], rgbColor[1], rgbColor[2], 1.0);
 }
 

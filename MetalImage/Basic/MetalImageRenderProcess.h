@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class MetalImageRenderProcess;
 
 typedef void(^MetalImageRenderProcessBlock)(id<MTLRenderCommandEncoder> renderEncoder);
-typedef void(^__nullable MetalImageRenderProcessCompleteBlock)(void);
 
 @interface MetalImageRenderProcess : NSObject
 @property (nonatomic, readonly) MetalImageTexture *texture;
@@ -27,13 +26,12 @@ typedef void(^__nullable MetalImageRenderProcessCompleteBlock)(void);
 /**
  *  在同一个CommandBuffer中进行渲染
  *
- *  @param processing   给外部一个RenderEncoder并利用它实现Draw-Call的同步闭包
- *  @param completion   外部实现Draw-Call后的同步闭包
+ *  @param processing   给外部一个RenderEncoder并利用它实现Draw-Call
  *
  *  @discussion
  *  会自动交换目标纹理，不要在外部调用[renderEncoder endEncoding]
  */
-- (void)addRenderProcess:(MetalImageRenderProcessBlock)processing completion:(MetalImageRenderProcessCompleteBlock _Nullable)completion;
+- (void)addRenderProcess:(MetalImageRenderProcessBlock)processing;
 
 /**
  *  将会Commit内部的Commandbuffer

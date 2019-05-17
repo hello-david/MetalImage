@@ -30,21 +30,18 @@
     [[MetalImageDevice shared].textureCache cacheTexture:self.texture];
 }
 
-- (void)addRenderProcess:(MetalImageRenderProcessBlock)processing completion:(MetalImageRenderProcessCompleteBlock)completion {
+- (void)addRenderProcess:(MetalImageRenderProcessBlock)processing {
     @autoreleasepool {
         if (processing) {
             processing(self.renderEncoder);
         }
-        _renderingTexture.orientation = _texture.orientation;
         
+        _renderingTexture.orientation = _texture.orientation;
         [_renderEncoder endEncoding];
         [self swapTexture:_renderingTexture];
         
         _renderEncoder = nil;
         _renderingTexture = nil;
-        if (completion) {
-            completion();
-        }
     }
 }
 

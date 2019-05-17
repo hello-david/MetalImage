@@ -45,13 +45,13 @@
     __weak typeof(textureResource) weakResource = textureResource;
     [textureResource.renderProcess addRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
         [weakSelf renderToEncoder:renderEncoder withResource:weakResource];
-    } completion:^{
-        if (!weakSelf.source.haveTarget) {
-            [weakResource.renderProcess commitRender];
-            return;
-        }
-        [weakSelf send:weakResource withTime:time];
     }];
+    
+    if (!self.source.haveTarget) {
+        [textureResource.renderProcess commitRender];
+        return;
+    }
+    [self send:weakResource withTime:time];
 }
 
 #pragma mark - Render Process

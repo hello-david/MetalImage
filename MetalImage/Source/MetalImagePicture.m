@@ -80,7 +80,7 @@
             if ([filter isKindOfClass:[MetalImageFilter class]]) {
                 [strongSelf.resource.renderProcess addRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
                     [(MetalImageFilter*)filter renderToEncoder:renderEncoder withResource:strongSelf.resource];
-                } completion:nil];
+                }];
             } else {
                 [strongSelf.resource.renderProcess commitRenderWaitUntilFinish:YES];
                 [filter renderToResource:strongSelf.resource];
