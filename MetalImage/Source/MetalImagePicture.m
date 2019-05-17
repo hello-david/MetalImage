@@ -71,7 +71,6 @@
     __weak typeof(self) weakSelf = self;
     dispatch_async([MetalImageDevice shared].concurrentQueue, ^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
-        
         if (!strongSelf) {
             !completion ? : completion(nil);
             return;
@@ -79,15 +78,15 @@
         
         for (id<MetalImageRender> filter in filters) {
             if ([filter isKindOfClass:[MetalImageFilter class]]) {
-                [strongSelf.resource.renderProcess startRender:^(id<MTLRenderCommandEncoder> renderEncoder) {
+                [strongSelf.resource.renderProcess addRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
                     [(MetalImageFilter*)filter renderToEncoder:renderEncoder withResource:strongSelf.resource];
                 } completion:nil];
             } else {
-                [strongSelf.resource.renderProcess endRenderUntilCompleted:YES];
+                [strongSelf.resource.renderProcess commitRenderWaitUntilFinish:YES];
                 [filter renderToResource:strongSelf.resource];
             }
         }
-        [strongSelf.resource.renderProcess endRenderUntilCompleted:YES];
+        [strongSelf.resource.renderProcess commitRenderWaitUntilFinish:YES];
         
         UIImage *processedImage = [strongSelf.resource.texture imageFromTexture];
         strongSelf.resource = nil;

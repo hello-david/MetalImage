@@ -93,7 +93,7 @@ typedef struct MetalImageGaussianParameter {
     }
     
     MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
-    [textureResource.renderProcess endRender];// 先把之前的提交了
+    [textureResource.renderProcess commitRender];// 先把之前的提交了
     
     id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
     [commandBuffer enqueue];

@@ -72,7 +72,7 @@
     }
     
     MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
-    [textureResource.renderProcess endRender];
+    [textureResource.renderProcess commitRender];
     
     __weak typeof(self) weakSelf = self;
     dispatch_async(self.displayQueue, ^{

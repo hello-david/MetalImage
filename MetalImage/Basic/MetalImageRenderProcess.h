@@ -33,8 +33,7 @@ typedef void(^__nullable MetalImageRenderProcessCompleteBlock)(void);
  *  @discussion
  *  会自动交换目标纹理，不要在外部调用[renderEncoder endEncoding]
  */
-- (void)startRender:(MetalImageRenderProcessBlock)processing
-         completion:(MetalImageRenderProcessCompleteBlock)completion;
+- (void)addRenderProcess:(MetalImageRenderProcessBlock)processing completion:(MetalImageRenderProcessCompleteBlock _Nullable)completion;
 
 /**
  *  将会Commit内部的Commandbuffer
@@ -42,8 +41,8 @@ typedef void(^__nullable MetalImageRenderProcessCompleteBlock)(void);
  *  @discussion
  *  在使用外部的CommandBuffer时有enqueue需要先把内置CommandBuffer的提交了
  */
-- (void)endRender;
-- (void)endRenderUntilCompleted:(BOOL)waitUntilCompleted;
+- (void)commitRender;
+- (void)commitRenderWaitUntilFinish:(BOOL)waitUntilCompleted;
 
 /**
  *  替换这个资源对象的纹理，用于原始纹理和目标纹理交换

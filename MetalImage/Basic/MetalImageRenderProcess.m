@@ -30,30 +30,29 @@
     [[MetalImageDevice shared].textureCache cacheTexture:self.texture];
 }
 
-- (void)startRender:(MetalImageRenderProcessBlock)processing completion:(MetalImageRenderProcessCompleteBlock)completion {
+- (void)addRenderProcess:(MetalImageRenderProcessBlock)processing completion:(MetalImageRenderProcessCompleteBlock)completion {
     @autoreleasepool {
         if (processing) {
             processing(self.renderEncoder);
         }
         _renderingTexture.orientation = _texture.orientation;
-
+        
         [_renderEncoder endEncoding];
         [self swapTexture:_renderingTexture];
         
         _renderEncoder = nil;
         _renderingTexture = nil;
-        
         if (completion) {
             completion();
         }
     }
 }
 
-- (void)endRender {
-    [self endRenderUntilCompleted:NO];
+- (void)commitRender {
+    [self commitRenderWaitUntilFinish:NO];
 }
 
-- (void)endRenderUntilCompleted:(BOOL)waitUntilCompleted {
+- (void)commitRenderWaitUntilFinish:(BOOL)waitUntilCompleted {
     if (!_renderCommandBuffer || _renderCommandBuffer.status > MTLCommandBufferStatusEnqueued) {
         _renderCommandBuffer = nil;
         return;
@@ -76,7 +75,7 @@
 
 - (void)setTargetSize:(CGSize)targetSize {
     if (!CGSizeEqualToSize(_targetSize, targetSize)) {
-        [self endRenderUntilCompleted:YES];
+        [self commitRenderWaitUntilFinish:YES];
         _targetSize = targetSize;
     }
 }

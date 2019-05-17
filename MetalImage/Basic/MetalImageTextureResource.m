@@ -33,7 +33,7 @@
 
 - (MetalImageResource *)newResourceFromSelf {
     // 拷贝之前先提交之前的渲染
-    [self.renderProcess endRender];
+    [self.renderProcess commitRender];
     
     // 拷贝当前的纹理
     __block MetalImageTextureResource *newResource = nil;

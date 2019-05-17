@@ -310,7 +310,7 @@
     
     // 之前的效果提交了
     if (resource.type == MetalImageResourceTypeImage) {
-        [((MetalImageTextureResource *)resource).renderProcess endRender];
+        [((MetalImageTextureResource *)resource).renderProcess commitRender];
     }
     
     __weak typeof(self) weakSelf = self;

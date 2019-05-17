@@ -40,16 +40,17 @@
         return;
     }
     
-    __weak typeof(self) weakSelf = self;
     MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
-    [textureResource.renderProcess startRender:^(id<MTLRenderCommandEncoder> renderEncoder) {
-        [weakSelf renderToEncoder:renderEncoder withResource:textureResource];
+    __weak typeof(self) weakSelf = self;
+    __weak typeof(textureResource) weakResource = textureResource;
+    [textureResource.renderProcess addRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
+        [weakSelf renderToEncoder:renderEncoder withResource:weakResource];
     } completion:^{
         if (!weakSelf.source.haveTarget) {
-            [textureResource.renderProcess endRender];
+            [weakResource.renderProcess commitRender];
             return;
         }
-        [weakSelf send:resource withTime:time];
+        [weakSelf send:weakResource withTime:time];
     }];
 }
 
