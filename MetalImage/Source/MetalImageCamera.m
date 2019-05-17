@@ -118,7 +118,7 @@
         
         __weak typeof(self) weakSelf = self;
         CVPixelBufferLockBaseAddress(cameraFrame, 0);
-        dispatch_barrier_sync(self.renderQueue, ^{
+        dispatch_sync(self.renderQueue, ^{
             CVPixelBufferUnlockBaseAddress(cameraFrame, 0);
             
             // Create CVMetal Texture
@@ -161,7 +161,7 @@
         CFRetain(sampleBuffer);
         
         __weak typeof(self) weakSelf = self;
-        dispatch_barrier_sync(self.audioProcessQueue, ^{
+        dispatch_sync(self.audioProcessQueue, ^{
             CMTime sampleTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
             MetalImageAudioResource *audioResource = [[MetalImageAudioResource alloc] initWithBuffer:sampleBuffer];
             [weakSelf send:audioResource withTime:sampleTime];
