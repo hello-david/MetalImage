@@ -61,7 +61,7 @@
     
     _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:@"oneInputVertex"
                                                                       fragment:@"passthroughFragment"
-                                                                   enableBlend:YES];
+                                                                   enableBlend:NO];
     _renderTarget.size = _renderSize;
     
     _renderTarget.fillMode = MetalImageContentModeScaleAspectFill;
@@ -422,9 +422,10 @@
     MetalImageTexture *targetTexture = [[MetalImageDevice shared].textureCache fetchTexture:_renderSize pixelFormat:resource.texture.metalTexture.pixelFormat];
     targetTexture.orientation = resource.texture.orientation;
     _renderTarget.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;      // 设置目标纹理
-    _renderTarget.renderPassDecriptor.colorAttachments[0].clearColor = [self getMTLbackgroundColor]; // 调整目标纹理背景色
+    _renderTarget.renderPassDecriptor.colorAttachments[0].clearColor = [self mtlBackgroundColor];    // 调整目标纹理背景色
     [_renderTarget updateCoordinateIfNeed:resource.texture];// 调整输入纹理绘制到目标纹理时的比例和方向
     
+    // 渲染
     id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
     id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:self.renderTarget.renderPassDecriptor];
     [self renderToEncoder:renderEncoder withResource:resource];
@@ -447,7 +448,8 @@
     if (self.backgroundType == MetalImagContentBackgroundFilter && self.backgroundTextureResource) {
         if (!CGSizeEqualToSize(resource.texture.size, _renderSize) && !CGSizeEqualToSize(_lastBackgroundSise, _renderSize)) {
             _lastBackgroundSise = CGSizeMake(_renderSize.width, _renderSize.height);
-            MetalImageCoordinate positionCoor = [self.backgroundTextureResource.texture texturePositionToSize:_renderSize contentMode:MetalImageContentModeScaleAspectFill];
+            MetalImageCoordinate positionCoor = [self.backgroundTextureResource.texture texturePositionToSize:_renderSize
+                                                                                                  contentMode:MetalImageContentModeScaleAspectFill];
             _backgroundPostionBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&positionCoor length:sizeof(positionCoor) options:0];
         }
         [renderEncoder setVertexBuffer:_backgroundPostionBuffer offset:0 atIndex:0];
@@ -466,24 +468,27 @@
 #endif
 }
 
-- (MTLClearColor)getMTLbackgroundColor {
-    if (CGColorEqualToColor(self.backgroundColor.CGColor, [UIColor blackColor].CGColor)) {
-        return MTLClearColorMake(0, 0, 0, 1);
+- (MTLClearColor)mtlBackgroundColor {
+    if (self.backgroundType != MetalImagContentBackgroundColor) {
+        return MTLClearColorMake(0, 0, 0, 1.0);
     }
     
-    CGFloat components[4];
-    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
-    unsigned char resultingPixel[4];
-    CGContextRef context = CGBitmapContextCreate(&resultingPixel, 1, 1, 8, 4, rgbColorSpace, kCGImageAlphaNoneSkipLast);
-    CGContextSetFillColorWithColor(context, [self.backgroundColor CGColor]);
-    CGContextFillRect(context, CGRectMake(0, 0, 1, 1));
-    CGContextRelease(context);
-    CGColorSpaceRelease(rgbColorSpace);
-    for (int component = 0; component < 4; component++) {
-        components[component] = resultingPixel[component] / 255.0f;
-    }
+    /**
+     *  Writter的背景实际不需要到Alpha通道，只需要获取UIColor(RGBA)对应效果的RGB
+     *  提供一个背景色比如白色背景BGcolur = 1或者黑色背景BGcolur =0
+     */
+    CGFloat rgba[4];
+    [self.backgroundColor getRed:rgba green:rgba + 1 blue:rgba + 2 alpha:rgba + 3];
     
-    return MTLClearColorMake(components[0], components[1], components[2], components[3]);
+    CGFloat bgColur = 0.0;
+    CGFloat targetR = bgColur * (1 - rgba[3]) + rgba[0] * rgba[3];
+    CGFloat targetG = bgColur * (1 - rgba[3]) + rgba[1] * rgba[3];
+    CGFloat targetB = bgColur * (1 - rgba[3]) + rgba[2] * rgba[3];
+                                                               
+    CGFloat rgbColor[3] = { targetR, targetG, targetB };
+    
+    NSLog(@"R:%f, G:%f, B:%f", rgbColor[0], rgbColor[1], rgbColor[2]);
+    return MTLClearColorMake(rgbColor[0], rgbColor[1], rgbColor[2], 1.0);
 }
 
 #pragma mark - Audio Write Process

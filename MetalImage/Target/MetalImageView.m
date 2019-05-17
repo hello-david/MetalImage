@@ -81,6 +81,7 @@
         @autoreleasepool {
             id <CAMetalDrawable> drawable = [strongSelf.metalLayer nextDrawable];
             if (drawable) {
+                // View的Alpha使用layer的opaque实现而非开启这个Pieline的Blend
                 MTLClearColor color = [strongSelf getMTLbackgroundColor];
                 if (strongSelf.metalLayer.opaque && color.alpha != 1.0) {
                     strongSelf.metalLayer.opaque = NO;

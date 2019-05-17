@@ -50,11 +50,14 @@ typedef struct {
         renderPipelineDesc.colorAttachments[0].pixelFormat = [MetalImageDevice shared].pixelFormat;
         
         if (enableBlend) {
+            // 结果色 = 源色 * 源因子 + 目标色 * 目标因子
+            // 结果alpha = 源透明度 * 源因子 + 目标透明度 * 目标因子
+
             renderPipelineDesc.colorAttachments[0].blendingEnabled = YES;
             renderPipelineDesc.colorAttachments[0].rgbBlendOperation = MTLBlendOperationAdd;
             renderPipelineDesc.colorAttachments[0].alphaBlendOperation = MTLBlendOperationAdd;
-            renderPipelineDesc.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactorOne;
-            renderPipelineDesc.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactorOne;
+            renderPipelineDesc.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactorSourceAlpha;
+            renderPipelineDesc.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactorSourceAlpha;
             renderPipelineDesc.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
             renderPipelineDesc.colorAttachments[0].destinationAlphaBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
         }
