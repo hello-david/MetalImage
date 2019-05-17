@@ -41,6 +41,7 @@
     _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:@"oneInputVertex"
                                                                       fragment:@"passthroughFragment"];
     _renderTarget.fillMode = MetalImageContentModeScaleAspectFill;
+    _renderTarget.size = self.metalLayer.frame.size;
 }
 
 - (void)layoutSubviews {
@@ -74,7 +75,7 @@
     [textureResource.renderProcess endRender];
     
     __weak typeof(self) weakSelf = self;
-    dispatch_async(_displayQueue, ^{
+    dispatch_async(self.displayQueue, ^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
         
         @autoreleasepool {
@@ -83,7 +84,7 @@
                 MTLClearColor color = [strongSelf getMTLbackgroundColor];
                 if (strongSelf.metalLayer.opaque && color.alpha != 1.0) {
                     strongSelf.metalLayer.opaque = NO;
-                } else if (color.alpha == 1.0) {
+                } else if (!strongSelf.metalLayer.opaque && color.alpha == 1.0) {
                     strongSelf.metalLayer.opaque = YES;
                 }
                 
@@ -96,29 +97,18 @@
                 id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:strongSelf.renderTarget.renderPassDecriptor];
                 [strongSelf renderToEncoder:renderEncoder withResource:textureResource];
                 [commandBuffer presentDrawable:drawable];
+                [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull buffer) {
+                    [[MetalImageDevice shared].textureCache cacheTexture:textureResource.texture];
+                }];
                 [commandBuffer commit];
-                
-                [[MetalImageDevice shared].textureCache cacheTexture:textureResource.texture];
             }
         }
     });
 }
 
 - (MTLClearColor)getMTLbackgroundColor {
-    UIColor *backgroundColor = self.metalBackgroundColor;
-    
     CGFloat components[4];
-    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
-    unsigned char resultingPixel[4];
-    CGContextRef context = CGBitmapContextCreate(&resultingPixel, 1, 1, 8, 4, rgbColorSpace, kCGImageAlphaNoneSkipLast);
-    CGContextSetFillColorWithColor(context, [backgroundColor CGColor]);
-    CGContextFillRect(context, CGRectMake(0, 0, 1, 1));
-    CGContextRelease(context);
-    CGColorSpaceRelease(rgbColorSpace);
-    for (int component = 0; component < 4; component++) {
-        components[component] = resultingPixel[component] / 255.0f;
-    }
-    
+    [self.metalBackgroundColor getRed:components green:components + 1 blue:components + 2 alpha:components + 3];
     return MTLClearColorMake(components[0], components[1], components[2], components[3]);
 }
 
