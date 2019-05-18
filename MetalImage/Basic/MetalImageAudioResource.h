@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MetalImageAudioResource : MetalImageResource
 @property (nonatomic, assign, readonly) CMSampleBufferRef audioBuffer;
 
-- (instancetype)init __attribute__((deprecated("此方法已弃用,请使用initWithBuffer:方法")));
 - (instancetype)initWithBuffer:(CMSampleBufferRef)audioBuffer;
 
 /**

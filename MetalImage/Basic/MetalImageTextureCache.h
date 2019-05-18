@@ -11,7 +11,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MetalImageTextureCache : NSObject
-- (instancetype)init __attribute__((deprecated("此方法已弃用,请使用initWithDevice:方法")));
 - (instancetype)initWithDevice:(id<MTLDevice>)device;
 
 /**

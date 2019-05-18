@@ -26,12 +26,6 @@ typedef struct {
 
 @implementation MetalImageTextureCache
 
-- (instancetype)init {
-    if (self = [super init]) {
-    }
-    return self;
-}
-
 - (instancetype)initWithDevice:(id<MTLDevice>)device {
     if (self = [super init]) {
         _device = device;

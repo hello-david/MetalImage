@@ -6,7 +6,9 @@
 //
 
 #import "MetalImageGaussianBlurFilter.h"
-NSString *const kMetalImageGaussinDefaultVertex = METAL_SHADER_STRING
+// 使用https://github.com/BradLarson/GPUImage/blob/master/framework/Source/GPUImageGaussianBlurFilter.m这个脚本
+
+NSString *const MetalImageGaussinDefaultVertex = METAL_SHADER_STRING
 (
  using namespace metal;
  
@@ -212,7 +214,7 @@ typedef struct MetalImageGaussianParameter {
 #pragma mark - 高斯模糊动态脚本生成
 + (NSString *)vertexShaderForBlurOfRadius:(NSUInteger)blurRadius sigma:(CGFloat)sigma {
     if (blurRadius < 1) {
-        return kMetalImageGaussinDefaultVertex;
+        return MetalImageGaussinDefaultVertex;
     }
     
     // 给sigma参数分配正太高斯权重

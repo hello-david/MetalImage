@@ -32,7 +32,6 @@ typedef void(^_Nullable MetalImageMovieWriterStartHandlle)(NSError *_Nullable er
 @property (nonatomic, assign, readonly) AVAssetWriterStatus status;
 @property (nonatomic, strong, readonly) NSURL *storageUrl;
 
-- (instancetype)init __attribute__((deprecated("此方法已弃用,请使用initWithStorageUrl:size:方法")));
 - (instancetype)initWithStorageUrl:(NSURL *)storageUrl size:(CGSize)size;
 
 /**

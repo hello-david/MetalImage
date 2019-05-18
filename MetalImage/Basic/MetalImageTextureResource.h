@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) MetalImageTexture *texture;
 @property (nonatomic, readonly) MetalImageRenderProcess *renderProcess;
 
-- (instancetype)init __attribute__((deprecated("此方法已弃用,请使用initWithTexture:方法")));
 - (instancetype)initWithTexture:(MetalImageTexture *)texture;
 
 /**
