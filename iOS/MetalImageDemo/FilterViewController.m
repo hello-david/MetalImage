@@ -36,6 +36,8 @@
 
 @property (nonatomic, strong) MetalImageCamera *camera;
 @property (nonatomic, strong) FilterModel *filterModel;
+
+@property (nonatomic, strong) MetalImagePicture *picture;
 @end
 
 @implementation FilterViewController
@@ -49,15 +51,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.camera addTarget:(id<MetalImageTarget>)self.filterModel.filter];
-    [self.filterModel.filter addTarget:self.firstFrameView];
-    [self.camera startCapture];
+    if (self.usePicture) {
+        [self.picture addTarget:(id<MetalImageTarget>)self.filterModel.filter];
+        [self.filterModel.filter addTarget:self.firstFrameView];
+        [self.picture processImage];
+    } else {
+        [self.camera addTarget:(id<MetalImageTarget>)self.filterModel.filter];
+        [self.filterModel.filter addTarget:self.firstFrameView];
+        [self.camera startCapture];
+    }
     
     for (NSInteger index = 0; index < self.filterModel.propertyName.count; index ++) {
         FileterNumericalValue value;
         [self.filterModel.value[index] getValue:&value];
         
         if (index == 0) {
+            self.firstLabel.hidden = NO;
+            self.firstSlider.hidden = NO;
             self.firstSlider.maximumValue = value.max;
             self.firstSlider.minimumValue = value.min;
             self.firstSlider.value = value.current;
@@ -96,6 +106,10 @@
     if (sender == self.thirdSlider) {
         [(NSObject *)self.filterModel.filter setValue:@(sender.value) forKey:self.filterModel.propertyName[2]];
     }
+    
+    if (self.usePicture) {
+        [self.picture processImage];
+    }
 }
 
 - (MetalImageCamera *)camera {
@@ -103,5 +117,12 @@
         _camera = [[MetalImageCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
     }
     return _camera;
+}
+
+- (MetalImagePicture *)picture {
+    if (!_picture) {
+        _picture = [[MetalImagePicture alloc] initWithImage:[UIImage imageNamed:@"1.jpg"]];
+    }
+    return _picture;
 }
 @end

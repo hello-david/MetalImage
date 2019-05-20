@@ -43,6 +43,7 @@ typedef struct {
 @end
 
 @interface FilterViewController : UIViewController
+@property (nonatomic, assign) BOOL usePicture;
 + (instancetype)filterVCWithModel:(FilterModel *)filterModel;
 @end
 

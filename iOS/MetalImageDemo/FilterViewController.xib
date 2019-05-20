@@ -31,7 +31,7 @@
                     <rect key="frame" x="20" y="64" width="374" height="610"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
-                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="yFX-VE-GKy">
+                <slider hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="yFX-VE-GKy">
                     <rect key="frame" x="115" y="712" width="184" height="31"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="CTy-4w-TVZ"/>
@@ -59,7 +59,7 @@
                         <action selector="sliderValueChange:" destination="-1" eventType="valueChanged" id="5oe-nP-xOG"/>
                     </connections>
                 </slider>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pAM-bX-GCV">
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pAM-bX-GCV">
                     <rect key="frame" x="20" y="717" width="89" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="wg2-Nt-tTb"/>

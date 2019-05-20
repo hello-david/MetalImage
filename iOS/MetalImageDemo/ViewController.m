@@ -10,6 +10,7 @@
 #import "BasicViewController.h"
 #import "RecordViewController.h"
 #import "FilterViewController.h"
+#import "MPSFilterViewController.h"
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -27,7 +28,7 @@
 - (NSArray<NSArray *> *)dataSource {
     if (!_dataSource) {
         _dataSource = @[@[@"相机/图片显示", @"录制"],
-                        @[@"饱和度", @"对比度", @"亮度", @"色调", @"锐化", @"高斯模糊", @"毛玻璃"],
+                        @[@"饱和度", @"对比度", @"亮度", @"色调", @"锐化", @"高斯模糊", @"毛玻璃", @"边缘检测"],
                         @[@""]];
     }
     return _dataSource;
@@ -97,6 +98,7 @@
         id<MetalImageSource, MetalImageTarget, MetalImageRender> filter = nil;
         NSArray *effectPropertyName = nil;
         NSArray *values = nil;
+        BOOL usePicture = NO;
         switch (index) {
             case 0: {
                 filter = [[MetalImageSaturationFilter alloc] init];
@@ -153,6 +155,34 @@
                            [NSValue value:&value3 withObjCType:@encode(FileterNumericalValue)]];
                 break;
             }
+            case 7: {
+                const float weights[] = {
+                    -1, 0, 1,
+                    -2, 0, 2,
+                    -1, 0, 1
+                };
+                filter = [MetalImageConvolutionFilter filterWithKernelWidth:3 kernelHeight:3 weights:weights];
+                usePicture = YES;
+                
+                // 测试效果是否一致
+//                id<MTLTexture> texutre = [[MetalImageDevice shared].textureLoader newTextureWithCGImage:[[UIImage imageNamed:@"1.jpg"] CGImage] options:NULL error:nil];
+//                MTLTextureDescriptor *textureDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:texutre.pixelFormat
+//                                                                                                       width:texutre.width
+//                                                                                                      height:texutre.height
+//                                                                                                   mipmapped:NO];
+//                textureDesc.usage = MTLTextureUsageShaderRead | MTLTextureUsageShaderWrite | MTLTextureUsageRenderTarget;
+//                id<MTLTexture> desTexture = [[MetalImageDevice shared].device newTextureWithDescriptor:textureDesc];
+//                MPSImageConvolution *convolition = [[MPSImageConvolution alloc] initWithDevice:[MetalImageDevice shared].device
+//                                                                                   kernelWidth:3
+//                                                                                  kernelHeight:3 weights:weights];
+//
+//                id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
+//                [commandBuffer enqueue];
+//                [convolition encodeToCommandBuffer:commandBuffer sourceTexture:texutre destinationTexture:desTexture];
+//                [commandBuffer commit];
+//                [commandBuffer waitUntilCompleted];
+                break;
+            }
             default:
                 break;
         }
@@ -160,6 +190,7 @@
         if (filter) {
             FilterModel *model = [FilterModel filter:filter effectProperty:effectPropertyName value:values];
             FilterViewController *filterVC = [FilterViewController filterVCWithModel:model];
+            filterVC.usePicture = usePicture;
             [self.navigationController pushViewController:filterVC animated:YES];
         }
     }

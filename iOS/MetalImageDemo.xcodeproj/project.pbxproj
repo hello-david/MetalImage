@@ -14,6 +14,8 @@
 		9537A97921AFA17200AE2586 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9537A97821AFA17200AE2586 /* Assets.xcassets */; };
 		9537A97C21AFA17200AE2586 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9537A97A21AFA17200AE2586 /* LaunchScreen.storyboard */; };
 		9537A97F21AFA17200AE2586 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9537A97E21AFA17200AE2586 /* main.m */; };
+		959946AC2292772900B390F4 /* MPSFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959946AA2292772900B390F4 /* MPSFilterViewController.m */; };
+		959946AD2292772900B390F4 /* MPSFilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 959946AB2292772900B390F4 /* MPSFilterViewController.xib */; };
 		95B8ECDC228964E8008BC11C /* BasicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B8ECDA228964E8008BC11C /* BasicViewController.m */; };
 		95B8ECDD228964E8008BC11C /* BasicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95B8ECDB228964E8008BC11C /* BasicViewController.xib */; };
 		95B8ECE122896506008BC11C /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B8ECDF22896506008BC11C /* FilterViewController.m */; };
@@ -36,6 +38,9 @@
 		9537A97B21AFA17200AE2586 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9537A97D21AFA17200AE2586 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9537A97E21AFA17200AE2586 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		959946A92292772900B390F4 /* MPSFilterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPSFilterViewController.h; sourceTree = "<group>"; };
+		959946AA2292772900B390F4 /* MPSFilterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MPSFilterViewController.m; sourceTree = "<group>"; };
+		959946AB2292772900B390F4 /* MPSFilterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MPSFilterViewController.xib; sourceTree = "<group>"; };
 		95B8ECD9228964E8008BC11C /* BasicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicViewController.h; sourceTree = "<group>"; };
 		95B8ECDA228964E8008BC11C /* BasicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BasicViewController.m; sourceTree = "<group>"; };
 		95B8ECDB228964E8008BC11C /* BasicViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BasicViewController.xib; sourceTree = "<group>"; };
@@ -110,6 +115,9 @@
 				95B8ECE3228981DC008BC11C /* RecordViewController.h */,
 				95B8ECE4228981DC008BC11C /* RecordViewController.m */,
 				95B8ECE5228981DC008BC11C /* RecordViewController.xib */,
+				959946A92292772900B390F4 /* MPSFilterViewController.h */,
+				959946AA2292772900B390F4 /* MPSFilterViewController.m */,
+				959946AB2292772900B390F4 /* MPSFilterViewController.xib */,
 			);
 			path = MetalImageDemo;
 			sourceTree = "<group>";
@@ -182,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9537A97C21AFA17200AE2586 /* LaunchScreen.storyboard in Resources */,
+				959946AD2292772900B390F4 /* MPSFilterViewController.xib in Resources */,
 				95E412AC22475F5500DAC583 /* 1.jpg in Resources */,
 				9537A97921AFA17200AE2586 /* Assets.xcassets in Resources */,
 				9537A97721AFA17200AE2586 /* Main.storyboard in Resources */,
@@ -249,6 +258,7 @@
 				95B8ECDC228964E8008BC11C /* BasicViewController.m in Sources */,
 				95B8ECE122896506008BC11C /* FilterViewController.m in Sources */,
 				95B8ECE6228981DC008BC11C /* RecordViewController.m in Sources */,
+				959946AC2292772900B390F4 /* MPSFilterViewController.m in Sources */,
 				9537A97F21AFA17200AE2586 /* main.m in Sources */,
 				9537A97121AFA17200AE2586 /* AppDelegate.m in Sources */,
 			);
