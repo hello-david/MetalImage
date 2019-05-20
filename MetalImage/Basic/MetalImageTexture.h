@@ -44,9 +44,9 @@ typedef enum {
 } MetalImageOrientation;
 
 typedef enum {
-    MetalImageContentModeScaleToFill,    // 显示全部图像，铺满全部渲染空间
-    MetalImageContentModeScaleAspectFit, // 调整图像比例，显示全部图像
-    MetalImageContentModeScaleAspectFill // 调整图像比例，铺满全部渲染空间
+    MetalImageContentModeScaleToFill,    // 拉伸图像，铺满全部渲染空间
+    MetalImageContentModeScaleAspectFit, // 缩放图像，保持比例，可能不会填充满整个区域
+    MetalImageContentModeScaleAspectFill // 缩放图像，保持比例，会填充整个区域
 } MetalImageContentMode;
 
 typedef enum {

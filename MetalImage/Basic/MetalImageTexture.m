@@ -119,7 +119,7 @@
         texturePortraitSize = CGSizeMake(self.height, self.width);
     }
     
-    float heightScaling, widthScaling;
+    float heightScaling, widthScaling = 0.0;
     CGSize insetSize = [self makeRectWithAspectRatio:texturePortraitSize destSize:targetSize].size;
     MetalImageCoordinate position;
     switch (contentMode) {
@@ -133,10 +133,16 @@
             heightScaling = insetSize.height / targetSize.height;
             break;
             
-        case MetalImageContentModeScaleAspectFill:
-            widthScaling = targetSize.height / insetSize.height;
-            heightScaling = targetSize.width / insetSize.width;
+        case MetalImageContentModeScaleAspectFill: {
+            if (targetSize.width >= targetSize.height) {
+                widthScaling = targetSize.height / insetSize.height;
+                heightScaling = targetSize.width / insetSize.width;
+            } else {
+                heightScaling = (targetSize.height / insetSize.height) / (targetSize.height / targetSize.width);
+                widthScaling = targetSize.width / insetSize.width;
+            }
             break;
+        }
             
         default:
             break;

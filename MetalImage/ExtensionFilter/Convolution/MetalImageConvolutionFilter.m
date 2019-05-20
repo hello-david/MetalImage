@@ -43,15 +43,11 @@ typedef struct MetalImageConvolitionParameter {
         _kernelWidth = kernelWidth;
         _kernelHeight = kernelHeight;
         _kernelWeights = kernelWeights;
-        self.bias = 0.0f;
+        
+        [self switchRenderPiplineWithVertex:[[self class] vertexShaderWithKernelWidth:_kernelWidth kernelHeight:_kernelHeight]
+                                   fragment:[[self class] fragmentShaderWithKernelWidth:_kernelWidth kernelHeight:_kernelHeight weights:_kernelWeights]];
     }
     return self;
-}
-
-- (void)setBias:(float)bias {
-    _bias = bias;
-    [self switchRenderPiplineWithVertex:[[self class] vertexShaderWithKernelWidth:_kernelWidth kernelHeight:_kernelHeight]
-                               fragment:[[self class] fragmentShaderWithKernelWidth:_kernelWidth kernelHeight:_kernelHeight weights:_kernelWeights]];
 }
 
 - (id<MTLBuffer>)paramBuffer {

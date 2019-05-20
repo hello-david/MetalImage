@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MetalImageConvolutionFilter : MetalImageFilter
 @property (readonly, nonatomic) NSUInteger kernelHeight;
 @property (readonly, nonatomic) NSUInteger kernelWidth;
-@property (assign, nonatomic) float bias;
 
 + (instancetype _Nullable)filterWithKernelWidth:(NSUInteger)kernelWidth
                                    kernelHeight:(NSUInteger)kernelHeight
