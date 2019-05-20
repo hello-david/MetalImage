@@ -88,7 +88,6 @@
 
 - (void)dealloc {
     [self stopCapture];
-    [[MetalImageDevice shared].textureCache freeAllTexture];
 }
 
 - (void)startCapture {
