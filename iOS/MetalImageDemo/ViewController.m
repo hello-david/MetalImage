@@ -165,22 +165,28 @@
                 usePicture = YES;
                 
                 // 测试效果是否一致
-//                id<MTLTexture> texutre = [[MetalImageDevice shared].textureLoader newTextureWithCGImage:[[UIImage imageNamed:@"1.jpg"] CGImage] options:NULL error:nil];
-//                MTLTextureDescriptor *textureDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:texutre.pixelFormat
-//                                                                                                       width:texutre.width
-//                                                                                                      height:texutre.height
-//                                                                                                   mipmapped:NO];
-//                textureDesc.usage = MTLTextureUsageShaderRead | MTLTextureUsageShaderWrite | MTLTextureUsageRenderTarget;
-//                id<MTLTexture> desTexture = [[MetalImageDevice shared].device newTextureWithDescriptor:textureDesc];
-//                MPSImageConvolution *convolition = [[MPSImageConvolution alloc] initWithDevice:[MetalImageDevice shared].device
-//                                                                                   kernelWidth:3
-//                                                                                  kernelHeight:3 weights:weights];
-//
-//                id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
-//                [commandBuffer enqueue];
-//                [convolition encodeToCommandBuffer:commandBuffer sourceTexture:texutre destinationTexture:desTexture];
-//                [commandBuffer commit];
-//                [commandBuffer waitUntilCompleted];
+                id<MTLTexture> texutre = [[MetalImageDevice shared].textureLoader newTextureWithCGImage:[[UIImage imageNamed:@"1.jpg"] CGImage]
+                                                                                                options:NULL
+                                                                                                  error:nil];
+                
+                MTLTextureDescriptor *textureDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:texutre.pixelFormat
+                                                                                                       width:texutre.width
+                                                                                                      height:texutre.height
+                                                                                                   mipmapped:NO];
+                textureDesc.usage = MTLTextureUsageShaderRead | MTLTextureUsageShaderWrite | MTLTextureUsageRenderTarget;
+                id<MTLTexture> desTexture = [[MetalImageDevice shared].device newTextureWithDescriptor:textureDesc];
+                
+                MPSImageConvolution *convolition = [[MPSImageConvolution alloc] initWithDevice:[MetalImageDevice shared].device
+                                                                                   kernelWidth:3
+                                                                                  kernelHeight:3
+                                                                                       weights:weights];
+                
+                id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
+                [commandBuffer enqueue];
+                [convolition encodeToCommandBuffer:commandBuffer sourceTexture:texutre destinationTexture:desTexture];
+                [commandBuffer commit];
+                [commandBuffer waitUntilCompleted];
+                NSLog(@"");
                 break;
             }
             default:
