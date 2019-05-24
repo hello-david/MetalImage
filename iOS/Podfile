@@ -6,5 +6,5 @@ target 'MetalImageDemo' do
   # use_frameworks!
 
   # Pods for MetalImageDemo
-  pod 'MetalImage', :path => '../MetalImage.podspec'
+  pod 'MetalImage', :path => '../MetalImage.podspec', :subspecs => ['Core', 'ExtensionFilter']
 end

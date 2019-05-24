@@ -1,7 +1,4 @@
 PODS:
-  - MetalImage (0.0.1):
-    - MetalImage/Core (= 0.0.1)
-    - MetalImage/ExtensionFilter (= 0.0.1)
   - MetalImage/Core (0.0.1):
     - MetalImage/Core/Basic (= 0.0.1)
     - MetalImage/Core/Filter (= 0.0.1)
@@ -11,18 +8,20 @@ PODS:
   - MetalImage/Core/Filter (0.0.1)
   - MetalImage/Core/Source (0.0.1)
   - MetalImage/Core/Target (0.0.1)
-  - MetalImage/ExtensionFilter (0.0.1)
+  - MetalImage/ExtensionFilter (0.0.1):
+    - MetalImage/Core
 
 DEPENDENCIES:
-  - MetalImage (from `../MetalImage.podspec`)
+  - MetalImage/Core (from `../MetalImage.podspec`)
+  - MetalImage/ExtensionFilter (from `../MetalImage.podspec`)
 
 EXTERNAL SOURCES:
   MetalImage:
     :path: "../MetalImage.podspec"
 
 SPEC CHECKSUMS:
-  MetalImage: 2081ccf69172d25d071d1d872988d3886711f873
+  MetalImage: e18bd9f599560e47a6334042c1a2186682cde4c0
 
-PODFILE CHECKSUM: c898ed1ff85fabf8bfc9e6d1f63600d14abb8213
+PODFILE CHECKSUM: 2e3614f9f326ad839dbb756867fc16434af1d943
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.0

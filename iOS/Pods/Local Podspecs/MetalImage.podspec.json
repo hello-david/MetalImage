@@ -2,23 +2,25 @@
   "name": "MetalImage",
   "version": "0.0.1",
   "summary": "A short description of MetalImage.",
-  "description": "MTGPUMetal 为 iOS 平台上一个简单的Metal滤镜处理框架",
+  "description": "MetalImage 为 iOS 平台上一个简单的Metal滤镜处理框架",
   "homepage": "https://github.com/hello-david/MetalImage.git",
   "license": {
     "type": "Copyright",
     "text": "      © 2008-2018 David.Dai. All rights reserved.\n"
   },
   "authors": {
-    "David": "hello.david.me@gmail.com"
+    "david.dai": "hello.david.me@gmail.com"
   },
   "platforms": {
     "ios": "9.0"
   },
   "source": {
-    "git": "",
+    "git": "https://github.com/hello-david/MetalImage.git",
     "tag": "0.0.1"
   },
-  "source_files": "MetalImage/MetalImage.h",
+  "public_header_files": "MetalImage/MetalImage.h",
+  "default_subspecs": "Core",
+  "requires_arc": true,
   "subspecs": [
     {
       "name": "Core",
@@ -61,8 +63,10 @@
       "name": "ExtensionFilter",
       "public_header_files": "MetalImage/ExtensionFilter/**/*.{h}",
       "source_files": "MetalImage/ExtensionFilter/**/*.{h,m,cpp,mm}",
-      "pod_target_xcconfig": {
-        "GCC_PREPROCESSOR_DEFINITIONS": "ExtensionFilter_Pod_Enable=1"
+      "dependencies": {
+        "MetalImage/Core": [
+
+        ]
       }
     }
   ]

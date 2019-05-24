@@ -8,28 +8,14 @@
 
 Pod::Spec.new do |s|
 
-  # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  #
-  #  These will help people to find your library, and whilst it
-  #  can feel like a chore to fill in it's definitely to your advantage. The
-  #  summary should be tweet-length, and the description more in depth.
-  #
-
   s.name         = "MetalImage"
   s.version      = "0.0.1"
   s.summary      = "A short description of MetalImage."
-
-  # This description is used to generate tags and improve search results.
-  #   * Think: What does it do? Why did you write it? What is the focus?
-  #   * Try to keep it short, snappy and to the point.
-  #   * Write the description between the DESC delimiters below.
-  #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
-    MTGPUMetal 为 iOS 平台上一个简单的Metal滤镜处理框架
+    MetalImage 为 iOS 平台上一个简单的Metal滤镜处理框架
                    DESC
 
   s.homepage     = "https://github.com/hello-david/MetalImage.git"
-
   s.license      = {
     :type => 'Copyright',
     :text => <<-LICENSE
@@ -37,49 +23,49 @@ Pod::Spec.new do |s|
     LICENSE
   }
 
-  s.author       = { "David" => "hello.david.me@gmail.com" }
-
+  s.author       = { "david.dai" => "hello.david.me@gmail.com" }
   s.platform     = :ios, "9.0"
+  s.source       = { :git => "https://github.com/hello-david/MetalImage.git", :tag => "#{s.version}" }
 
-  s.source       = { :git => "", :tag => "#{s.version}" }
-
-  s.source_files = 'MetalImage/MetalImage.h'
+  s.public_header_files = 'MetalImage/MetalImage.h'
+  s.default_subspec = 'Core'
   
-  # ―――--------- MetalImage Core ―――---------
-  s.subspec 'Core' do |sp|
-      sp.subspec 'Basic' do |spp|
-          spp.public_header_files = 'MetalImage/Basic/**/*.{h}'
-          spp.source_files = 'MetalImage/Basic/**/*.{h,m,cpp,mm}'
+  # Core
+  s.subspec 'Core' do |core|
+      core.subspec 'Basic' do |basic|
+          basic.public_header_files = 'MetalImage/Basic/**/*.{h}'
+          basic.source_files = 'MetalImage/Basic/**/*.{h,m,cpp,mm}'
       end
       
-      sp.subspec 'Source' do |spp|
-          spp.public_header_files = 'MetalImage/Source/**/*.{h}'
-          spp.source_files = 'MetalImage/Source/**/*.{h,m,cpp,mm}'
+      core.subspec 'Source' do |source|
+          source.public_header_files = 'MetalImage/Source/**/*.{h}'
+          source.source_files = 'MetalImage/Source/**/*.{h,m,cpp,mm}'
       end
       
-      sp.subspec 'Filter' do |spp|
-          spp.public_header_files = 'MetalImage/Filter/**/*.{h}'
-          spp.source_files = 'MetalImage/Filter/**/*.{h,m,cpp,mm}'
+      core.subspec 'Filter' do |filter|
+          filter.public_header_files = 'MetalImage/Filter/**/*.{h}'
+          filter.source_files = 'MetalImage/Filter/**/*.{h,m,cpp,mm}'
       end
       
-      sp.subspec 'Target' do |spp|
-          spp.public_header_files = 'MetalImage/Target/**/*.{h}'
-          spp.source_files = 'MetalImage/Target/**/*.{h,m,cpp,mm}'
+      core.subspec 'Target' do |target|
+          target.public_header_files = 'MetalImage/Target/**/*.{h}'
+          target.source_files = 'MetalImage/Target/**/*.{h,m,cpp,mm}'
       end
       
-      sp.source_files = 'MetalImage/MetalImage.h'
-      
-      sp.resource_bundles = {
+      core.source_files = 'MetalImage/MetalImage.h'
+      core.resource_bundles = {
           'MetalImageBundle' => ['MetalImage/Library/*.metal']
       }
       
-      sp.frameworks = "Metal", "MetalKit", "CoreVideo", "AVFoundation"
+      core.frameworks = "Metal", "MetalKit", "CoreVideo", "AVFoundation"
   end
   
-  # ―――--------- 滤镜拓展 ―――---------
-  s.subspec 'ExtensionFilter' do |sp|
-      sp.public_header_files = 'MetalImage/ExtensionFilter/**/*.{h}'
-      sp.source_files = 'MetalImage/ExtensionFilter/**/*.{h,m,cpp,mm}'
-      sp.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'ExtensionFilter_Pod_Enable=1'}
+  # 滤镜拓展
+  s.subspec 'ExtensionFilter' do |extensionFilter|
+      extensionFilter.public_header_files = 'MetalImage/ExtensionFilter/**/*.{h}'
+      extensionFilter.source_files = 'MetalImage/ExtensionFilter/**/*.{h,m,cpp,mm}'
+      extensionFilter.dependency 'MetalImage/Core'
   end
+  
+  s.requires_arc = true
 end

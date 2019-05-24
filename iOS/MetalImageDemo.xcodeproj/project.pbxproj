@@ -209,16 +209,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/MetalImage/MetalImageBundle.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MetalImageBundle.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
