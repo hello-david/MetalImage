@@ -54,7 +54,6 @@
     if (self.usePicture) {
         [self.picture addTarget:(id<MetalImageTarget>)self.filterModel.filter];
         [self.filterModel.filter addTarget:self.firstFrameView];
-        [self.picture processImage];
     } else {
         [self.camera addTarget:(id<MetalImageTarget>)self.filterModel.filter];
         [self.filterModel.filter addTarget:self.firstFrameView];
@@ -110,6 +109,11 @@
     if (self.usePicture) {
         [self.picture processImage];
     }
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self.picture processImage];
 }
 
 - (MetalImageCamera *)camera {

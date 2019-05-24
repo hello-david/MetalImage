@@ -41,16 +41,18 @@
     _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:@"oneInputVertex"
                                                                       fragment:@"passthroughFragment"];
     _renderTarget.fillMode = MetalImageContentModeScaleAspectFill;
-    self.renderTarget.size = CGSizeMake(self.metalLayer.frame.size.width * [UIScreen mainScreen].scale,
-                                        self.metalLayer.frame.size.height * [UIScreen mainScreen].scale);
+    _renderTarget.size = CGSizeMake(self.metalLayer.frame.size.width * [UIScreen mainScreen].scale,
+                                    self.metalLayer.frame.size.height * [UIScreen mainScreen].scale);
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.metalLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-    if (!CGSizeEqualToSize(self.renderTarget.size, self.metalLayer.frame.size)) {
-        self.renderTarget.size = CGSizeMake(self.metalLayer.frame.size.width * [UIScreen mainScreen].scale,
-                                            self.metalLayer.frame.size.height * [UIScreen mainScreen].scale);
+    CGSize desSize = CGSizeMake(self.metalLayer.frame.size.width * [UIScreen mainScreen].scale,
+                                self.metalLayer.frame.size.height * [UIScreen mainScreen].scale);
+    
+    if (!CGSizeEqualToSize(self.renderTarget.size, desSize)) {
+        self.renderTarget.size = desSize;
     }
 }
 
