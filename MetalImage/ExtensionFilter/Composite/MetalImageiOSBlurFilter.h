@@ -11,13 +11,10 @@
 #import "MetalImageGaussianBlurFilter.h"
 
 @interface MetalImageiOSBlurFilter : NSObject <MetalImageTarget, MetalImageSource, MetalImageRender>
-@property (nonatomic, assign) float blurRadiusInPixels;
-@property (nonatomic, assign) float texelSpacingMultiplier;
-@property (nonatomic, assign) float saturation;
-@property (nonatomic, assign) float luminance;
+@property (nonatomic, assign) float blurRadiusInPixels;// 高斯模糊半径，默认8.0，当为0.0时无模糊效果
+@property (nonatomic, assign) float texelSpacingMultiplier;// 采样步长，默认1.0，当为0.0时无模糊效果
+@property (nonatomic, assign) float saturation;// 饱和度，默认0.0不调整，建议[-1.0, 1.0]
+@property (nonatomic, assign) float luminance;// 亮度，默认0.0不调整，建议[-1.0, 1.0]
 
-/**
- *  使用该接口实现完整毛玻璃渲染
- */
 - (void)renderToResource:(MetalImageTextureResource *)resource;
 @end

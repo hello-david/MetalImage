@@ -183,31 +183,29 @@
         return;
     }
     
-    [[self class] texutreDataProviderProcess:texture process:^(CGDataProviderRef provider, CGSize imageSize, NSUInteger bytesPerRow) {
-        CFDataRef data = CGDataProviderCopyData(provider);
+    [[self class] texutreDataProviderProcess:texture process:^(CFDataRef imageData, CGSize imageSize, NSUInteger bytesPerRow) {
         [self.metalTexture replaceRegion:MTLRegionMake2D(0, 0, imageSize.width, imageSize.height)
                              mipmapLevel:0
-                               withBytes:CFDataGetBytePtr(data)
+                               withBytes:CFDataGetBytePtr(imageData)
                              bytesPerRow:4 * imageSize.width];
-        CFRelease(data);
     }];
 }
 
-static void MetalImageReleaseDataCallback(void *info, const void *data, size_t size) {
-    free((void *)data);
-}
-
 + (UIImage *)imageFromMTLTexture:(id<MTLTexture>)texture {
-    NSAssert([texture pixelFormat] == MTLPixelFormatBGRA8Unorm, @"Pixel format of texture must be MTLPixelFormatBGRA8Unorm to create UIImage");
+    CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
+    if ([texture pixelFormat] == MTLPixelFormatBGRA8Unorm) {
+        bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;// BGRA
+    } else {
+        bitmapInfo = kCGBitmapByteOrder32Big | kCGImageAlphaNoneSkipFirst;//ARGB
+    }
     
     __block UIImage *image = nil;
-    [[self class] texutreDataProviderProcess:texture process:^(CGDataProviderRef provider, CGSize imageSize, NSUInteger bytesPerRow) {
+    [[self class] texutreDataProviderProcess:texture process:^(CFDataRef imageData, CGSize imageSize, NSUInteger bytesPerRow) {
+        CGDataProviderRef provider = CGDataProviderCreateWithCFData(imageData);
+        
         int bitsPerComponent = 8;
         int bitsPerPixel = 32;
         CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-        CGBitmapInfo bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;// BGRA
-//        kCGBitmapByteOrder32Big | kCGImageAlphaNoneSkipFirst//ARGB
-        
         CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
         CGImageRef imageRef = CGImageCreate(imageSize.width,
                                             imageSize.height,
@@ -221,8 +219,9 @@ static void MetalImageReleaseDataCallback(void *info, const void *data, size_t s
                                             false,
                                             renderingIntent);
         
-        image = [UIImage imageWithCGImage:imageRef scale:0.0 orientation:UIImageOrientationDownMirrored];
+        image = [UIImage imageWithCGImage:imageRef scale:0.0 orientation:UIImageOrientationUp];
         
+        CFRelease(provider);
         CFRelease(colorSpaceRef);
         CFRelease(imageRef);
     }];
@@ -261,14 +260,11 @@ static void MetalImageReleaseDataCallback(void *info, const void *data, size_t s
         return ;
     }
     
-    NSAssert([texture pixelFormat] == MTLPixelFormatBGRA8Unorm, @"Pixel format of texture must be MTLPixelFormatBGRA8Unorm to create Pixel");
-    
     __block CVPixelBufferRef pixelBuffer = NULL;
-    [[self class] texutreDataProviderProcess:texture process:^(CGDataProviderRef provider, CGSize imageSize, NSUInteger bytesPerRow) {
-        CFDataRef data = CGDataProviderCopyData(provider);
+    [[self class] texutreDataProviderProcess:texture process:^(CFDataRef imageData, CGSize imageSize, NSUInteger bytesPerRow) {
         CVReturn ret = CVPixelBufferCreateWithBytes(kCFAllocatorDefault, imageSize.width, imageSize.height,
                                                     kCVPixelFormatType_32BGRA,
-                                                    (void *)CFDataGetBytePtr(data),
+                                                    (void *)CFDataGetBytePtr(imageData),
                                                     bytesPerRow, nil, nil, nil,
                                                     &pixelBuffer);
         if (ret != 0) {
@@ -281,26 +277,25 @@ static void MetalImageReleaseDataCallback(void *info, const void *data, size_t s
         }
         
         CVPixelBufferRelease(pixelBuffer);
-        CFRelease(data);
     }];
 }
 
-+ (void)texutreDataProviderProcess:(id<MTLTexture>)texture process:(void(^)(CGDataProviderRef provider, CGSize imageSize, NSUInteger bytesPerRow))process {
++ (void)texutreDataProviderProcess:(id<MTLTexture>)texture process:(void(^)(CFDataRef imageData, CGSize imageSize, NSUInteger bytesPerRow))process {
     @autoreleasepool {
         CGSize imageSize = CGSizeMake([texture width], [texture height]);
         NSUInteger bytesPerRow = imageSize.width * 4;
         size_t imageByteCount = imageSize.width * imageSize.height * 4;
         void *imageBytes = malloc(imageByteCount);
         MTLRegion region = MTLRegionMake2D(0, 0, imageSize.width, imageSize.height);
-        
+    
         [texture getBytes:imageBytes bytesPerRow:bytesPerRow fromRegion:region mipmapLevel:0];
-        CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, imageBytes, imageByteCount, MetalImageReleaseDataCallback);
+        CFDataRef imageData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, imageBytes, imageByteCount,kCFAllocatorDefault);
         
         if (process) {
-            process(provider, imageSize, bytesPerRow);
+            process(imageData, imageSize, bytesPerRow);
         }
         
-        CFRelease(provider);
+        CFRelease(imageData);
     }
 }
 @end
