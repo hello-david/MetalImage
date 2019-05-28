@@ -29,7 +29,7 @@
     if (!_dataSource) {
         _dataSource = @[@[@"相机/图片显示", @"录制"],
                         @[@"饱和度", @"对比度", @"亮度", @"色调", @"锐化", @"高斯模糊", @"毛玻璃", @"边缘检测"],
-                        @[@""]];
+                        @[@"边缘检测", @"高斯模糊"]];
     }
     return _dataSource;
 }
@@ -147,7 +147,7 @@
             case 6: {
                 filter = [[MetalImageiOSBlurFilter alloc] init];
                 effectPropertyName = @[@"blurRadiusInPixels", @"saturation", @"luminance"];
-                FileterNumericalValue value1 = {0.0, 15.0, 4.0};
+                FileterNumericalValue value1 = {0.0, 16.0, 8.0};
                 FileterNumericalValue value2 = {-1.0, 1.0, 0.0};
                 FileterNumericalValue value3 = {-1.0, 1.0, 0.0};
                 values = @[[NSValue value:&value1 withObjCType:@encode(FileterNumericalValue)],
@@ -163,30 +163,6 @@
                 };
                 filter = [MetalImageConvolutionFilter filterWithKernelWidth:3 kernelHeight:3 weights:weights];
                 usePicture = YES;
-                
-                // 测试效果是否一致
-                id<MTLTexture> texutre = [[MetalImageDevice shared].textureLoader newTextureWithCGImage:[[UIImage imageNamed:@"1.jpg"] CGImage]
-                                                                                                options:NULL
-                                                                                                  error:nil];
-                
-                MTLTextureDescriptor *textureDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:texutre.pixelFormat
-                                                                                                       width:texutre.width
-                                                                                                      height:texutre.height
-                                                                                                   mipmapped:NO];
-                textureDesc.usage = MTLTextureUsageShaderRead | MTLTextureUsageShaderWrite | MTLTextureUsageRenderTarget;
-                id<MTLTexture> desTexture = [[MetalImageDevice shared].device newTextureWithDescriptor:textureDesc];
-                
-                MPSImageConvolution *convolition = [[MPSImageConvolution alloc] initWithDevice:[MetalImageDevice shared].device
-                                                                                   kernelWidth:3
-                                                                                  kernelHeight:3
-                                                                                       weights:weights];
-                
-                id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
-                [commandBuffer enqueue];
-                [convolition encodeToCommandBuffer:commandBuffer sourceTexture:texutre destinationTexture:desTexture];
-                [commandBuffer commit];
-                [commandBuffer waitUntilCompleted];
-                NSLog(@"");
                 break;
             }
             default:
@@ -203,7 +179,8 @@
     
     // MPS滤镜
     if (section == 2) {
-        
+        MPSFilterViewController *filterVC = [MPSFilterViewController filterWithType:index];
+        [self.navigationController pushViewController:filterVC animated:YES];
     }
 }
 

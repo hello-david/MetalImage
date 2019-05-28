@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MPSFilterViewController">
             <connections>
+                <outlet property="imageView" destination="Tm6-xK-ZKC" id="AHJ-OH-yFf"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -20,13 +21,18 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tm6-xK-ZKC" customClass="MetalImageView">
-                    <rect key="frame" x="20" y="44" width="374" height="818"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tm6-xK-ZKC" customClass="UIImageView">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Tm6-xK-ZKC" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="ThQ-VX-mdt"/>
+                <constraint firstItem="Tm6-xK-ZKC" firstAttribute="bottom" secondItem="Q5M-cg-NOt" secondAttribute="bottom" id="hsG-UR-Olp"/>
+                <constraint firstItem="Tm6-xK-ZKC" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="ijk-9l-SaT"/>
+                <constraint firstItem="Tm6-xK-ZKC" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="vGh-u7-ueN"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="131.8840579710145" y="124.55357142857142"/>
         </view>

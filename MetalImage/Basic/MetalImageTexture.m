@@ -193,9 +193,10 @@
 
 + (UIImage *)imageFromMTLTexture:(id<MTLTexture>)texture {
     CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
-    if ([texture pixelFormat] == MTLPixelFormatBGRA8Unorm) {
+    MTLPixelFormat pixelFormat = texture.pixelFormat;
+    if (pixelFormat == MTLPixelFormatBGRA8Unorm || pixelFormat == MTLPixelFormatBGRA8Unorm_sRGB) {
         bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;// BGRA
-    } else {
+    } else if (pixelFormat == MTLPixelFormatRGBA8Unorm || pixelFormat == MTLPixelFormatRGBA8Unorm_sRGB){
         bitmapInfo = kCGBitmapByteOrder32Big | kCGImageAlphaNoneSkipFirst;//ARGB
     }
     

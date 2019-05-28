@@ -11,7 +11,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, MPSFilterType) {
+    MPSFilterTypeEdgeDetection,
+    MPSFilterTypeGaussianBlur
+};
+
 @interface MPSFilterViewController : UIViewController
+
++ (instancetype)filterWithType:(MPSFilterType)type;
 
 @end
 
