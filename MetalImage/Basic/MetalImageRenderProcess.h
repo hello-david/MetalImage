@@ -15,11 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^MetalImageRenderProcessBlock)(id<MTLRenderCommandEncoder> renderEncoder);
 
 @interface MetalImageRenderProcess : NSObject
-@property (nonatomic, readonly) MetalImageTexture *texture;
-@property (nonatomic, readonly) MetalImageTexture *renderingTexture;
 @property (nonatomic, assign) CGSize targetSize;
-@property (nonatomic, strong) id<MTLBuffer> positionBuffer;
-@property (nonatomic, strong) id<MTLBuffer> textureCoorBuffer;
+@property (nonatomic, readonly) MetalImageTexture *texture;       // 当前纹理
+@property (nonatomic, readonly) MetalImageTexture *targetTexture; // 渲染结果纹理
+@property (nonatomic, readonly) id<MTLBuffer> positionBuffer;     // 整个渲染空间
+@property (nonatomic, readonly) id<MTLBuffer> textureCoorBuffer;  // 整张图片
 
 - (instancetype)initWithTexture:(MetalImageTexture *)texture;
 

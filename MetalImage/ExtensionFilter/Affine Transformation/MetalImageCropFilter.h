@@ -7,7 +7,7 @@
 
 #import "MetalImageFilter.h"
 @interface MetalImageCropFilter : MetalImageFilter
-@property (assign, nonatomic) CGRect cropRegion;
+@property (nonatomic, assign) CGRect cropRegion;
 
 - (instancetype)initWithCropRegin:(CGRect)cropRegion;
 @end

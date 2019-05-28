@@ -8,7 +8,7 @@
 #import "MetalImageCropFilter.h"
 
 @interface MetalImageCropFilter()
-@property (nonatomic, strong) id<MTLBuffer> textureCoord;
+@property (nonatomic, strong) id<MTLBuffer> cropTextureCoord;
 @end
 
 @implementation MetalImageCropFilter
@@ -28,7 +28,7 @@
         return;
     }
     _cropRegion = cropRegion;
-    _textureCoord = nil;
+    _cropTextureCoord = nil;
 }
 
 - (void)receive:(MetalImageResource *)resource withTime:(CMTime)time {
@@ -51,7 +51,7 @@
     [renderEncoder pushDebugGroup:@"Crop Draw"];
 #endif
     
-    if (!_textureCoord) {
+    if (!_cropTextureCoord) {
         float x = _cropRegion.origin.x / resource.texture.width;
         float y = _cropRegion.origin.y / resource.texture.height;
         float width = _cropRegion.size.width / resource.texture.width;
@@ -77,12 +77,12 @@
         textureCoor.bottomRightX = rightX;
         textureCoor.bottomRightY = bottomY;
         
-        _textureCoord = [[MetalImageDevice shared].device newBufferWithBytes:&textureCoor length:sizeof(textureCoor) options:0];
+        _cropTextureCoord = [[MetalImageDevice shared].device newBufferWithBytes:&textureCoor length:sizeof(textureCoor) options:0];
     }
     
     [renderEncoder setRenderPipelineState:self.target.pielineState];
     [renderEncoder setVertexBuffer:resource.renderProcess.positionBuffer offset:0 atIndex:0];
-    [renderEncoder setVertexBuffer:_textureCoord offset:0 atIndex:1];
+    [renderEncoder setVertexBuffer:_cropTextureCoord offset:0 atIndex:1];
     [renderEncoder setFragmentTexture:resource.texture.metalTexture atIndex:0];
     [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];
     

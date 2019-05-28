@@ -13,7 +13,9 @@
 @property (nonatomic, strong) id<MTLRenderCommandEncoder> renderEncoder;
 
 @property (nonatomic, strong) MetalImageTexture *texture;
-@property (nonatomic, strong) MetalImageTexture *renderingTexture;
+@property (nonatomic, strong) MetalImageTexture *targetTexture;
+@property (nonatomic, strong) id<MTLBuffer> positionBuffer;
+@property (nonatomic, strong) id<MTLBuffer> textureCoorBuffer;
 @end
 
 @implementation MetalImageRenderProcess
@@ -36,12 +38,12 @@
             processing(self.renderEncoder);
         }
         
-        _renderingTexture.orientation = _texture.orientation;
+        _targetTexture.orientation = _texture.orientation;
         [_renderEncoder endEncoding];
-        [self swapTexture:_renderingTexture];
+        [self swapTexture:_targetTexture];
         
         _renderEncoder = nil;
-        _renderingTexture = nil;
+        _targetTexture = nil;
     }
 }
 
@@ -59,7 +61,7 @@
     !waitUntilCompleted ? : [_renderCommandBuffer waitUntilCompleted];
     _renderEncoder = nil;
     _renderCommandBuffer = nil;
-    _renderingTexture = nil;
+    _targetTexture = nil;
 }
 
 - (void)swapTexture:(MetalImageTexture *)texture {
@@ -97,27 +99,27 @@
 
 - (id<MTLRenderCommandEncoder>)renderEncoder {
     if (!_renderEncoder) {
-        self.renderPassDecriptor.colorAttachments[0].texture = self.renderingTexture.metalTexture;
+        self.renderPassDecriptor.colorAttachments[0].texture = self.targetTexture.metalTexture;
         _renderEncoder = [self.renderCommandBuffer renderCommandEncoderWithDescriptor:self.renderPassDecriptor];
     }
     return _renderEncoder;
 }
 
-- (MetalImageTexture *)renderingTexture {
-    if (!_renderingTexture) {
+- (MetalImageTexture *)targetTexture {
+    if (!_targetTexture) {
         CGSize targetSize = CGSizeEqualToSize(_targetSize, CGSizeZero) ? _texture.size : _targetSize;
-        _renderingTexture = [[MetalImageDevice shared].textureCache fetchTexture:targetSize
-                                                                     pixelFormat:_texture.metalTexture.pixelFormat];
-        _renderingTexture.orientation = _texture.orientation;
+        _targetTexture = [[MetalImageDevice shared].textureCache fetchTexture:targetSize
+                                                                  pixelFormat:_texture.metalTexture.pixelFormat];
+        _targetTexture.orientation = _texture.orientation;
     }
-    return _renderingTexture;
+    return _targetTexture;
 }
 
 - (id<MTLBuffer>)positionBuffer {
     if (!_positionBuffer) {
-        MetalImageCoordinate position = [self.texture texturePositionToSize:self.targetSize contentMode:MetalImageContentModeScaleToFill];
+        MetalImageCoordinate position = [self.texture texturePositionToSize:self.texture.size contentMode:MetalImageContentModeScaleToFill];
         _positionBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&position length:sizeof(position) options:0];
-        _positionBuffer.label = @"Internal Position";
+        _positionBuffer.label = @"Default Position";
     }
     return _positionBuffer;
 }
@@ -126,7 +128,7 @@
     if (!_textureCoorBuffer) {
         MetalImageCoordinate textureCoor = [self.texture textureCoordinatesToOrientation:self.texture.orientation];
         _textureCoorBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&textureCoor length:sizeof(textureCoor) options:0];
-        _textureCoorBuffer.label = @"Internal Texture Coordinates";
+        _textureCoorBuffer.label = @"Default Texture Coordinates";
     }
     return _textureCoorBuffer;
 }
