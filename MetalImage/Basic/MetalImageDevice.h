@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) MTLPixelFormat pixelFormat;
 @property (nonatomic, strong) dispatch_queue_t concurrentQueue;
 @property (nonatomic, strong) MetalImageTextureCache *textureCache;
-@property (nonatomic, strong) MTKTextureLoader *textureLoader API_AVAILABLE(ios(9.0));
+@property (nonatomic, strong) MTKTextureLoader *textureLoader;
 
 + (instancetype)shared;
 @end

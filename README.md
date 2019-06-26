@@ -5,8 +5,6 @@ MetalImage是基于Metal框架实现的一套图像滤镜链处理框架。
 ### 功能
 * 目前实现主要的框架(Camera/Picture/MovieWriter/Filter/View等)和基本的滤镜
 
-* 8.0 API还未测试
-
 ### 使用说明
 
 1.相机画面分发到视图上

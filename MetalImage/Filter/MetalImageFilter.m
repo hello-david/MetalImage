@@ -51,7 +51,7 @@
         [textureResource.renderProcess commitRender];
         return;
     }
-    [self send:weakResource withTime:time];
+    [self send:textureResource withTime:time];
 }
 
 #pragma mark - Render Process

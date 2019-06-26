@@ -16,8 +16,8 @@
 #define kMetalImageMovieWriterCancelError [NSError errorWithDomain:@"MoiveWriterWriterError" code:-9001 userInfo:@{@"message" : @"WriterCanceled"}]
 
 NS_ASSUME_NONNULL_BEGIN
-typedef void(^_Nullable MetalImageMovieWriterCompleteHandlle)(NSError *_Nullable error);
-typedef void(^_Nullable MetalImageMovieWriterStartHandlle)(NSError *_Nullable error);
+typedef void(^_Nullable MetalImageMovieWriterCompleteHandle)(NSError *_Nullable error);
+typedef void(^_Nullable MetalImageMovieWriterStartHandle)(NSError *_Nullable error);
 
 @interface MetalImageMovieWriter : NSObject <MetalImageTarget>
 @property (nonatomic, assign) MetalImageContentMode fillMode;
@@ -26,8 +26,8 @@ typedef void(^_Nullable MetalImageMovieWriterStartHandlle)(NSError *_Nullable er
 @property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, assign) BOOL haveAudioTrack;
 
-@property (nonatomic, copy) MetalImageMovieWriterCompleteHandlle completeHandle;
-@property (nonatomic, copy) MetalImageMovieWriterStartHandlle startHandle;
+@property (nonatomic, copy) MetalImageMovieWriterCompleteHandle completeHandle;
+@property (nonatomic, copy) MetalImageMovieWriterStartHandle startHandle;
 
 @property (nonatomic, assign, readonly) AVAssetWriterStatus status;
 @property (nonatomic, strong, readonly) NSURL *storageUrl;

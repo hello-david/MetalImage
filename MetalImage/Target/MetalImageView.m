@@ -37,7 +37,7 @@
     _metalLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     [self.layer addSublayer:_metalLayer];
     
-    _displayQueue = dispatch_queue_create("com.MetalImage.DisplayView", NULL);
+    _displayQueue = dispatch_queue_create("com.MetalImage.DisplayView", DISPATCH_QUEUE_SERIAL);
     _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:@"oneInputVertex"
                                                                       fragment:@"passthroughFragment"];
     _renderTarget.fillMode = MetalImageContentModeScaleAspectFill;
