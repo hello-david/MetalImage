@@ -13,7 +13,6 @@ typedef struct MetalImageSharpenFilterArg {
 } MetalImageSharpenFilterArg;
 
 @interface MetalImageSharpenFilter()
-@property (nonatomic, strong) id<MTLBuffer> sharpenBuffer;
 @property (nonatomic, assign) MetalImageSharpenFilterArg sharpenArg;
 @end
 
@@ -27,17 +26,9 @@ typedef struct MetalImageSharpenFilterArg {
     return self;
 }
 
-- (id<MTLBuffer>)sharpenBuffer {
-    if (!_sharpenBuffer) {
-        _sharpenBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&_sharpenArg length:sizeof(_sharpenArg) options:0];
-    }
-    return _sharpenBuffer;
-}
-
 - (void)setSharpness:(float)sharpness {
     _sharpness = sharpness;
     _sharpenArg.sharpenss = sharpness;
-    _sharpenBuffer = nil;
 }
 
 - (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
@@ -45,7 +36,6 @@ typedef struct MetalImageSharpenFilterArg {
     if ((1.0 / resource.renderProcess.targetSize.width != _sharpenArg.imageWidthFactor) || (1.0 / resource.renderProcess.targetSize.height != _sharpenArg.imageHeightFactor)) {
         _sharpenArg.imageWidthFactor = 1.0 / resource.renderProcess.targetSize.width;
         _sharpenArg.imageHeightFactor = 1.0 / resource.renderProcess.targetSize.height;
-        _sharpenBuffer = nil;
     }
     
 #if DEBUG
@@ -56,13 +46,7 @@ typedef struct MetalImageSharpenFilterArg {
     [renderEncoder setRenderPipelineState:self.target.pielineState];
     [renderEncoder setVertexBuffer:resource.renderProcess.positionBuffer offset:0 atIndex:0];
     [renderEncoder setVertexBuffer:resource.renderProcess.textureCoorBuffer offset:0 atIndex:1];
-    
-    if (@available(iOS 8.3, *)) {
-        [renderEncoder setVertexBytes:&_sharpenArg length:sizeof(_sharpenArg) atIndex:2];
-    } else {
-        [renderEncoder setVertexBuffer:self.sharpenBuffer offset:0 atIndex:2];
-    }
-    
+    [renderEncoder setVertexBytes:&_sharpenArg length:sizeof(_sharpenArg) atIndex:2];
     [renderEncoder setFragmentTexture:resource.texture.metalTexture atIndex:0];
     [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];
     

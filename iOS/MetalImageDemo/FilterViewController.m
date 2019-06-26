@@ -113,7 +113,10 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    [self.picture processImage];
+    
+    if (self.usePicture) {
+        [self.picture processImage];
+    }
 }
 
 - (MetalImageCamera *)camera {

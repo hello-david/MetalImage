@@ -18,7 +18,6 @@ typedef struct MetalImageConvolitionParameter {
 @property (assign, nonatomic) NSUInteger kernelHeight;
 @property (assign, nonatomic) NSUInteger kernelWidth;
 @property (nonatomic, assign) CGSize lastSize;
-@property (nonatomic, strong, nullable) id<MTLBuffer> paramBuffer;
 @end
 
 @implementation MetalImageConvolutionFilter
@@ -48,13 +47,6 @@ typedef struct MetalImageConvolitionParameter {
                                    fragment:[[self class] fragmentShaderWithKernelWidth:_kernelWidth kernelHeight:_kernelHeight weights:_kernelWeights]];
     }
     return self;
-}
-
-- (id<MTLBuffer>)paramBuffer {
-    if (!_paramBuffer) {
-        _paramBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&_param length:sizeof(_param) options:0];
-    }
-    return _paramBuffer;
 }
 
 - (void)switchRenderPiplineWithVertex:(NSString *)vertex fragment:(NSString *)fragment {
@@ -99,27 +91,22 @@ typedef struct MetalImageConvolitionParameter {
     if (!CGSizeEqualToSize(_lastSize, targetSize)) {
         _param.texelWidthOffset = 1.0 / targetSize.width;
         _param.texelHeightOffset = 1.0 / targetSize.height;
-        _paramBuffer = nil;
         _lastSize = targetSize;
     }
-    
-    [renderEncoder setRenderPipelineState:self.target.pielineState];
-    [renderEncoder setVertexBuffer:resource.renderProcess.positionBuffer offset:0 atIndex:0];
-    [renderEncoder setVertexBuffer:resource.renderProcess.textureCoorBuffer offset:0 atIndex:1];
-    [renderEncoder setFragmentTexture:resource.texture.metalTexture atIndex:0];
     
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"Convolition Draw"];
 #endif
     
-    if (@available(iOS 8.3, *)) {
-        [renderEncoder setVertexBytes:&_param length:sizeof(_param) atIndex:2];
-    } else {
-        [renderEncoder setVertexBuffer:self.paramBuffer offset:0 atIndex:2];
-    }
+    [renderEncoder setRenderPipelineState:self.target.pielineState];
+    [renderEncoder setVertexBuffer:resource.renderProcess.positionBuffer offset:0 atIndex:0];
+    [renderEncoder setVertexBuffer:resource.renderProcess.textureCoorBuffer offset:0 atIndex:1];
+    [renderEncoder setFragmentTexture:resource.texture.metalTexture atIndex:0];
     
+    [renderEncoder setVertexBytes:&_param length:sizeof(_param) atIndex:2];
     [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];
+    
 #if DEBUG
     [renderEncoder popDebugGroup];
 #endif

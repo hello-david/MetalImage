@@ -34,13 +34,8 @@
 
 - (MetalImageResource *)resource {
     if (!_resource) {
-        id<MTLTexture> texutre = nil;
-        if (@available(iOS 9.0, *)) {
-            NSError *err = nil;
-            texutre = [[MetalImageDevice shared].textureLoader newTextureWithCGImage:[_originImage CGImage] options:NULL error:&err];
-        } else {
-            texutre = [MetalImageTexture textureFromImage:_originImage device:[MetalImageDevice shared].device];
-        }
+        NSError *err = nil;
+        id<MTLTexture> texutre = [[MetalImageDevice shared].textureLoader newTextureWithCGImage:[_originImage CGImage] options:NULL error:&err];
         _resource = [[MetalImageTextureResource alloc] initWithTexture:[[MetalImageTexture alloc] initWithTexture:texutre orientation:MetalImagePortrait willCache:NO]];
     }
     return _resource;

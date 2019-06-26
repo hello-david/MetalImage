@@ -70,11 +70,7 @@ typedef struct {
                                                                                  width:width
                                                                                 height:height
                                                                              mipmapped:NO];
-                if (@available(iOS 9.0, *)) {
-                    textureDesc.usage = MTLTextureUsageShaderRead | MTLTextureUsageShaderWrite | MTLTextureUsageRenderTarget;
-                } else {
-                    // 暂不确定8.0是否texture默认可写
-                }
+                textureDesc.usage = MTLTextureUsageShaderRead | MTLTextureUsageShaderWrite | MTLTextureUsageRenderTarget;
                 [self.textureDescDic setObject:textureDesc forKey:key];
             }
             

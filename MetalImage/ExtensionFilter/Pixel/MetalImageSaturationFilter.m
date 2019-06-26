@@ -6,10 +6,6 @@
 //
 
 #import "MetalImageSaturationFilter.h"
-@interface MetalImageSaturationFilter()
-@property (nonatomic, strong) id<MTLBuffer> saturationBuffer;
-@end
-
 @implementation MetalImageSaturationFilter
 - (instancetype)init {
     if (self = [super initWithVertexFunction:@"oneInputVertex" fragmentFunction:@"saturationFragment" library:[MetalImageDevice shared].library]) {
@@ -18,16 +14,8 @@
     return self;
 }
 
-- (id<MTLBuffer>)saturationBuffer {
-    if (!_saturationBuffer) {
-        _saturationBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&_saturation length:sizeof(_saturation) options:0];
-    }
-    return _saturationBuffer;
-}
-
 - (void)setSaturation:(float)saturation {
     _saturation = saturation;
-    _saturationBuffer = nil;
 }
 
 - (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
@@ -39,11 +27,7 @@
     [renderEncoder setRenderPipelineState:self.target.pielineState];
     [renderEncoder setVertexBuffer:resource.renderProcess.positionBuffer offset:0 atIndex:0];
     [renderEncoder setVertexBuffer:resource.renderProcess.textureCoorBuffer offset:0 atIndex:1];
-    if (@available(iOS 8.3, *)) {
-        [renderEncoder setFragmentBytes:&_saturation length:sizeof(_saturation) atIndex:2];
-    } else {
-        [renderEncoder setFragmentBuffer:self.saturationBuffer offset:0 atIndex:2];
-    }
+    [renderEncoder setFragmentBytes:&_saturation length:sizeof(_saturation) atIndex:2];
     [renderEncoder setFragmentTexture:resource.texture.metalTexture atIndex:0];
     [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];
     

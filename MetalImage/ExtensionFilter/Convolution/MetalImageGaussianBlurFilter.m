@@ -52,9 +52,6 @@ typedef struct MetalImageGaussianParameter {
 @property (nonatomic, assign) float horizontalTexelSpacing;
 @property (nonatomic, assign) CGSize lastSize;
 @property (nonatomic, assign) BOOL texelSpacingMultiplierChanged;
-
-@property (nonatomic, strong) id<MTLBuffer> verticalParamBuffer;
-@property (nonatomic, strong) id<MTLBuffer> horizontalParamBuffer;
 @end
 
 @implementation MetalImageGaussianBlurFilter
@@ -115,8 +112,6 @@ typedef struct MetalImageGaussianParameter {
         self->_horizontalParam.texelWidthOffset = 0.0;
         self->_horizontalParam.texelHeightOffset = self.horizontalTexelSpacing / targetSize.height;
         _lastSize = targetSize;
-        _verticalParamBuffer = nil;
-        _horizontalParamBuffer = nil;
         _texelSpacingMultiplierChanged = NO;
     }
     
@@ -148,44 +143,26 @@ typedef struct MetalImageGaussianParameter {
 }
 
 - (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
-    [renderEncoder setRenderPipelineState:self.target.pielineState];
-    [renderEncoder setVertexBuffer:resource.renderProcess.positionBuffer offset:0 atIndex:0];
-    [renderEncoder setVertexBuffer:resource.renderProcess.textureCoorBuffer offset:0 atIndex:1];
-    [renderEncoder setFragmentTexture:resource.texture.metalTexture atIndex:0];
-
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"Gaussian Draw"];
 #endif
-    if (@available(iOS 8.3, *)) {
-        [renderEncoder setVertexBytes:&_currentParam length:sizeof(_currentParam) atIndex:2];
-        [renderEncoder setFragmentBytes:&_currentParam length:sizeof(_currentParam) atIndex:0];
-    } else {
-        id <MTLBuffer> buffer = ((_currentParam.texelHeightOffset == _verticalParam.texelHeightOffset) && (_currentParam.texelWidthOffset == _verticalParam.texelWidthOffset)) ? self.verticalParamBuffer : self.horizontalParamBuffer;
-        [renderEncoder setVertexBuffer:buffer offset:0 atIndex:2];
-        [renderEncoder setFragmentBuffer:buffer offset:0 atIndex:0];
-    }
+    
+    [renderEncoder setRenderPipelineState:self.target.pielineState];
+    [renderEncoder setVertexBuffer:resource.renderProcess.positionBuffer offset:0 atIndex:0];
+    [renderEncoder setVertexBuffer:resource.renderProcess.textureCoorBuffer offset:0 atIndex:1];
+    [renderEncoder setFragmentTexture:resource.texture.metalTexture atIndex:0];
+    
+    [renderEncoder setVertexBytes:&_currentParam length:sizeof(_currentParam) atIndex:2];
+    [renderEncoder setFragmentBytes:&_currentParam length:sizeof(_currentParam) atIndex:0];
     [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];
+    
 #if DEBUG
     [renderEncoder popDebugGroup];
 #endif
 }
 
 #pragma mark - 属性设置
-- (id<MTLBuffer>)horizontalParamBuffer {
-    if (!_horizontalParamBuffer) {
-        _horizontalParamBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&_horizontalParam length:sizeof(_horizontalParam) options:0];
-    }
-    return _horizontalParamBuffer;
-}
-
-- (id<MTLBuffer>)verticalParamBuffer {
-    if (!_verticalParamBuffer) {
-        _verticalParamBuffer = [[MetalImageDevice shared].device newBufferWithBytes:&_verticalParam length:sizeof(_verticalParam) options:0];
-    }
-    return _verticalParamBuffer;
-}
-
 - (void)setTexelSpacingMultiplier:(float)texelSpacingMultiplier {
     if (_texelSpacingMultiplier != texelSpacingMultiplier) {
         _texelSpacingMultiplierChanged = YES;
