@@ -48,13 +48,15 @@
     
     __weak typeof(self) weakSelf = self;
     dispatch_async([MetalImageDevice shared].concurrentQueue, ^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
+        @synchronized (self) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            
+            [strongSelf send:strongSelf.resource withTime:kCMTimeInvalid];
+            strongSelf.resource = nil;
         }
-        
-        [strongSelf send:strongSelf.resource withTime:kCMTimeInvalid];
-        strongSelf.resource = nil;
     });
 }
 
