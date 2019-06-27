@@ -26,8 +26,5 @@ fragment half4 passthroughFragment(SingleInputVertexIO fragmentInput [[stage_in]
                                    texture2d<half> inputTexture [[texture(0)]]) {
     constexpr sampler quadSampler;
     half4 color = inputTexture.sample(quadSampler, fragmentInput.textureCoordinate);
-    if (color.a < 0.001) {
-        discard_fragment();
-    }
     return color;
 }
