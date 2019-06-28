@@ -6,6 +6,8 @@
 //
 
 #import "MetalImageTarget.h"
+#import "NSBundle+MetalImageBundle.h"
+
 typedef struct {
     CGSize textureSize;
     CGSize targetSize;
@@ -27,7 +29,7 @@ typedef struct {
                                         fragment:(NSString *)fragmentFunctionName
                                      enableBlend:(BOOL)enableBlend {
 
-    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"MetalImageBundle" ofType:@"bundle"];
+    NSString *bundlePath = [NSBundle metalImage_bundleWithBundleName:@"MetalLibrary"].bundlePath;
     NSString *defaultMetalFile = [bundlePath stringByAppendingPathComponent:@"default.metallib"];
     NSError *error = nil;
     id<MTLLibrary>library = [[MetalImageDevice shared].device newLibraryWithFile:defaultMetalFile error:&error];

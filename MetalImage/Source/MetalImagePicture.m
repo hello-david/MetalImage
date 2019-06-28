@@ -85,9 +85,8 @@
         }
         [strongSelf.resource.renderProcess commitRenderWaitUntilFinish:YES];
         
-        UIImage *processedImage = [strongSelf.resource.texture imageFromTexture];
+        !completion ? : completion(strongSelf.resource);
         strongSelf.resource = nil;
-        !completion ? : completion(processedImage);
     });
 }
 

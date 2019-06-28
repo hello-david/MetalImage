@@ -5,6 +5,8 @@
 //  Created by David.Dai on 2018/11/26.
 //
 
+#import "NSBundle+MetalImageBundle.h"
+
 #import "MetalImageDevice.h"
 #import "MetalImageResource.h"
 #import "MetalImageTextureResource.h"

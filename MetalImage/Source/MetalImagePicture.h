@@ -11,7 +11,7 @@
 #import "MetalImageFilter.h"
 
 NS_ASSUME_NONNULL_BEGIN
-typedef void(^MetalImagePictureProcessCompletion)(UIImage * _Nullable processedImage);
+typedef void(^MetalImagePictureProcessCompletion)(MetalImageTextureResource * _Nullable processedTextureResource);
 
 @interface MetalImagePicture : NSObject <MetalImageSource>
 @property (nonatomic, strong) UIImage *originImage;

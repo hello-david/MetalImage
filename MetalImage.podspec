@@ -52,9 +52,14 @@ Pod::Spec.new do |s|
           target.source_files = 'MetalImage/Target/**/*.{h,m,cpp,mm}'
       end
       
+      core.subspec 'Category' do |category|
+          category.public_header_files = 'MetalImage/Category/**/*.{h}'
+          category.source_files = 'MetalImage/Category/**/*.{h,m,cpp,mm}'
+      end
+      
       core.source_files = 'MetalImage/MetalImage.h'
       core.resource_bundles = {
-          'MetalImageBundle' => ['MetalImage/Library/*.metal']
+          'MetalLibrary' => ['MetalImage/Library/*.metal']
       }
       
       core.frameworks = "Metal", "MetalKit", "CoreVideo", "AVFoundation"
