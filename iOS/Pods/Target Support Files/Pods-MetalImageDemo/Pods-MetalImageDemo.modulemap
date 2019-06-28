@@ -1,0 +1,6 @@
+framework module Pods_MetalImageDemo {
+  umbrella header "Pods-MetalImageDemo-umbrella.h"
+
+  export *
+  module * { export * }
+}

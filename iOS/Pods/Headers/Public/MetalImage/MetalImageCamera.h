@@ -1,1 +1,0 @@
-../../../../../MetalImage/Source/MetalImageCamera.h

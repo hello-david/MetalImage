@@ -26,7 +26,7 @@
       "name": "Core",
       "source_files": "MetalImage/MetalImage.h",
       "resource_bundles": {
-        "MetalImageBundle": [
+        "MetalLibrary": [
           "MetalImage/Library/*.metal"
         ]
       },
@@ -56,6 +56,11 @@
           "name": "Target",
           "public_header_files": "MetalImage/Target/**/*.{h}",
           "source_files": "MetalImage/Target/**/*.{h,m,cpp,mm}"
+        },
+        {
+          "name": "Category",
+          "public_header_files": "MetalImage/Category/**/*.{h}",
+          "source_files": "MetalImage/Category/**/*.{h,m,cpp,mm}"
         }
       ]
     },

@@ -1,2 +1,2 @@
 ${PODS_ROOT}/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-resources.sh
-${PODS_CONFIGURATION_BUILD_DIR}/MetalImage/MetalImageBundle.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/MetalImage/MetalLibrary.bundle

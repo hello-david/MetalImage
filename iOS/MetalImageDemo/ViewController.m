@@ -11,6 +11,7 @@
 #import "RecordViewController.h"
 #import "FilterViewController.h"
 #import "MPSFilterViewController.h"
+#import "MetalImageDemo-Swift.h"
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -27,7 +28,7 @@
 
 - (NSArray<NSArray *> *)dataSource {
     if (!_dataSource) {
-        _dataSource = @[@[@"相机/图片显示", @"录制"],
+        _dataSource = @[@[@"相机/图片显示", @"录制", @"性能调试"],
                         @[@"饱和度", @"对比度", @"亮度", @"色调", @"锐化", @"高斯模糊", @"毛玻璃", @"边缘检测"],
                         @[@"边缘检测", @"高斯模糊"]];
     }
@@ -87,6 +88,11 @@
                 RecordViewController *vc = [[RecordViewController alloc] initWithNibName:@"RecordViewController" bundle:nil];
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
+            }
+                
+            case 2: {
+                OSSignPostViewController *vc = [[OSSignPostViewController alloc] initWithNibName:@"OSSignPostViewController" bundle:nil];
+                [self.navigationController pushViewController:vc animated:YES];
             }
             default:
                 break;

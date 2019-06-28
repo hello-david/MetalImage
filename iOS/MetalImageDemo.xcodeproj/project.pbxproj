@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		81172A4B1C9AFD95B698DE06 /* libPods-MetalImageDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F606AA5CFBF44EB4E573EFC6 /* libPods-MetalImageDemo.a */; };
 		9537A97121AFA17200AE2586 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9537A97021AFA17200AE2586 /* AppDelegate.m */; };
 		9537A97421AFA17200AE2586 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9537A97321AFA17200AE2586 /* ViewController.m */; };
 		9537A97721AFA17200AE2586 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9537A97521AFA17200AE2586 /* Main.storyboard */; };
@@ -23,6 +22,9 @@
 		95B8ECE6228981DC008BC11C /* RecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B8ECE4228981DC008BC11C /* RecordViewController.m */; };
 		95B8ECE7228981DC008BC11C /* RecordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95B8ECE5228981DC008BC11C /* RecordViewController.xib */; };
 		95E412AC22475F5500DAC583 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 95E412AB22475F5400DAC583 /* 1.jpg */; };
+		95F81FE322C60C6B00D42BEA /* OSSignPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F81FE122C60C6B00D42BEA /* OSSignPostViewController.swift */; };
+		95F81FE422C60C6B00D42BEA /* OSSignPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95F81FE222C60C6B00D42BEA /* OSSignPostViewController.xib */; };
+		E057A17618A70BCC79D10AD3 /* Pods_MetalImageDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFB73F5C2DE8A0A811F305D8 /* Pods_MetalImageDemo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,7 +53,10 @@
 		95B8ECE4228981DC008BC11C /* RecordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecordViewController.m; sourceTree = "<group>"; };
 		95B8ECE5228981DC008BC11C /* RecordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecordViewController.xib; sourceTree = "<group>"; };
 		95E412AB22475F5400DAC583 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
-		F606AA5CFBF44EB4E573EFC6 /* libPods-MetalImageDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MetalImageDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		95F81FE022C60C6B00D42BEA /* MetalImageDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MetalImageDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		95F81FE122C60C6B00D42BEA /* OSSignPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSSignPostViewController.swift; sourceTree = "<group>"; };
+		95F81FE222C60C6B00D42BEA /* OSSignPostViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OSSignPostViewController.xib; sourceTree = "<group>"; };
+		DFB73F5C2DE8A0A811F305D8 /* Pods_MetalImageDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MetalImageDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81172A4B1C9AFD95B698DE06 /* libPods-MetalImageDemo.a in Frameworks */,
+				E057A17618A70BCC79D10AD3 /* Pods_MetalImageDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +123,9 @@
 				959946A92292772900B390F4 /* MPSFilterViewController.h */,
 				959946AA2292772900B390F4 /* MPSFilterViewController.m */,
 				959946AB2292772900B390F4 /* MPSFilterViewController.xib */,
+				95F81FE122C60C6B00D42BEA /* OSSignPostViewController.swift */,
+				95F81FE222C60C6B00D42BEA /* OSSignPostViewController.xib */,
+				95F81FE022C60C6B00D42BEA /* MetalImageDemo-Bridging-Header.h */,
 			);
 			path = MetalImageDemo;
 			sourceTree = "<group>";
@@ -125,7 +133,7 @@
 		CEB14B6C62CCFD2DB7585A36 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F606AA5CFBF44EB4E573EFC6 /* libPods-MetalImageDemo.a */,
+				DFB73F5C2DE8A0A811F305D8 /* Pods_MetalImageDemo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -141,7 +149,7 @@
 				9537A96821AFA17200AE2586 /* Sources */,
 				9537A96921AFA17200AE2586 /* Frameworks */,
 				9537A96A21AFA17200AE2586 /* Resources */,
-				50FD466C4B07060C6534F1C0 /* [CP] Copy Pods Resources */,
+				D4554F089B1B6B4AC8A87676 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -163,6 +171,7 @@
 				TargetAttributes = {
 					9537A96B21AFA17200AE2586 = {
 						CreatedOnToolsVersion = 9.4;
+						LastSwiftMigration = 1100;
 					};
 				};
 			};
@@ -191,6 +200,7 @@
 			files = (
 				9537A97C21AFA17200AE2586 /* LaunchScreen.storyboard in Resources */,
 				959946AD2292772900B390F4 /* MPSFilterViewController.xib in Resources */,
+				95F81FE422C60C6B00D42BEA /* OSSignPostViewController.xib in Resources */,
 				95E412AC22475F5500DAC583 /* 1.jpg in Resources */,
 				9537A97921AFA17200AE2586 /* Assets.xcassets in Resources */,
 				9537A97721AFA17200AE2586 /* Main.storyboard in Resources */,
@@ -203,23 +213,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		50FD466C4B07060C6534F1C0 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		B54CE5FB0A8D2A2B96BB48EC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -242,6 +235,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D4554F089B1B6B4AC8A87676 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MetalImageDemo/Pods-MetalImageDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -250,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9537A97421AFA17200AE2586 /* ViewController.m in Sources */,
+				95F81FE322C60C6B00D42BEA /* OSSignPostViewController.swift in Sources */,
 				95B8ECDC228964E8008BC11C /* BasicViewController.m in Sources */,
 				95B8ECE122896506008BC11C /* FilterViewController.m in Sources */,
 				95B8ECE6228981DC008BC11C /* RecordViewController.m in Sources */,
@@ -396,8 +407,10 @@
 			baseConfigurationReference = 5D818BEAB6E56ED42F0967AB /* Pods-MetalImageDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 6D9DQUVRKM;
 				INFOPLIST_FILE = MetalImageDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -407,6 +420,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.david.MetalImageDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MetalImageDemo/MetalImageDemo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -416,7 +432,9 @@
 			baseConfigurationReference = 45835DB71324E9D66444D13A /* Pods-MetalImageDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 6D9DQUVRKM;
 				INFOPLIST_FILE = MetalImageDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -426,6 +444,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.david.MetalImageDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MetalImageDemo/MetalImageDemo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

@@ -1,1 +1,0 @@
-../../../../../MetalImage/Basic/MetalImageTextureResource.h
