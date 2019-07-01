@@ -10,12 +10,17 @@ import UIKit
 import os.signpost
 import MetalImage
 
+@available(iOS 12.0, *)
 class OSSignPostViewController: UIViewController {
     
     @IBOutlet weak var frameView: MetalImageView!
     
     private lazy var picture: MetalImagePicture = {
         return MetalImagePicture.init(image: UIImage.init(named: "1.jpg")!)
+    }()
+    
+    private lazy var camera: MetalImageCamera = {
+       return MetalImageCamera.init(sessionPreset: AVCaptureSession.Preset.hd1920x1080, cameraPosition: AVCaptureDevice.Position.back)
     }()
     
     private lazy var luminanceFilter: MetalImageLuminanceFilter = {
@@ -39,13 +44,37 @@ class OSSignPostViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        camera.add(saturationFilter)
+        saturationFilter.add(gaussianFilter)
+        gaussianFilter.add(luminanceFilter)
+        luminanceFilter.add(frameView)
         
+        let filterChainProcessBlock: MetalImageFilterBlock = {(beforeProcess, textureReousrece, filter) in
+            struct StaticVar { static var postId = OSSignpostID(log: .metalImage) }
+            if beforeProcess {
+                StaticVar.postId = OSSignpostID(log: .metalImage)
+                os_signpost(.begin, log: .metalImage, name: "Filter", signpostID: StaticVar.postId, "b_%s", NSStringFromClass(filter.classForCoder))
+                return;
+            }
+            os_signpost(.end, log: .metalImage, name: "Filter", signpostID: StaticVar.postId, "e_%s", NSStringFromClass(filter.classForCoder))
+        }
         
+        saturationFilter.chainProcessHandle = filterChainProcessBlock
+        gaussianFilter.chainProcessHandle = filterChainProcessBlock
+        luminanceFilter.chainProcessHandle = filterChainProcessBlock
+        camera.startCapture()
+    }
+
+    private func processImage() {
+        luminanceFilter.rangeReductionFactor = Float.random(in: -1.0..<(-0.3))
+        saturationFilter.saturation = Float.random(in: 0.0..<2.0)
+        
+        os_signpost(.begin, log: .metalImage, name: "Process")
         picture.processImage(byFilters: [saturationFilter, gaussianFilter, luminanceFilter]) { [weak self] (textureResource) in
             guard textureResource != nil else {
                 return
             }
-            
+            os_signpost(.end, log: .metalImage, name: "Process")
             self?.frameView.receive(textureResource!, with: CMTime.invalid)
         }
     }
@@ -53,5 +82,5 @@ class OSSignPostViewController: UIViewController {
 
 extension OSLog {
     @available(iOS 10.0, *)
-    static let filter = OSLog(subsystem: "com.metalImage", category: "Test")
+    static let metalImage = OSLog(subsystem: "com.metalImage", category: "Test")
 }

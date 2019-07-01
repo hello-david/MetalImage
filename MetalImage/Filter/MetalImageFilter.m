@@ -41,6 +41,10 @@
     }
     
     MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
+    if (self.chainProcessHandle) {
+        self.chainProcessHandle(YES, textureResource, self);
+    }
+    
     if ([self supportProcessRenderCommandEncoderOnly]) {
         __weak typeof(self) weakSelf = self;
         __weak typeof(textureResource) weakResource = textureResource;
@@ -48,6 +52,7 @@
             [weakSelf renderToCommandEncoder:renderEncoder withResource:weakResource];
         }];
     } else {
+        [textureResource.renderProcess commitRender];// 先把之前的提交了
         [self renderToResource:textureResource];
     }
     
@@ -56,6 +61,9 @@
         return;
     }
     
+    if (self.chainProcessHandle) {
+        self.chainProcessHandle(NO, textureResource, self);
+    }
     [self send:textureResource withTime:time];
 }
 

@@ -91,8 +91,11 @@
             }
                 
             case 2: {
-                OSSignPostViewController *vc = [[OSSignPostViewController alloc] initWithNibName:@"OSSignPostViewController" bundle:nil];
-                [self.navigationController pushViewController:vc animated:YES];
+                if (@available(iOS 12.0, *)) {
+                    OSSignPostViewController *vc = [[OSSignPostViewController alloc] initWithNibName:@"OSSignPostViewController" bundle:nil];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                break;
             }
             default:
                 break;
