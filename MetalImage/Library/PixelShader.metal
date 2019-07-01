@@ -54,28 +54,28 @@ fragment half4 contrastFragment(SingleInputVertexIO fragmentInput [[stage_in]],
 }
 
 #pragma mark - 色调
-constant half4 kRGBToYPrime = half4(0.299, 0.587, 0.114, 0.0);
-constant half4 kRGBToI = half4(0.595716, -0.274453, -0.321263, 0.0);
-constant half4 kRGBToQ = half4(0.211456, -0.522591, 0.31135, 0.0);
+constant float4 kRGBToYPrime = float4(0.299, 0.587, 0.114, 0.0);
+constant float4 kRGBToI = float4(0.595716, -0.274453, -0.321263, 0.0);
+constant float4 kRGBToQ = float4(0.211456, -0.522591, 0.31135, 0.0);
 
-constant half4 kYIQToR = half4(1.0, 0.9563, 0.6210, 0.0);
-constant half4 kYIQToG = half4(1.0, -0.2721, -0.6474, 0.0);
-constant half4 kYIQToB = half4(1.0, -1.1070, 1.7046, 0.0);
+constant float4 kYIQToR = float4(1.0, 0.9563, 0.6210, 0.0);
+constant float4 kYIQToG = float4(1.0, -0.2721, -0.6474, 0.0);
+constant float4 kYIQToB = float4(1.0, -1.1070, 1.7046, 0.0);
 
-fragment half4 hueFragment(SingleInputVertexIO fragmentInput [[stage_in]],
-                           constant float &hueAdjust [[buffer(2)]],
-                           texture2d<half> inputTexture [[texture(0)]]) {
+fragment float4 hueFragment(SingleInputVertexIO fragmentInput [[stage_in]],
+                            constant float &hueAdjust [[buffer(2)]],
+                            texture2d<float> inputTexture [[texture(0)]]) {
     constexpr sampler quadSampler;
-    half4 textureColor = inputTexture.sample(quadSampler, fragmentInput.textureCoordinate);
+    float4 textureColor = inputTexture.sample(quadSampler, fragmentInput.textureCoordinate);
     
     // Convert to YIQ
-    half YPrime = dot(textureColor, kRGBToYPrime);
-    half I = dot(textureColor, kRGBToI);
-    half Q = dot(textureColor, kRGBToQ);
+    float YPrime = dot(textureColor, kRGBToYPrime);
+    float I = dot(textureColor, kRGBToI);
+    float Q = dot(textureColor, kRGBToQ);
     
     // Calculate the hue and chroma
-    half hue = atan2(Q, I);
-    half chroma = sqrt(I * I + Q * Q);
+    float hue = atan2(Q, I);
+    float chroma = sqrt(I * I + Q * Q);
     
     // Make the user's adjustments
     hue += (-hueAdjust);
@@ -85,7 +85,7 @@ fragment half4 hueFragment(SingleInputVertexIO fragmentInput [[stage_in]],
     I = chroma * cos (hue);
     
     // Convert back to RGB
-    half4 yIQ = half4(YPrime, I, Q, 0.0);
+    float4 yIQ = float4(YPrime, I, Q, 0.0);
     textureColor.r = dot(yIQ, kYIQToR);
     textureColor.g = dot(yIQ, kYIQToG);
     textureColor.b = dot(yIQ, kYIQToB);
