@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSBundle(MetalImageBundle)
-+ (NSBundle *)metalImage_bundleWithBundleName:(NSString *)bundleName;
++ (NSBundle *)metalImage_bundleWithName:(NSString *)bundleName;
 @end
 
 NS_ASSUME_NONNULL_END

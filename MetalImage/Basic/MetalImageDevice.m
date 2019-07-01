@@ -60,7 +60,7 @@
 
 - (id<MTLLibrary>)library {
     if (!_library) {
-        NSString *bundlePath = [NSBundle metalImage_bundleWithBundleName:@"MetalLibrary"].bundlePath;
+        NSString *bundlePath = [NSBundle metalImage_bundleWithName:@"MetalLibrary"].bundlePath;
         NSString *defaultMetalFile = [bundlePath stringByAppendingPathComponent:@"default.metallib"];
         NSError *error = nil;
         _library = [_device newLibraryWithFile:defaultMetalFile error:&error];

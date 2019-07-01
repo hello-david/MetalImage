@@ -428,7 +428,7 @@
     // 渲染
     id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
     id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:self.renderTarget.renderPassDecriptor];
-    [self renderToEncoder:renderEncoder withResource:resource];
+    [self renderToCommandEncoder:renderEncoder withResource:resource];
     [renderEncoder endEncoding];
     [resource.renderProcess swapTexture:targetTexture];
     [commandBuffer commit];
@@ -438,7 +438,7 @@
     [[MetalImageDevice shared].textureCache cacheTexture:self.backgroundTextureResource.texture];
 }
 
-- (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"MovieWriter Draw"];

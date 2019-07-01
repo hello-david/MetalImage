@@ -85,23 +85,6 @@ typedef struct MetalImageGaussianParameter {
 }
 
 #pragma mark -
-- (void)receive:(MetalImageResource *)resource withTime:(CMTime)time {
-    if (resource.type != MetalImageResourceTypeImage) {
-        [self send:resource withTime:time];
-        return;
-    }
-    
-    MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
-    [textureResource.renderProcess commitRender];// 先把之前的提交了
-    
-    id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
-    [commandBuffer enqueue];
-    [self encodeToCommandBuffer:commandBuffer withResource:textureResource];
-    [commandBuffer commit];
-    [commandBuffer waitUntilCompleted];
-    [self send:textureResource withTime:time];
-}
-
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageTextureResource *)resource {    
     // 目标大小变了
     CGSize targetSize = CGSizeEqualToSize(self.target.size, CGSizeZero) ? resource.renderProcess.targetSize : self.target.size;
@@ -124,7 +107,7 @@ typedef struct MetalImageGaussianParameter {
         self.target.renderPassDecriptor.colorAttachments[0].texture = horizontalTargetTexture.metalTexture;
         
         id<MTLRenderCommandEncoder> horizontalRenderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:self.target.renderPassDecriptor];
-        [self renderToEncoder:horizontalRenderEncoder withResource:resource];
+        [self renderToCommandEncoder:horizontalRenderEncoder withResource:resource];
         [horizontalRenderEncoder endEncoding];
         [resource.renderProcess swapTexture:horizontalTargetTexture];
         
@@ -136,13 +119,13 @@ typedef struct MetalImageGaussianParameter {
         self.target.renderPassDecriptor.colorAttachments[0].texture = verticalTargetTexture.metalTexture;
         
         id<MTLRenderCommandEncoder> verticalRenderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:self.target.renderPassDecriptor];
-        [self renderToEncoder:verticalRenderEncoder withResource:resource];
+        [self renderToCommandEncoder:verticalRenderEncoder withResource:resource];
         [verticalRenderEncoder endEncoding];
         [resource.renderProcess swapTexture:verticalTargetTexture];
     };
 }
 
-- (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"Gaussian Draw"];
@@ -160,6 +143,10 @@ typedef struct MetalImageGaussianParameter {
 #if DEBUG
     [renderEncoder popDebugGroup];
 #endif
+}
+
+- (BOOL)supportProcessRenderCommandEncoderOnly {
+    return NO;
 }
 
 #pragma mark - 属性设置

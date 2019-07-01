@@ -18,7 +18,7 @@
     _saturation = saturation;
 }
 
-- (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"Saturation Draw"];

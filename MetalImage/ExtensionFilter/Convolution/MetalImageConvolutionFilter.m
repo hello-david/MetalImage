@@ -81,12 +81,12 @@ typedef struct MetalImageConvolitionParameter {
     self.target.renderPassDecriptor.colorAttachments[0].texture = targetTexture.metalTexture;
     
     id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:self.target.renderPassDecriptor];
-    [self renderToEncoder:renderEncoder withResource:resource];
+    [self renderToCommandEncoder:renderEncoder withResource:resource];
     [renderEncoder endEncoding];
     [resource.renderProcess swapTexture:targetTexture];
 }
 
-- (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
     CGSize targetSize = CGSizeEqualToSize(self.target.size, CGSizeZero) ? resource.renderProcess.targetSize : self.target.size;
     if (!CGSizeEqualToSize(_lastSize, targetSize)) {
         _param.texelWidthOffset = 1.0 / targetSize.width;

@@ -100,7 +100,7 @@
                 id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
                 [commandBuffer enqueue];
                 id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:strongSelf.renderTarget.renderPassDecriptor];
-                [strongSelf renderToEncoder:renderEncoder withResource:textureResource];
+                [strongSelf renderToCommandEncoder:renderEncoder withResource:textureResource];
                 [commandBuffer presentDrawable:drawable];
                 [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull buffer) {
                     [[MetalImageDevice shared].textureCache cacheTexture:textureResource.texture];
@@ -118,7 +118,7 @@
 }
 
 #pragma mark - Render Process
-- (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"Display Draw"];

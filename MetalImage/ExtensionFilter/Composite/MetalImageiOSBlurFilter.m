@@ -64,6 +64,10 @@
     [commandBuffer3 waitUntilCompleted];
 }
 
+- (BOOL)supportProcessRenderCommandEncoderOnly {
+    return NO;
+}
+
 #pragma mark - 属性设置
 -(void)setBlurRadiusInPixels:(float)blurRadiusInPixels {
     _blurRadiusInPixels = blurRadiusInPixels;

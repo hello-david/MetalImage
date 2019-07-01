@@ -74,9 +74,9 @@
         }
         
         for (id<MetalImageRender> filter in filters) {
-            if ([filter isKindOfClass:[MetalImageFilter class]]) {
+            if ([filter isKindOfClass:[MetalImageFilter class]] && [filter supportProcessRenderCommandEncoderOnly]) {
                 [strongSelf.resource.renderProcess addRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
-                    [(MetalImageFilter*)filter renderToEncoder:renderEncoder withResource:strongSelf.resource];
+                    [(MetalImageFilter*)filter renderToCommandEncoder:renderEncoder withResource:strongSelf.resource];
                 }];
             } else {
                 [strongSelf.resource.renderProcess commitRenderWaitUntilFinish:YES];

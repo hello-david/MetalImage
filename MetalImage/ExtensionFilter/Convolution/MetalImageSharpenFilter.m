@@ -31,7 +31,7 @@ typedef struct MetalImageSharpenFilterArg {
     _sharpenArg.sharpenss = sharpness;
 }
 
-- (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
     // 目标大小变了
     if ((1.0 / resource.renderProcess.targetSize.width != _sharpenArg.imageWidthFactor) || (1.0 / resource.renderProcess.targetSize.height != _sharpenArg.imageHeightFactor)) {
         _sharpenArg.imageWidthFactor = 1.0 / resource.renderProcess.targetSize.width;

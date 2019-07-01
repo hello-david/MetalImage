@@ -38,14 +38,14 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  RenderEncoder由外部管理(不生成也不Encoder)
  *
- *  @param renderEncoder    外部生成的renderEncoder
+ *  @param renderEncoder    外部生成的renderCommandEncoder
  *  @param resource         待渲染的资源
  *
  *  @discussion
  *  内部包含一个或多个Draw-Call渲染不会进行结果纹理交换，不是一个完整的渲染流程
  *  可通过设置resource的targetSize来指定目标纹理的大小
  */
-- (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource;
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource;
 @end
 
 NS_ASSUME_NONNULL_END

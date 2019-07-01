@@ -20,20 +20,28 @@ class OSSignPostViewController: UIViewController {
     
     private lazy var luminanceFilter: MetalImageLuminanceFilter = {
         let filter = MetalImageLuminanceFilter.init()
-        filter.rangeReductionFactor = 0.4
+        filter.rangeReductionFactor = -0.5
         return filter
     }()
     
     private lazy var saturationFilter: MetalImageSaturationFilter = {
         let filter = MetalImageSaturationFilter.init()
-        filter.saturation = 0.6
+        filter.saturation = 0.3
+        return filter
+    }()
+    
+    private lazy var gaussianFilter: MetalImageGaussianBlurFilter = {
+        let filter = MetalImageGaussianBlurFilter.init()
+        filter.blurRadiusInPixels = 8.0
+        filter.texelSpacingMultiplier = 1.0
         return filter
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        picture.processImage(byFilters: [luminanceFilter, saturationFilter]) { [weak self] (textureResource) in
+        
+        picture.processImage(byFilters: [saturationFilter, gaussianFilter, luminanceFilter]) { [weak self] (textureResource) in
             guard textureResource != nil else {
                 return
             }

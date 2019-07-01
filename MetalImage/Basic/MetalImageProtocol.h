@@ -41,5 +41,10 @@
  *  独立完整的渲染流程
  */
 - (void)renderToResource:(MetalImageTextureResource *)resource;
+
+/**
+ *  是否支持只进行RenderCommandEncoder级别的渲染
+ */
+- (BOOL)supportProcessRenderCommandEncoderOnly;
 @end
 

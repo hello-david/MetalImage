@@ -41,16 +41,21 @@
     }
     
     MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
-    __weak typeof(self) weakSelf = self;
-    __weak typeof(textureResource) weakResource = textureResource;
-    [textureResource.renderProcess addRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
-        [weakSelf renderToEncoder:renderEncoder withResource:weakResource];
-    }];
+    if ([self supportProcessRenderCommandEncoderOnly]) {
+        __weak typeof(self) weakSelf = self;
+        __weak typeof(textureResource) weakResource = textureResource;
+        [textureResource.renderProcess addRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
+            [weakSelf renderToCommandEncoder:renderEncoder withResource:weakResource];
+        }];
+    } else {
+        [self renderToResource:textureResource];
+    }
     
     if (!self.source.haveTarget) {
         [textureResource.renderProcess commitRender];
         return;
     }
+    
     [self send:textureResource withTime:time];
 }
 
@@ -65,13 +70,13 @@
     // 实现一个renderEncoder流程(可能有多个Draw-Call)
     @autoreleasepool {
         id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:self.target.renderPassDecriptor];
-        [self renderToEncoder:renderEncoder withResource:resource];
+        [self renderToCommandEncoder:renderEncoder withResource:resource];
         [renderEncoder endEncoding];
         [resource.renderProcess swapTexture:targetTexture];
     }
 }
 
-- (void)renderToEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"Passthrough Draw"];
@@ -95,6 +100,10 @@
     [self encodeToCommandBuffer:commandBuffer withResource:resource];
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
+}
+
+- (BOOL)supportProcessRenderCommandEncoderOnly {
+    return YES;
 }
 
 #pragma mark - Source Protocol

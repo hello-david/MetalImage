@@ -8,7 +8,7 @@
 #import "NSBundle+MetalImageBundle.h"
 
 @implementation NSBundle(MetalImageBundle)
-+ (NSBundle *)metalImage_bundleWithBundleName:(NSString *)bundleName {
++ (NSBundle *)metalImage_bundleWithName:(NSString *)bundleName {
     if (!bundleName) {
         return nil;
     }
