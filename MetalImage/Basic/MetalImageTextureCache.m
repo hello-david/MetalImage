@@ -88,7 +88,7 @@ typedef struct {
         return;
     }
     
-    dispatch_sync(self.cacheQueue, ^{
+    dispatch_async(self.cacheQueue, ^{
         NSString *key = texutre.cacheKey ? texutre.cacheKey : MetalImageTextureCacheKey(texutre.width, texutre.height, texutre.pixelFormat);
         NSMutableArray *textureArray = [self.textureDic objectForKey:key];
         if (!textureArray) {
