@@ -35,6 +35,7 @@
 #import "MetalImageSharpenFilter.h"
 #import "MetalImageContrastFilter.h"
 #import "MetalImageHueFilter.h"
+#import "MetalImageLookUpTableFilter.h"
 #import "MetalImageLuminanceFilter.h"
 #import "MetalImageSaturationFilter.h"
 
