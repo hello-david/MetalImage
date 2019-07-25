@@ -80,11 +80,11 @@
                     [(MetalImageFilter*)filter renderToCommandEncoder:renderEncoder withResource:strongSelf.resource];
                 }];
             } else {
-                [strongSelf.resource.renderProcess commitRenderWaitUntilFinish:YES];
+                [strongSelf.resource.renderProcess commitRenderWaitUntilFinish:YES completion:nil];
                 [filter renderToResource:strongSelf.resource];
             }
         }
-        [strongSelf.resource.renderProcess commitRenderWaitUntilFinish:YES];
+        [strongSelf.resource.renderProcess commitRenderWaitUntilFinish:YES completion:nil];
         
         !completion ? : completion(strongSelf.resource);
         strongSelf.resource = nil;

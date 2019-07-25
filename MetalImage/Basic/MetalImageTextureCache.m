@@ -8,11 +8,14 @@
 #import "MetalImageTextureCache.h"
 
 #define MetalImageTextureCacheKey(width, height, pixelFormat) [NSString stringWithFormat:@"width:%lud,height:%lud,pixelFormat:%lud",(unsigned long)width, (unsigned long)height, (unsigned long)pixelFormat]
+
 typedef struct {
     NSUInteger width;
     NSUInteger height;
     NSUInteger pixelFormat;
 } MetalImageTextureKey;
+
+static const void * kMetalImageTextureSpecificKey = &kMetalImageTextureSpecificKey;
 
 @interface MetalImageTextureCache()
 @property (nonatomic, strong) NSMutableDictionary <NSString *, NSMutableArray<MetalImageTexture*>*> *textureDic;
@@ -32,17 +35,19 @@ typedef struct {
         _textureDic = [[NSMutableDictionary alloc] init];
         _textureDescDic = [[NSMutableDictionary alloc] init];
         _cacheQueue = dispatch_queue_create("com.MetalImage.TextureCache", DISPATCH_QUEUE_SERIAL);
+        dispatch_queue_set_specific(_cacheQueue, kMetalImageTextureSpecificKey, (__bridge void * _Nullable)(self), NULL);
     }
     return self;
 }
 
 - (MetalImageTexture *)fetchTexture:(CGSize)size pixelFormat:(MTLPixelFormat)pixelFormat {
+    
     __block MetalImageTexture *texture = nil;
-    dispatch_sync(self.cacheQueue, ^{
+    dispatch_block_t fetchBlock = ^{
         NSUInteger width = (NSUInteger)size.width;
         NSUInteger height = (NSUInteger)size.height;
         NSString *key = nil;
-        
+            
         if (width == self.lastKey.width && height == self.lastKey.height && self.lastKey.pixelFormat == pixelFormat && self.lastKeyStr) {
             key = self.lastKeyStr;
         }
@@ -52,13 +57,13 @@ typedef struct {
             self.lastKey = lastedKey;
             self.lastKeyStr = key;
         }
-        
+            
         NSMutableArray *textureArray = [self.textureDic objectForKey:key];
         if (!textureArray) {
             textureArray = [[NSMutableArray alloc] init];
             [self.textureDic setObject:textureArray forKey:key];
         }
-        
+            
         texture = [textureArray lastObject];
         if (texture) {
             [textureArray removeLastObject];
@@ -73,12 +78,18 @@ typedef struct {
                 textureDesc.usage = MTLTextureUsageShaderRead | MTLTextureUsageShaderWrite | MTLTextureUsageRenderTarget;
                 [self.textureDescDic setObject:textureDesc forKey:key];
             }
-            
+                
             id<MTLTexture> metalTexture = [self.device newTextureWithDescriptor:textureDesc];
             texture = [[MetalImageTexture alloc] initWithTexture:metalTexture orientation:MetalImagePortrait willCache:YES];
             texture.cacheKey = key;
         }
-    });
+    };
+    
+    if (dispatch_get_specific(kMetalImageTextureSpecificKey) != NULL) {
+        fetchBlock();
+    } else {
+        dispatch_sync(self.cacheQueue, fetchBlock);
+    }
     
     return texture;
 }

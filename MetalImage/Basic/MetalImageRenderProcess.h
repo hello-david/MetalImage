@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class MetalImageRenderProcess;
 
 typedef void(^MetalImageRenderProcessBlock)(id<MTLRenderCommandEncoder> renderEncoder);
+typedef void(^MetalImageRenderCompletionBlock)(MetalImageTexture *renderedTexture);
 
 @interface MetalImageRenderProcess : NSObject
 @property (nonatomic, assign) CGSize targetSize;
@@ -40,7 +41,7 @@ typedef void(^MetalImageRenderProcessBlock)(id<MTLRenderCommandEncoder> renderEn
  *  在使用外部的CommandBuffer时有enqueue需要先把内置CommandBuffer的提交了
  */
 - (void)commitRender;
-- (void)commitRenderWaitUntilFinish:(BOOL)waitUntilCompleted;
+- (void)commitRenderWaitUntilFinish:(BOOL)waitUntilFinish completion:(MetalImageRenderCompletionBlock _Nullable)completion;
 
 /**
  *  替换这个资源对象的纹理，用于原始纹理和目标纹理交换

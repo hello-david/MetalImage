@@ -48,17 +48,24 @@
 }
 
 - (void)commitRender {
-    [self commitRenderWaitUntilFinish:NO];
+    [self commitRenderWaitUntilFinish:NO completion:nil];
 }
 
-- (void)commitRenderWaitUntilFinish:(BOOL)waitUntilCompleted {
+- (void)commitRenderWaitUntilFinish:(BOOL)waitUntilFinish completion:(MetalImageRenderCompletionBlock)completion {
     if (!_renderCommandBuffer || _renderCommandBuffer.status > MTLCommandBufferStatusEnqueued) {
         _renderCommandBuffer = nil;
         return;
     }
     
+    if (completion) {
+        __weak typeof(self) weakSelf = self;
+        [_renderCommandBuffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull commandbuffer) {
+            completion(weakSelf.texture);
+        }];
+    }
+    
     [_renderCommandBuffer commit];
-    !waitUntilCompleted ? : [_renderCommandBuffer waitUntilCompleted];
+    !waitUntilFinish ? : [_renderCommandBuffer waitUntilCompleted];
     _renderEncoder = nil;
     _renderCommandBuffer = nil;
     _targetTexture = nil;
@@ -74,7 +81,7 @@
 
 - (void)setTargetSize:(CGSize)targetSize {
     if (!CGSizeEqualToSize(_targetSize, targetSize)) {
-        [self commitRenderWaitUntilFinish:YES];
+        [self commitRenderWaitUntilFinish:YES completion:nil];
         _targetSize = targetSize;
     }
 }
