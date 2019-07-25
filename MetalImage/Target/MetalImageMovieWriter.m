@@ -27,7 +27,7 @@
 @property (nonatomic, assign) CMTime lastAudioTime;
 
 @property (nonatomic, strong) MetalImageTarget *renderTarget;
-@property (nonatomic, strong) MetalImageTextureResource *backgroundTextureResource;
+@property (nonatomic, strong) MetalImageResource *backgroundTextureResource;
 @property (nonatomic, assign) CGSize lastBackgroundSise;
 @property (nonatomic, strong) id<MTLBuffer> backgroundPostionBuffer;
 @end
@@ -303,14 +303,14 @@
     // 不是在写入状态
     if (_assetWriter.status != AVAssetWriterStatusWriting) {
         if (resource.type == MetalImageResourceTypeImage) {
-            [[MetalImageDevice shared].textureCache cacheTexture:((MetalImageTextureResource *)resource).texture];
+            [[MetalImageDevice shared].textureCache cacheTexture:resource.texture];
         }
         return;
     }
     
     // 之前的效果提交了
     if (resource.type == MetalImageResourceTypeImage) {
-        [((MetalImageTextureResource *)resource).renderProcess commitRender];
+        [resource.renderProcess commitRender];
     }
     
     __weak typeof(self) weakSelf = self;
@@ -320,13 +320,13 @@
         @autoreleasepool {
             switch (resource.type) {
                 case MetalImageResourceTypeImage:
-                    [strongSelf imageProcess:(MetalImageTextureResource *)resource time:time];
-                    [[MetalImageDevice shared].textureCache cacheTexture:((MetalImageTextureResource *)resource).texture];
+                    [strongSelf imageProcess:resource time:time];
+                    [[MetalImageDevice shared].textureCache cacheTexture:resource.texture];
                     break;
                     
                 case MetalImageResourceTypeAudio:
                     if (strongSelf.haveAudioTrack) {
-                        [strongSelf audioProcess:(MetalImageAudioResource *)resource time:time];
+                        [strongSelf audioProcess:resource time:time];
                     }
                     break;
                 default:
@@ -337,7 +337,7 @@
 }
 
 #pragma mark - Pixel Write Process
-- (void)imageProcess:(MetalImageTextureResource *)resource time:(CMTime)time {
+- (void)imageProcess:(MetalImageResource *)resource time:(CMTime)time {
     // 向前的时间戳一律不接受
     if (CMTimeCompare(_lastImageTime, time) != -1) {
         return;
@@ -409,11 +409,11 @@
                                            }];
 }
 
-- (void)imageRenderProcess:(MetalImageTextureResource *)resource {
+- (void)imageRenderProcess:(MetalImageResource *)resource {
     // 自定义背景滤镜
     if (self.backgroundType == MetalImagContentBackgroundFilter && self.fillMode == MetalImageContentModeScaleAspectFit &&
         (_renderSize.width / _renderSize.height != resource.texture.size.width / resource.texture.size.height)) {
-        MetalImageTextureResource *backgroundTextureResource = (MetalImageTextureResource *)[resource newResourceFromSelf];
+        MetalImageResource *backgroundTextureResource = [resource newResourceFromSelf];
         [self.backgroundFilter renderToResource:backgroundTextureResource];
         self.backgroundTextureResource = backgroundTextureResource;
     }
@@ -438,7 +438,7 @@
     [[MetalImageDevice shared].textureCache cacheTexture:self.backgroundTextureResource.texture];
 }
 
-- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageResource *)resource {
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"MovieWriter Draw"];
@@ -492,7 +492,7 @@
 }
 
 #pragma mark - Audio Write Process
-- (void)audioProcess:(MetalImageAudioResource *)resource time:(CMTime)time {
+- (void)audioProcess:(MetalImageResource *)resource time:(CMTime)time {
     // 向前的时间戳一律不接受
     if (CMTimeCompare(_lastAudioTime, time) == 1) {
         return;

@@ -9,8 +9,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import <CoreVideo/CoreVideo.h>
 #import "MetalImageSource.h"
-#import "MetalImageAudioResource.h"
-#import "MetalImageTextureResource.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -40,35 +40,38 @@
         return;
     }
     
-    MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
     if (self.chainProcessHandle) {
-        self.chainProcessHandle(YES, textureResource, self);
+        self.chainProcessHandle(YES, resource, self);
     }
     
     if ([self supportProcessRenderCommandEncoderOnly]) {
         __weak typeof(self) weakSelf = self;
-        __weak typeof(textureResource) weakResource = textureResource;
-        [textureResource.renderProcess addRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
+        __weak typeof(resource) weakResource = resource;
+        [resource.renderProcess addRenderProcess:^(id<MTLRenderCommandEncoder> renderEncoder) {
             [weakSelf renderToCommandEncoder:renderEncoder withResource:weakResource];
         }];
     } else {
-        [textureResource.renderProcess commitRender];// 先把之前的提交了
-        [self renderToResource:textureResource];
+        [resource.renderProcess commitRender];// 先把之前的提交了
+        [self renderToResource:resource];
     }
     
     if (!self.source.haveTarget) {
-        [textureResource.renderProcess commitRender];
+        [resource.renderProcess commitRender];
         return;
     }
     
     if (self.chainProcessHandle) {
-        self.chainProcessHandle(NO, textureResource, self);
+        self.chainProcessHandle(NO, resource, self);
     }
-    [self send:textureResource withTime:time];
+    [self send:resource withTime:time];
 }
 
 #pragma mark - Render Process
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageTextureResource *)resource {
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageResource *)resource {
+    if (MetalImageResourceTypeImage != resource.type) {
+        return;
+    }
+    
     CGSize targetSize = CGSizeEqualToSize(self.target.size, CGSizeZero) ? resource.texture.size : self.target.size;
     MetalImageTexture *targetTexture = [[MetalImageDevice shared].textureCache fetchTexture:targetSize
                                                                                 pixelFormat:resource.texture.metalTexture.pixelFormat];
@@ -84,7 +87,11 @@
     }
 }
 
-- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageResource *)resource {
+    if (MetalImageResourceTypeImage != resource.type) {
+        return;
+    }
+    
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"Passthrough Draw"];
@@ -102,7 +109,11 @@
 }
 
 #pragma mark - Render Protocol
--(void)renderToResource:(MetalImageTextureResource *)resource {
+-(void)renderToResource:(MetalImageResource *)resource {
+    if (MetalImageResourceTypeImage != resource.type) {
+        return;
+    }
+    
     id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
     [commandBuffer enqueue];
     [self encodeToCommandBuffer:commandBuffer withResource:resource];

@@ -13,7 +13,10 @@
 
 @implementation MetalImageLookUpTableFilter
 
-- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(nonnull MetalImageResource *)resource {
+    if (MetalImageResourceTypeImage != resource.type) {
+        return;
+    }
     
 }
 

@@ -37,15 +37,18 @@
         return;
     }
     
-    MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
-    float width = CGRectGetWidth(_cropRegion) > textureResource.texture.width ? textureResource.texture.width : CGRectGetWidth(_cropRegion);
-    float height = CGRectGetHeight(_cropRegion) > textureResource.texture.height ? textureResource.texture.height : CGRectGetHeight(_cropRegion);
-    textureResource.renderProcess.targetSize = CGSizeMake(width, height);
+    float width = CGRectGetWidth(_cropRegion) > resource.texture.width ? resource.texture.width : CGRectGetWidth(_cropRegion);
+    float height = CGRectGetHeight(_cropRegion) > resource.texture.height ? resource.texture.height : CGRectGetHeight(_cropRegion);
+    resource.renderProcess.targetSize = CGSizeMake(width, height);
     
     [super receive:resource withTime:time];
 }
 
-- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(nonnull MetalImageResource *)resource {
+    if (MetalImageResourceTypeImage != resource.type) {
+        return;
+    }
+    
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"Crop Draw"];

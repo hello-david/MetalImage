@@ -11,14 +11,12 @@
 #endif
 
 #import "MetalImage.h"
-#import "MetalImageAudioResource.h"
 #import "MetalImageDevice.h"
 #import "MetalImageProtocol.h"
 #import "MetalImageRenderProcess.h"
 #import "MetalImageResource.h"
 #import "MetalImageTexture.h"
 #import "MetalImageTextureCache.h"
-#import "MetalImageTextureResource.h"
 #import "NSBundle+MetalImageBundle.h"
 #import "MetalImageFilter.h"
 #import "MetalImageCamera.h"

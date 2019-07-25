@@ -8,7 +8,6 @@
 #import <Foundation/Foundation.h>
 #import "MetalImageDevice.h"
 #import "MetalImageTexture.h"
-#import "MetalImageTextureResource.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

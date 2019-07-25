@@ -9,8 +9,6 @@
 
 #import "MetalImageDevice.h"
 #import "MetalImageResource.h"
-#import "MetalImageTextureResource.h"
-#import "MetalImageAudioResource.h"
 #import "MetalImageTexture.h"
 #import "MetalImageTextureCache.h"
 #import "MetalImageProtocol.h"

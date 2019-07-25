@@ -16,5 +16,5 @@
 @property (nonatomic, assign) float saturation;// 饱和度，默认0.0不调整，建议[-1.0, 1.0]
 @property (nonatomic, assign) float luminance;// 亮度，默认0.0不调整，建议[-1.0, 1.0]
 
-- (void)renderToResource:(MetalImageTextureResource *)resource;
+- (void)renderToResource:(MetalImageResource *)resource;
 @end

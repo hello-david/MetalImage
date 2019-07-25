@@ -149,7 +149,7 @@
                 MetalImageTexture *imageTexture = [[MetalImageTexture alloc] initWithTexture:texture
                                                                                  orientation:MetalImageLandscapeLeft
                                                                                    willCache:NO];
-                MetalImageTextureResource *imageResource = [[MetalImageTextureResource alloc] initWithTexture:imageTexture];
+                MetalImageResource *imageResource = [MetalImageResource imageResource:imageTexture];
                 imageResource.processingQueue = weakSelf.renderQueue;
                 [weakSelf send:imageResource withTime:sampleTime];
             }
@@ -162,7 +162,7 @@
         __weak typeof(self) weakSelf = self;
         dispatch_sync(self.audioProcessQueue, ^{
             CMTime sampleTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
-            MetalImageAudioResource *audioResource = [[MetalImageAudioResource alloc] initWithBuffer:sampleBuffer];
+            MetalImageResource *audioResource = [MetalImageResource audioResource:sampleBuffer];
             [weakSelf send:audioResource withTime:sampleTime];
             
             CFRelease(sampleBuffer);

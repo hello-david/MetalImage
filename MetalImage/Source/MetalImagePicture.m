@@ -8,7 +8,7 @@
 #import "MetalImagePicture.h"
 
 @interface MetalImagePicture()
-@property (nonatomic, strong) MetalImageTextureResource *resource;
+@property (nonatomic, strong) MetalImageResource *resource;
 @property (nonatomic, strong) MetalImageSource *source;
 @end
 
@@ -36,7 +36,8 @@
     if (!_resource) {
         NSError *err = nil;
         id<MTLTexture> texutre = [[MetalImageDevice shared].textureLoader newTextureWithCGImage:[_originImage CGImage] options:NULL error:&err];
-        _resource = [[MetalImageTextureResource alloc] initWithTexture:[[MetalImageTexture alloc] initWithTexture:texutre orientation:MetalImagePortrait willCache:NO]];
+        MetalImageTexture *metalTexture = [[MetalImageTexture alloc] initWithTexture:texutre orientation:MetalImagePortrait willCache:NO];
+        _resource = [MetalImageResource imageResource:metalTexture];
     }
     return _resource;
 }

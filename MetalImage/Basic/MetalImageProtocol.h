@@ -8,8 +8,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreMedia/CoreMedia.h>
 #import "MetalImageResource.h"
-#import "MetalImageTextureResource.h"
-#import "MetalImageAudioResource.h"
 
 @protocol MetalImageTarget;
 @protocol MetalImageSource;
@@ -40,7 +38,7 @@
 /**
  *  独立完整的渲染流程
  */
-- (void)renderToResource:(MetalImageTextureResource *)resource;
+- (void)renderToResource:(MetalImageResource *)resource;
 
 /**
  *  是否支持只进行RenderCommandEncoder级别的渲染

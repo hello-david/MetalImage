@@ -85,7 +85,11 @@ typedef struct MetalImageGaussianParameter {
 }
 
 #pragma mark -
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageTextureResource *)resource {    
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(nonnull MetalImageResource *)resource {
+    if (MetalImageResourceTypeImage != resource.type) {
+        return;
+    }
+    
     // 目标大小变了
     CGSize targetSize = CGSizeEqualToSize(self.target.size, CGSizeZero) ? resource.renderProcess.targetSize : self.target.size;
     if (!CGSizeEqualToSize(_lastSize, targetSize) || _texelSpacingMultiplierChanged) {
@@ -125,7 +129,11 @@ typedef struct MetalImageGaussianParameter {
     };
 }
 
-- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(nonnull MetalImageResource *)resource {
+    if (MetalImageResourceTypeImage != resource.type) {
+        return;
+    }
+    
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"Gaussian Draw"];

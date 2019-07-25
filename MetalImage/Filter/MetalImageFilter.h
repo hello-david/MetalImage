@@ -9,13 +9,13 @@
 #import "MetalImageProtocol.h"
 #import "MetalImageSource.h"
 #import "MetalImageTarget.h"
-#import "MetalImageTextureResource.h"
+#import "MetalImageResource.h"
 
 #define METAL_SHADER_STRING(text) @ #text
 
 NS_ASSUME_NONNULL_BEGIN
 @class MetalImageFilter;
-typedef void(^MetalImageFilterBlock)(BOOL beforeProcess, MetalImageTextureResource *resource, MetalImageFilter *filter);
+typedef void(^MetalImageFilterBlock)(BOOL beforeProcess, MetalImageResource *resource, MetalImageFilter *filter);
 
 @interface MetalImageFilter : NSObject <MetalImageSource, MetalImageTarget, MetalImageRender>
 @property (nonatomic, readonly) MetalImageSource *source;
@@ -36,7 +36,7 @@ typedef void(^MetalImageFilterBlock)(BOOL beforeProcess, MetalImageTextureResour
  *  内部包含一个或多个RenderCommandEncoder并渲染后交换纹理保证输入输出有序
  *  可通过设置resource的targetSize来指定目标纹理的大小
  */
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageTextureResource *)resource;
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer withResource:(MetalImageResource *)resource;
 
 /**
  *  CommandEncoder层级的渲染
@@ -48,7 +48,7 @@ typedef void(^MetalImageFilterBlock)(BOOL beforeProcess, MetalImageTextureResour
  *  内部包含一个或多个Draw-Call渲染不会进行结果纹理交换
  *  可通过设置resource的targetSize来指定目标纹理的大小
  */
-- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource;
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageResource *)resource;
 @end
 
 NS_ASSUME_NONNULL_END

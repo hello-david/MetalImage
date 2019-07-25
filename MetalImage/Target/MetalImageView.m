@@ -75,8 +75,7 @@
         return;
     }
     
-    MetalImageTextureResource *textureResource = (MetalImageTextureResource *)resource;
-    [textureResource.renderProcess commitRender];
+    [resource.renderProcess commitRender];
     
     __weak typeof(self) weakSelf = self;
     dispatch_async(self.displayQueue, ^{
@@ -95,15 +94,15 @@
                 
                 strongSelf.renderTarget.renderPassDecriptor.colorAttachments[0].texture = [drawable texture];
                 strongSelf.renderTarget.renderPassDecriptor.colorAttachments[0].clearColor = color;
-                [strongSelf.renderTarget updateCoordinateIfNeed:textureResource.texture];// 调整输入纹理绘制到目标纹理时的比例和方向
+                [strongSelf.renderTarget updateCoordinateIfNeed:resource.texture];// 调整输入纹理绘制到目标纹理时的比例和方向
                 
                 id <MTLCommandBuffer> commandBuffer = [[MetalImageDevice shared].commandQueue commandBuffer];
                 [commandBuffer enqueue];
                 id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:strongSelf.renderTarget.renderPassDecriptor];
-                [strongSelf renderToCommandEncoder:renderEncoder withResource:textureResource];
+                [strongSelf renderToCommandEncoder:renderEncoder withResource:resource];
                 [commandBuffer presentDrawable:drawable];
                 [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull buffer) {
-                    [[MetalImageDevice shared].textureCache cacheTexture:textureResource.texture];
+                    [[MetalImageDevice shared].textureCache cacheTexture:resource.texture];
                 }];
                 [commandBuffer commit];
             }
@@ -118,7 +117,7 @@
 }
 
 #pragma mark - Render Process
-- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageTextureResource *)resource {
+- (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageResource *)resource {
 #if DEBUG
     renderEncoder.label = NSStringFromClass([self class]);
     [renderEncoder pushDebugGroup:@"Display Draw"];

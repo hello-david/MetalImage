@@ -10,8 +10,7 @@
 #import "MetalImageProtocol.h"
 #import "MetalImageTarget.h"
 #import "MetalImageFilter.h"
-#import "MetalImageTextureResource.h"
-#import "MetalImageAudioResource.h"
+#import "MetalImageResource.h"
 
 #define kMetalImageMovieWriterCancelError [NSError errorWithDomain:@"MoiveWriterWriterError" code:-9001 userInfo:@{@"message" : @"WriterCanceled"}]
 
