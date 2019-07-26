@@ -49,9 +49,9 @@ class OSSignPostViewController: UIViewController {
         gaussianFilter.add(luminanceFilter)
         luminanceFilter.add(frameView)
         
-        let filterChainProcessBlock: MetalImageFilterBlock = {(beforeProcess, textureReousrece, filter) in
+        let filterChainProcessBlock: MetalImageFilterBlock = {(beforeFilter, textureReousrece, filter) in
             struct StaticVar { static var postId = OSSignpostID(log: .metalImage) }
-            if beforeProcess {
+            if beforeFilter {
                 StaticVar.postId = OSSignpostID(log: .metalImage)
                 os_signpost(.begin, log: .metalImage, name: "Filter", signpostID: StaticVar.postId, "b_%s", NSStringFromClass(filter.classForCoder))
                 return;
@@ -59,9 +59,9 @@ class OSSignPostViewController: UIViewController {
             os_signpost(.end, log: .metalImage, name: "Filter", signpostID: StaticVar.postId, "e_%s", NSStringFromClass(filter.classForCoder))
         }
         
-        saturationFilter.chainProcessHandle = filterChainProcessBlock
-        gaussianFilter.chainProcessHandle = filterChainProcessBlock
-        luminanceFilter.chainProcessHandle = filterChainProcessBlock
+        saturationFilter.filterChainProcessHook = filterChainProcessBlock
+        gaussianFilter.filterChainProcessHook = filterChainProcessBlock
+        luminanceFilter.filterChainProcessHook = filterChainProcessBlock
         camera.startCapture()
     }
 

@@ -40,8 +40,8 @@
         return;
     }
     
-    if (self.chainProcessHandle) {
-        self.chainProcessHandle(YES, resource, self);
+    if (self.filterChainProcessHook) {
+        self.filterChainProcessHook(YES, resource, self);
     }
     
     if ([self supportProcessRenderCommandEncoderOnly]) {
@@ -51,19 +51,16 @@
             [weakSelf renderToCommandEncoder:renderEncoder withResource:weakResource];
         }];
     } else {
-        [resource.renderProcess commitRender];// 先把之前的提交了
+        // 先把之前的提交了
+        [resource.renderProcess commitRender];
         [self renderToResource:resource];
     }
     
-    if (!self.source.haveTarget) {
-        [resource.renderProcess commitRender];
-        return;
+    if (self.filterChainProcessHook) {
+         self.filterChainProcessHook(NO, resource, self);
     }
-    
-    if (self.chainProcessHandle) {
-        self.chainProcessHandle(NO, resource, self);
-    }
-    [self send:resource withTime:time];
+
+    !self.source.haveTarget ? [resource.renderProcess commitRender] : [self send:resource withTime:time];
 }
 
 #pragma mark - Render Process

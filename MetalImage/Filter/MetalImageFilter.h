@@ -15,12 +15,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @class MetalImageFilter;
-typedef void(^MetalImageFilterBlock)(BOOL beforeProcess, MetalImageResource *resource, MetalImageFilter *filter);
+typedef void(^MetalImageFilterBlock)(BOOL beforeFilter, MetalImageResource *resource, MetalImageFilter *filter);
 
 @interface MetalImageFilter : NSObject <MetalImageSource, MetalImageTarget, MetalImageRender>
 @property (nonatomic, readonly) MetalImageSource *source;
 @property (nonatomic, readonly) MetalImageTarget *target;
-@property (nonatomic, copy, nullable) MetalImageFilterBlock chainProcessHandle;
+@property (nonatomic, copy, nullable) MetalImageFilterBlock filterChainProcessHook;
 
 - (instancetype)initWithVertexFunction:(NSString *)vertexFunction
                       fragmentFunction:(NSString *)fragmentFunction
