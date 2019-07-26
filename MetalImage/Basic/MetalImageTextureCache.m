@@ -30,7 +30,8 @@ static const void * kMetalImageTextureSpecificKey = &kMetalImageTextureSpecificK
 @implementation MetalImageTextureCache
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         _device = device;
         _textureDic = [[NSMutableDictionary alloc] init];
         _textureDescDic = [[NSMutableDictionary alloc] init];
@@ -114,10 +115,16 @@ static const void * kMetalImageTextureSpecificKey = &kMetalImageTextureSpecificK
 }
 
 - (void)freeAllTexture {
-    dispatch_sync(self.cacheQueue, ^{
+    dispatch_block_t deleteBlock = ^{
         [self.textureDic removeAllObjects];
         [self.textureDescDic removeAllObjects];
         self.lastKeyStr = nil;
-    });
+    };
+    
+    if (dispatch_get_specific(kMetalImageTextureSpecificKey) != NULL) {
+        deleteBlock();
+    } else {
+        dispatch_sync(self.cacheQueue, deleteBlock);
+    }
 }
 @end
