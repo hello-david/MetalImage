@@ -9,14 +9,13 @@
 
 @implementation MetalImageContrastFilter
 - (instancetype)init {
-    if (self = [super initWithVertexFunction:@"oneInputVertex" fragmentFunction:@"contrastFragment" library:[MetalImageDevice shared].library]) {
+    self = [super initWithVertexFunction:kMetalImageDefaultVertex
+                        fragmentFunction:@"contrastFragment"
+                                 library:[MetalImageDevice shared].library];
+    if (self) {
         _contrast = 1.0;
     }
     return self;
-}
-
-- (void)setContrast:(float)contrast {
-    _contrast = contrast;
 }
 
 - (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageResource *)resource {

@@ -195,7 +195,7 @@
     CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
     MTLPixelFormat pixelFormat = texture.pixelFormat;
     if (pixelFormat == MTLPixelFormatBGRA8Unorm || pixelFormat == MTLPixelFormatBGRA8Unorm_sRGB) {
-        bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;// BGRA
+        bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;//BGRA
     } else if (pixelFormat == MTLPixelFormatRGBA8Unorm || pixelFormat == MTLPixelFormatRGBA8Unorm_sRGB){
         bitmapInfo = kCGBitmapByteOrder32Big | kCGImageAlphaNoneSkipFirst;//ARGB
     }

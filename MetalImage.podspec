@@ -59,7 +59,10 @@ Pod::Spec.new do |s|
       
       core.source_files = 'MetalImage/MetalImage.h'
       core.resource_bundles = {
-          'MetalLibrary' => ['MetalImage/Library/*.metal']
+          'MetalLibrary' => [
+          'MetalImage/Library/*.metal',
+          'MetalImage/Resource/*'
+          ]
       }
       
       core.frameworks = "Metal", "MetalKit", "CoreVideo", "AVFoundation"

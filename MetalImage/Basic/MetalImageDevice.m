@@ -8,6 +8,8 @@
 #import "MetalImageDevice.h"
 #import "NSBundle+MetalImageBundle.h"
 
+NSString *const MetalImageBundleName = @"MetalLibrary";
+
 @interface MetalImageDevice()
 @property (nonatomic, strong) id<MTLDevice> device;
 @property (nonatomic, strong) id<MTLCommandQueue> commandQueue;
@@ -60,7 +62,7 @@
 
 - (id<MTLLibrary>)library {
     if (!_library) {
-        NSString *bundlePath = [NSBundle metalImage_bundleWithName:@"MetalLibrary"].bundlePath;
+        NSString *bundlePath = [NSBundle metalImage_bundleWithName:MetalImageBundleName].bundlePath;
         NSString *defaultMetalFile = [bundlePath stringByAppendingPathComponent:@"default.metallib"];
         NSError *error = nil;
         _library = [_device newLibraryWithFile:defaultMetalFile error:&error];

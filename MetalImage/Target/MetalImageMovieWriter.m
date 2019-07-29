@@ -59,8 +59,8 @@
     _appendImageFirst = YES;
     _haveAppedImage = NO;
     
-    _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:@"oneInputVertex"
-                                                                      fragment:@"passthroughFragment"
+    _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:kMetalImageDefaultVertex
+                                                                      fragment:kMetalImageDefaultFragment
                                                                    enableBlend:NO];
     _renderTarget.size = _renderSize;
     

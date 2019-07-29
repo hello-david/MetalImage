@@ -12,12 +12,12 @@
 @end
 
 @implementation MetalImageCropFilter
-- (instancetype)init {
-    return [self initWithVertexFunction:@"oneInputVertex" fragmentFunction:@"passthroughFragment" library:[MetalImageDevice shared].library];
-}
 
 - (instancetype)initWithCropRegin:(CGRect)cropRegion {
-    if (self = [super initWithVertexFunction:@"oneInputVertex" fragmentFunction:@"passthroughFragment" library:[MetalImageDevice shared].library]) {
+    self = [super initWithVertexFunction:kMetalImageDefaultVertex
+                        fragmentFunction:kMetalImageDefaultFragment
+                                 library:[MetalImageDevice shared].library];
+    if (self) {
         self.cropRegion = cropRegion;
     }
     return self;

@@ -9,14 +9,13 @@
 
 @implementation MetalImageHueFilter
 - (instancetype)init {
-    if (self = [super initWithVertexFunction:@"oneInputVertex" fragmentFunction:@"hueFragment" library:[MetalImageDevice shared].library]) {
+    self = [super initWithVertexFunction:kMetalImageDefaultVertex
+                        fragmentFunction:@"hueFragment"
+                                 library:[MetalImageDevice shared].library];
+    if (self) {
         _hue = 0.0;
     }
     return self;
-}
-
-- (void)setHue:(float)hue {
-    _hue = hue;
 }
 
 - (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(MetalImageResource *)resource {

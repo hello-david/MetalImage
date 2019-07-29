@@ -38,8 +38,8 @@
     [self.layer addSublayer:_metalLayer];
     
     _displayQueue = dispatch_queue_create("com.MetalImage.DisplayView", DISPATCH_QUEUE_SERIAL);
-    _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:@"oneInputVertex"
-                                                                      fragment:@"passthroughFragment"];
+    _renderTarget = [[MetalImageTarget alloc] initWithDefaultLibraryWithVertex:kMetalImageDefaultVertex
+                                                                      fragment:kMetalImageDefaultFragment];
     _renderTarget.fillMode = MetalImageContentModeScaleAspectFill;
     _renderTarget.size = CGSizeMake(self.metalLayer.frame.size.width * [UIScreen mainScreen].scale,
                                     self.metalLayer.frame.size.height * [UIScreen mainScreen].scale);

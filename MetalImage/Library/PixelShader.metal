@@ -95,11 +95,12 @@ fragment float4 hueFragment(SingleInputVertexIO fragmentInput [[stage_in]],
 
 #pragma mark - 颜色查找表
 fragment float4 lookUpTableFragment(SingleInputVertexIO fragmentInput [[stage_in]],
-                                    constant float &intensity [[buffer(2)]],
-                                    constant float2 &lutSize [[buffer(3)]],
+                                    constant float &sampleStep [[buffer(2)]],
+                                    constant float &intensity [[buffer(3)]],
                                     texture2d<float> inputTexture [[texture(0)]],
                                     texture2d<float> lutTexture [[texture(1)]]) {
     constexpr sampler quadSampler;
     float4 textureColor = inputTexture.sample(quadSampler, fragmentInput.textureCoordinate);
+    
     return textureColor;
 }

@@ -12,7 +12,13 @@
 #import <MetalKit/MTKTextureLoader.h>
 #import "MetalImageTextureCache.h"
 
+#define METAL_SHADER_STRING(text)   @ #text
+#define kMetalImageDefaultVertex    @"oneInputVertex"
+#define kMetalImageDefaultFragment  @"passthroughFragment"
+
 NS_ASSUME_NONNULL_BEGIN
+
+extern NSString* const MetalImageBundleName;
 
 @interface MetalImageDevice : NSObject
 @property (nonatomic, readonly) id<MTLDevice> device;

@@ -18,7 +18,10 @@ typedef struct MetalImageSharpenFilterArg {
 
 @implementation MetalImageSharpenFilter
 - (instancetype)init {
-    if (self = [super initWithVertexFunction:@"sharpenVertex" fragmentFunction:@"sharpenFragment" library:[MetalImageDevice shared].library]) {
+    self = [super initWithVertexFunction:@"sharpenVertex"
+                        fragmentFunction:@"sharpenFragment"
+                                 library:[MetalImageDevice shared].library];
+    if (self) {
         _sharpenArg.sharpenss = 0.0;
         _sharpenArg.imageHeightFactor = 0.0;// 单位像素高
         _sharpenArg.imageWidthFactor = 0.0;// 单位像素宽

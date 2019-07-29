@@ -17,6 +17,7 @@
         bundleName = [bundleName componentsSeparatedByString:@".bundle"].firstObject;
     }
     
+    // 兼容cocoapods framework方式引入的时候Bundle地址
     NSURL *associateBundleURL = [[NSBundle mainBundle] URLForResource:bundleName withExtension:@"bundle"];
     if (!associateBundleURL) {
         associateBundleURL = [[NSBundle mainBundle] URLForResource:@"Frameworks" withExtension:nil];

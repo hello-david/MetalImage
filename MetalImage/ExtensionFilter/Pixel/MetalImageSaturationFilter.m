@@ -8,14 +8,13 @@
 #import "MetalImageSaturationFilter.h"
 @implementation MetalImageSaturationFilter
 - (instancetype)init {
-    if (self = [super initWithVertexFunction:@"oneInputVertex" fragmentFunction:@"saturationFragment" library:[MetalImageDevice shared].library]) {
+    self = [super initWithVertexFunction:kMetalImageDefaultVertex
+                        fragmentFunction:@"saturationFragment"
+                                 library:[MetalImageDevice shared].library];
+    if (self) {
         _saturation = 1.0;
     }
     return self;
-}
-
-- (void)setSaturation:(float)saturation {
-    _saturation = saturation;
 }
 
 - (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(nonnull MetalImageResource *)resource {

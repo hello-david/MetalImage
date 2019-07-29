@@ -12,6 +12,7 @@
 #import "FilterViewController.h"
 #import "MPSFilterViewController.h"
 #import "MetalImageDemo-Swift.h"
+#import "NSBundle+MetalImageBundle.h"
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -29,7 +30,7 @@
 - (NSArray<NSArray *> *)dataSource {
     if (!_dataSource) {
         _dataSource = @[@[@"相机/图片显示", @"录制", @"性能调试"],
-                        @[@"饱和度", @"对比度", @"亮度", @"色调", @"锐化", @"高斯模糊", @"毛玻璃", @"边缘检测"],
+                        @[@"饱和度", @"对比度", @"亮度", @"色调", @"锐化", @"高斯模糊", @"毛玻璃", @"边缘检测", @"LUT"],
                         @[@"边缘检测", @"高斯模糊"]];
     }
     return _dataSource;
@@ -171,6 +172,18 @@
                     -1, 0, 1
                 };
                 filter = [MetalImageConvolutionFilter filterWithKernelWidth:3 kernelHeight:3 weights:weights];
+                usePicture = YES;
+                break;
+            }
+            case 8: {
+                NSString *bundlePath = [NSBundle metalImage_bundleWithName:MetalImageBundleName].bundlePath;
+                NSString *filePath = [bundlePath stringByAppendingPathComponent:@"64_effect.png"];
+                UIImage *lutImage = [UIImage imageWithContentsOfFile:filePath];
+                id<MTLTexture> lutTexture = [MetalImageTexture textureFromImage:lutImage device:[MetalImageDevice shared].device];
+                filter = [[MetalImageLookUpTableFilter alloc] initWithLutTexture:lutTexture sampleStep:64];
+                effectPropertyName = @[@"intensity"];
+                FileterNumericalValue value1 = {-1.0, 0, 1.0};
+                values = @[[NSValue value:&value1 withObjCType:@encode(FileterNumericalValue)]];
                 usePicture = YES;
                 break;
             }

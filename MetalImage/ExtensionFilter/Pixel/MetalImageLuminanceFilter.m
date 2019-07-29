@@ -9,14 +9,13 @@
 
 @implementation MetalImageLuminanceFilter
 - (instancetype)init {
-    if (self = [super initWithVertexFunction:@"oneInputVertex" fragmentFunction:@"luminanceRangeFragment" library:[MetalImageDevice shared].library]) {
+    self = [super initWithVertexFunction:kMetalImageDefaultVertex
+                        fragmentFunction:@"luminanceRangeFragment"
+                                 library:[MetalImageDevice shared].library];
+    if (self) {
         _rangeReductionFactor = 0.0;
     }
     return self;
-}
-
-- (void)setRangeReductionFactor:(float)rangeReductionFactor {
-    _rangeReductionFactor = rangeReductionFactor;
 }
 
 - (void)renderToCommandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder withResource:(nonnull MetalImageResource *)resource {

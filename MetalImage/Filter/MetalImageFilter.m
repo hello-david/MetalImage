@@ -6,6 +6,7 @@
 //
 
 #import "MetalImageFilter.h"
+
 @interface MetalImageFilter()
 @property (nonatomic, strong) MetalImageSource *source;
 @property (nonatomic, strong) MetalImageTarget *target;
@@ -13,7 +14,9 @@
 
 @implementation MetalImageFilter
 - (instancetype)init {
-    return [self initWithVertexFunction:@"oneInputVertex" fragmentFunction:@"passthroughFragment" library:[MetalImageDevice shared].library];
+    return [self initWithVertexFunction:kMetalImageDefaultVertex
+                       fragmentFunction:kMetalImageDefaultFragment
+                                library:[MetalImageDevice shared].library];
 }
 
 - (instancetype)initWithVertexFunction:(NSString *)vertexFunction

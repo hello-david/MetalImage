@@ -27,7 +27,8 @@
       "source_files": "MetalImage/MetalImage.h",
       "resource_bundles": {
         "MetalLibrary": [
-          "MetalImage/Library/*.metal"
+          "MetalImage/Library/*.metal",
+          "MetalImage/Resource/*"
         ]
       },
       "frameworks": [
