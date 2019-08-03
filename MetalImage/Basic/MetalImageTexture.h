@@ -75,7 +75,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)textureCVPixelBufferProcess:(id<MTLTexture>)texture process:(void(^)(CVPixelBufferRef pixelBuffer))process;
 + (UIImage *)imageFromMTLTexture:(id<MTLTexture>)texture;
-+ (id<MTLTexture>)textureFromImage:(UIImage *)image device:(id<MTLDevice>)device;
 @end
 
 NS_ASSUME_NONNULL_END

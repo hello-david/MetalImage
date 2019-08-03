@@ -177,12 +177,12 @@
             }
             case 8: {
                 NSString *bundlePath = [NSBundle metalImage_bundleWithName:MetalImageBundleName].bundlePath;
-                NSString *filePath = [bundlePath stringByAppendingPathComponent:@"64_effect.png"];
+                NSString *filePath = [bundlePath stringByAppendingPathComponent:@"8*8_effect.png"];
                 UIImage *lutImage = [UIImage imageWithContentsOfFile:filePath];
-                id<MTLTexture> lutTexture = [MetalImageTexture textureFromImage:lutImage device:[MetalImageDevice shared].device];
-                filter = [[MetalImageLookUpTableFilter alloc] initWithLutTexture:lutTexture sampleStep:64];
+                id<MTLTexture> lutTexture = [[MetalImageDevice shared].textureLoader newTextureWithCGImage:lutImage.CGImage options:nil error:nil];
+                filter = [[MetalImageLookUpTableFilter alloc] initWithLutTexture:lutTexture type:MetalImageLUTFilterType8_8];
                 effectPropertyName = @[@"intensity"];
-                FileterNumericalValue value1 = {-1.0, 0, 1.0};
+                FileterNumericalValue value1 = {0.0, 1.0, 0.0};
                 values = @[[NSValue value:&value1 withObjCType:@encode(FileterNumericalValue)]];
                 usePicture = YES;
                 break;

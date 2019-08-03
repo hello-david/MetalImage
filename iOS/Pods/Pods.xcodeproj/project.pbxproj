@@ -16,26 +16,25 @@
 		15CD0EA4B3F79582AFC1C451F242A18E /* MetalImageMovieWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B6E3369C050EA7B6C3968CA669F53C1 /* MetalImageMovieWriter.m */; };
 		22100BFA0C8349058852D3F549AF8FF0 /* MetalImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E3F3743C921265E090ECEE646B8FA101 /* MetalImageView.m */; };
 		22FE4F66832AC2BCDE5388944628A4FB /* MetalImageSaturationFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE50A1AC5A40DED34430EFAD264AA5DC /* MetalImageSaturationFilter.m */; };
-		2447C28A5BA1F16C22469FBC73714C86 /* 16_effect.png in Resources */ = {isa = PBXBuildFile; fileRef = 6CCF2700863109A491A21F06497739FE /* 16_effect.png */; };
 		273896D94C3BC0BB893602C4ED29F97C /* MetalImageResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7AF1D48A8A39A2A8454469E3DBEAB0 /* MetalImageResource.m */; };
 		27D9C45E64FD7006560077CF077CB6E1 /* MetalImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 81A8372ADE05158752BECD6EA4519E92 /* MetalImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2A5311DF063B3BD05FD560BDE3196771 /* MetalImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E26B64CC46C1575423BAC7016061BA /* MetalImageFilter.m */; };
 		2BA7459E247743D897BE6E0C30F8E06A /* MetalImageTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB77634A454A8DA69448576D42E7EA9 /* MetalImageTarget.m */; };
-		2C40247F416EF057B27D166033DE9E91 /* Basic.metal in Resources */ = {isa = PBXBuildFile; fileRef = 56E855F86EAC2FDAE23D97AADFD4EAC0 /* Basic.metal */; };
-		2CC13C8625315F70308204D355071434 /* PixelShader.metal in Resources */ = {isa = PBXBuildFile; fileRef = E860D1887A5A9971F4AC4627762CB8BB /* PixelShader.metal */; };
 		2DCF11039218B87AFCA4F19CB1B60D4B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FE03E819F3A1BB451A7E9AC0DB921B /* AVFoundation.framework */; };
+		30DC226AC2525D10338E24B11EAA3372 /* 8*8_effect.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A6B9B755136AE34CF0D60F92833EABD /* 8*8_effect.png */; };
 		32E9104D2F1BDD4CAA0082E0C64CFC5E /* MetalImageiOSBlurFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CA8CF87C0FD3BF312A2B91FE4ED288E /* MetalImageiOSBlurFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		390CC97500A3320510C663F0CA6FD7D2 /* MetalImageLookUpTableFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = A98EE02B8A5BD9DC3E63522B89CE2828 /* MetalImageLookUpTableFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3B06DB8D9F6A15C26ABC6120C9228146 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA1DDC85634013C694D5A08F1B933FF /* Foundation.framework */; };
 		3BA95CAB69C65921B2BBEA4035270C42 /* MetalImageTextureCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E6C41B1301697AA221894831242457 /* MetalImageTextureCache.m */; };
 		3CABE52DE37A01D1A9824A6F8E57F7C9 /* MetalImageContrastFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 06172F2174BFD6CA74E7A84D29AD0E7B /* MetalImageContrastFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		40D05C90607527F7AE5044DABD283953 /* 64_origin.png in Resources */ = {isa = PBXBuildFile; fileRef = BDBE7420BFB9A7EEBE365622BB267DE0 /* 64_origin.png */; };
 		40F930000DA7A9DDC0302CF9C38FF6B4 /* MetalImageResource.h in Headers */ = {isa = PBXBuildFile; fileRef = C50354C335DE3D7685BCD3C755E0000C /* MetalImageResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		425A1AE8F9E9EF190BCDD49282C9910A /* MetalImageSharpenFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B81BDDD74A3ADE47DB5E58411066E7 /* MetalImageSharpenFilter.m */; };
 		464E9A98248C45CE76F842243C275CF7 /* MetalImagePicture.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AB2535C6C7EBF46BDB3039F7BCF031F /* MetalImagePicture.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4B753D044F94CB106F1EE23EC9803C22 /* MetalImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 9531DF35447EEFF2070BC5127159D7B1 /* MetalImageSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C0D829FB416ACA84D4F5AA5E0CC5287 /* MetalImageHueFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B97A0918B3615D49DDFF7864810C5A2 /* MetalImageHueFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D00A4709D8F9DCD9D500751A555A383 /* MetalImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F338F03A4268653166A0FB678AE629E6 /* MetalImageSource.m */; };
+		50B5E10D38A8079AB43E64EE56BC5444 /* 8*8_origin.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B29384FD1BF35B020F593932DD38F35 /* 8*8_origin.png */; };
+		544C5C247CDAE2ABFE6BF085E88C0D8C /* 4*4_origin.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A86B6E921BE67834DDF3531B684E966 /* 4*4_origin.png */; };
 		549FB4C7D9A9020865A239A725A1FB58 /* MetalImageTextureCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 95DFC34E26A02DD8BC313C6D1DA59DFA /* MetalImageTextureCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		57136BFA1ECB16D4C18617F94981E91B /* MetalImageProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 49AB0F8A0117827347B0ECDCD87725DA /* MetalImageProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		57756205BA85A4174266D9B066C53D42 /* MetalImageDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 846DEE81FD299843F2406D5AFA02C686 /* MetalImageDevice.m */; };
@@ -47,16 +46,16 @@
 		60FD8AF011C12F4CE36730B59EBCDA41 /* MetalImageTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = A4257A40322AAD6A179C2F2305E62920 /* MetalImageTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6DA6DD9847868F6D07F987900112765A /* MetalImageCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 78F3EEF0A5BBA3226E1E48F67DB2CFBD /* MetalImageCamera.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		78F3DC88B3F471C9450816EE8FF9371B /* MetalImageRenderProcess.h in Headers */ = {isa = PBXBuildFile; fileRef = 30E0244ED81F13252F8F2688C7B83714 /* MetalImageRenderProcess.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		876D414CB504FC00A5F055AC18330961 /* ConvolutionShader.metal in Resources */ = {isa = PBXBuildFile; fileRef = 3BD570470398B15DA36A50B181996A73 /* ConvolutionShader.metal */; };
 		8D50CA1D59731A1F2B9B76069DF2C302 /* MetalImageCropFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D6880BE41D909ED1A890F2DE5A41445 /* MetalImageCropFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9049D103EA687233E96F2F9A7A408F61 /* ConvolutionShader.metal in Resources */ = {isa = PBXBuildFile; fileRef = 35507692D4076BC491F3A70EE853C7E8 /* ConvolutionShader.metal */; };
 		969AF43704802A43BA9305C8FA720B37 /* MetalImageGaussianBlurFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FDA1AA007E3008752DE24895C87C014F /* MetalImageGaussianBlurFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D9C1B059C41DE12E9D61602EE69203F /* PixelShader.metal in Resources */ = {isa = PBXBuildFile; fileRef = E0D47233334B4E0B609898739502E562 /* PixelShader.metal */; };
 		A12047CBF8D5FF81A0418D07999BE7B5 /* MetalImageTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = CC9630540028BE5C2C61C207B946CF88 /* MetalImageTexture.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A22FC00CB59CF01DA039A2047B32D564 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C812723820EB47EB5C797FF1FD7DBF52 /* CoreVideo.framework */; };
 		A9E4D5F872902DBCE2DAEB5980CB7645 /* MetalImageGaussianBlurFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7CF193116E21F9EEA5418E9D287C9B /* MetalImageGaussianBlurFilter.m */; };
 		B10120D0F93CF100FA7A78C65F1EB042 /* MetalImageDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 223DBC4002D728D618BE311DCCE1FE61 /* MetalImageDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B82CA65D2DE1343A39EC94B5BED38838 /* MetalImageTransformFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A49E284AF8A5BA3D6B73B6EC717B66C /* MetalImageTransformFilter.m */; };
 		B997A467E03BF5807313AD2C6E9A3CD8 /* MetalImageLookUpTableFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C68065630C279A4E1A1906E0A567A9B /* MetalImageLookUpTableFilter.m */; };
-		BE705F0CE4FD120A1A0D85DA21BA3019 /* 64_effect.png in Resources */ = {isa = PBXBuildFile; fileRef = DBBFD83B5E46770686FCE64A7CD64715 /* 64_effect.png */; };
 		C00D289D5B86B890CFCE3AE3D668A551 /* MetalImageRenderProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = BF38EB921C2245EB06DBEEDC4A05A43F /* MetalImageRenderProcess.m */; };
 		C2BFD9D87785D8BEEE0965E5373E3D91 /* MetalImageCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C292878279234EB6C38EB78DA422208 /* MetalImageCamera.m */; };
 		C531E96B3D040A14B34B87B5942E8388 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D34DBA0731AB3D46CFAE3C38D23B50 /* MetalKit.framework */; };
@@ -66,6 +65,7 @@
 		CF0639B0AED546650CF18BA813F4494B /* MetalLibrary.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6AA4AA151F302BA367350B6AF6DD064D /* MetalLibrary.bundle */; };
 		D4B917D0E76FA330CA731DFA23CF6A31 /* MetalImageHueFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C347BF0BC0A637F5DBB176A5741B1340 /* MetalImageHueFilter.m */; };
 		D827B44ADF57C37A7D277126741D958A /* MetalImageContrastFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF69423A2A92432CA642847DD7A2BFA /* MetalImageContrastFilter.m */; };
+		E11E83BAEEF63C9B8639B6BF9681B798 /* Basic.metal in Resources */ = {isa = PBXBuildFile; fileRef = CCED75E76808F7262D7EDDF7E0E5C670 /* Basic.metal */; };
 		E244BCE2403052AD3D2B962EF64A12CD /* MetalImageSaturationFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 7A1DB7B75913B66C377835F994D9332E /* MetalImageSaturationFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E2AEC65A35C68C63F79FE7A3E2F7F9F2 /* MetalImageTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = E30F7FD311FC273E346C0769A483C3B7 /* MetalImageTexture.m */; };
 		E731D9952CC3F0461C474F73175FC095 /* MetalImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 96789A11AC723D22D6464C5F06214DAC /* MetalImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -73,7 +73,6 @@
 		EE4BF8721B0A649F70B544041534F0AC /* MetalImageSharpenFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = F6C0344E1A3D4C114F2EBB37064775F9 /* MetalImageSharpenFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EFA564095FC52C9D2FDBB6FCF4068372 /* MetalImage-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A1D51D7D824FA6AA6E3D34C4ED79A359 /* MetalImage-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FBDB0CF70D5FAF5402FF0A416E360112 /* NSBundle+MetalImageBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = E902183F69B7EBA399C6A773B6B40DBB /* NSBundle+MetalImageBundle.m */; };
-		FDE370CC5E9C9F30F5B73AD25E3CC7E7 /* 16_origin.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C22163C2D497FCB26CB56956D4FF962 /* 16_origin.png */; };
 		FE25CE42B38787979AD7C21760ED78D0 /* MetalImageCropFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65CD3A5829B1E36E9317408757E45B14 /* MetalImageCropFilter.m */; };
 /* End PBXBuildFile section */
 
@@ -98,7 +97,6 @@
 		06172F2174BFD6CA74E7A84D29AD0E7B /* MetalImageContrastFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MetalImageContrastFilter.h; sourceTree = "<group>"; };
 		0AB2535C6C7EBF46BDB3039F7BCF031F /* MetalImagePicture.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MetalImagePicture.h; path = MetalImage/Source/MetalImagePicture.h; sourceTree = "<group>"; };
 		0AF69423A2A92432CA642847DD7A2BFA /* MetalImageContrastFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MetalImageContrastFilter.m; sourceTree = "<group>"; };
-		0C22163C2D497FCB26CB56956D4FF962 /* 16_origin.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = 16_origin.png; sourceTree = "<group>"; };
 		0D364FC310C2A01429FD74000BC6E0AD /* Pods-MetalImageDemo-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MetalImageDemo-umbrella.h"; sourceTree = "<group>"; };
 		11FE03E819F3A1BB451A7E9AC0DB921B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		13C6187AC54E9D260900B89F058DA81F /* Pods-MetalImageDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MetalImageDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -107,11 +105,13 @@
 		1F2FA5BF30B8FB04E09324B9EB1B1C05 /* Pods-MetalImageDemo-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-MetalImageDemo-acknowledgements.markdown"; sourceTree = "<group>"; };
 		223DBC4002D728D618BE311DCCE1FE61 /* MetalImageDevice.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MetalImageDevice.h; path = MetalImage/Basic/MetalImageDevice.h; sourceTree = "<group>"; };
 		27C6D61130DDAA94A6604A9F7AF0C2F4 /* MetalImageiOSBlurFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MetalImageiOSBlurFilter.m; sourceTree = "<group>"; };
+		2A86B6E921BE67834DDF3531B684E966 /* 4*4_origin.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "4*4_origin.png"; sourceTree = "<group>"; };
 		2D5CADA349827552D7E3D47038F1EDCD /* Pods-MetalImageDemo-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-MetalImageDemo-Info.plist"; sourceTree = "<group>"; };
 		30E0244ED81F13252F8F2688C7B83714 /* MetalImageRenderProcess.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MetalImageRenderProcess.h; path = MetalImage/Basic/MetalImageRenderProcess.h; sourceTree = "<group>"; };
+		35507692D4076BC491F3A70EE853C7E8 /* ConvolutionShader.metal */ = {isa = PBXFileReference; includeInIndex = 1; path = ConvolutionShader.metal; sourceTree = "<group>"; };
+		3A6B9B755136AE34CF0D60F92833EABD /* 8*8_effect.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "8*8_effect.png"; sourceTree = "<group>"; };
 		3B97A0918B3615D49DDFF7864810C5A2 /* MetalImageHueFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MetalImageHueFilter.h; sourceTree = "<group>"; };
 		3BB77634A454A8DA69448576D42E7EA9 /* MetalImageTarget.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MetalImageTarget.m; path = MetalImage/Target/MetalImageTarget.m; sourceTree = "<group>"; };
-		3BD570470398B15DA36A50B181996A73 /* ConvolutionShader.metal */ = {isa = PBXFileReference; includeInIndex = 1; path = ConvolutionShader.metal; sourceTree = "<group>"; };
 		3F8C78EBB7BCBC229CBAC78B896938E6 /* MetalImage-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MetalImage-prefix.pch"; sourceTree = "<group>"; };
 		49AB0F8A0117827347B0ECDCD87725DA /* MetalImageProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MetalImageProtocol.h; path = MetalImage/Basic/MetalImageProtocol.h; sourceTree = "<group>"; };
 		4C3C2E490EBE2EBA10CCC65626AAB572 /* MetalImageLuminanceFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MetalImageLuminanceFilter.h; sourceTree = "<group>"; };
@@ -120,18 +120,17 @@
 		4E5CA88D9B1859FB537DCA0D5B52472D /* MetalImageTransformFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MetalImageTransformFilter.h; sourceTree = "<group>"; };
 		4F69D6BC0A75ED54AF9E6D2058616C8A /* Pods-MetalImageDemo-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MetalImageDemo-dummy.m"; sourceTree = "<group>"; };
 		50D34DBA0731AB3D46CFAE3C38D23B50 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = DEVELOPER_DIR; };
-		56E855F86EAC2FDAE23D97AADFD4EAC0 /* Basic.metal */ = {isa = PBXFileReference; includeInIndex = 1; path = Basic.metal; sourceTree = "<group>"; };
 		5C292878279234EB6C38EB78DA422208 /* MetalImageCamera.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MetalImageCamera.m; path = MetalImage/Source/MetalImageCamera.m; sourceTree = "<group>"; };
 		65CD3A5829B1E36E9317408757E45B14 /* MetalImageCropFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MetalImageCropFilter.m; sourceTree = "<group>"; };
 		67E7A21D90EB9B6299CDA983A651ED63 /* MetalImageConvolutionFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MetalImageConvolutionFilter.h; sourceTree = "<group>"; };
 		6A057540EF60245A2B60D84C97B3B9A5 /* MetalImageMovieWriter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MetalImageMovieWriter.h; path = MetalImage/Target/MetalImageMovieWriter.h; sourceTree = "<group>"; };
 		6AA4AA151F302BA367350B6AF6DD064D /* MetalLibrary.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = MetalLibrary.bundle; path = "MetalImage-MetalLibrary.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B6E3369C050EA7B6C3968CA669F53C1 /* MetalImageMovieWriter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MetalImageMovieWriter.m; path = MetalImage/Target/MetalImageMovieWriter.m; sourceTree = "<group>"; };
-		6CCF2700863109A491A21F06497739FE /* 16_effect.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = 16_effect.png; sourceTree = "<group>"; };
 		6F7CF193116E21F9EEA5418E9D287C9B /* MetalImageGaussianBlurFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MetalImageGaussianBlurFilter.m; sourceTree = "<group>"; };
 		78F3EEF0A5BBA3226E1E48F67DB2CFBD /* MetalImageCamera.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MetalImageCamera.h; path = MetalImage/Source/MetalImageCamera.h; sourceTree = "<group>"; };
 		7A1DB7B75913B66C377835F994D9332E /* MetalImageSaturationFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MetalImageSaturationFilter.h; sourceTree = "<group>"; };
 		7A49E284AF8A5BA3D6B73B6EC717B66C /* MetalImageTransformFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MetalImageTransformFilter.m; sourceTree = "<group>"; };
+		7B29384FD1BF35B020F593932DD38F35 /* 8*8_origin.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "8*8_origin.png"; sourceTree = "<group>"; };
 		7D7AF1D48A8A39A2A8454469E3DBEAB0 /* MetalImageResource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MetalImageResource.m; path = MetalImage/Basic/MetalImageResource.m; sourceTree = "<group>"; };
 		81A8372ADE05158752BECD6EA4519E92 /* MetalImage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MetalImage.h; path = MetalImage/MetalImage.h; sourceTree = "<group>"; };
 		846DEE81FD299843F2406D5AFA02C686 /* MetalImageDevice.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MetalImageDevice.m; path = MetalImage/Basic/MetalImageDevice.m; sourceTree = "<group>"; };
@@ -156,7 +155,6 @@
 		A54D27E402C6E9D44C0BC2F6BF5184E2 /* Pods-MetalImageDemo.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-MetalImageDemo.modulemap"; sourceTree = "<group>"; };
 		A66CB0F514EBB607C816E1E00F68479F /* MetalImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = MetalImage.framework; path = MetalImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A98EE02B8A5BD9DC3E63522B89CE2828 /* MetalImageLookUpTableFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MetalImageLookUpTableFilter.h; sourceTree = "<group>"; };
-		BDBE7420BFB9A7EEBE365622BB267DE0 /* 64_origin.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = 64_origin.png; sourceTree = "<group>"; };
 		BDFD920C83F62F141D23AE9C89114A84 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Metal.framework; sourceTree = DEVELOPER_DIR; };
 		BEA1DDC85634013C694D5A08F1B933FF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		BF38EB921C2245EB06DBEEDC4A05A43F /* MetalImageRenderProcess.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MetalImageRenderProcess.m; path = MetalImage/Basic/MetalImageRenderProcess.m; sourceTree = "<group>"; };
@@ -166,11 +164,11 @@
 		C50354C335DE3D7685BCD3C755E0000C /* MetalImageResource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MetalImageResource.h; path = MetalImage/Basic/MetalImageResource.h; sourceTree = "<group>"; };
 		C812723820EB47EB5C797FF1FD7DBF52 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreVideo.framework; sourceTree = DEVELOPER_DIR; };
 		CC9630540028BE5C2C61C207B946CF88 /* MetalImageTexture.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MetalImageTexture.h; path = MetalImage/Basic/MetalImageTexture.h; sourceTree = "<group>"; };
-		DBBFD83B5E46770686FCE64A7CD64715 /* 64_effect.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = 64_effect.png; sourceTree = "<group>"; };
+		CCED75E76808F7262D7EDDF7E0E5C670 /* Basic.metal */ = {isa = PBXFileReference; includeInIndex = 1; path = Basic.metal; sourceTree = "<group>"; };
+		E0D47233334B4E0B609898739502E562 /* PixelShader.metal */ = {isa = PBXFileReference; includeInIndex = 1; path = PixelShader.metal; sourceTree = "<group>"; };
 		E30F7FD311FC273E346C0769A483C3B7 /* MetalImageTexture.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MetalImageTexture.m; path = MetalImage/Basic/MetalImageTexture.m; sourceTree = "<group>"; };
 		E3E6C41B1301697AA221894831242457 /* MetalImageTextureCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MetalImageTextureCache.m; path = MetalImage/Basic/MetalImageTextureCache.m; sourceTree = "<group>"; };
 		E3F3743C921265E090ECEE646B8FA101 /* MetalImageView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MetalImageView.m; path = MetalImage/Target/MetalImageView.m; sourceTree = "<group>"; };
-		E860D1887A5A9971F4AC4627762CB8BB /* PixelShader.metal */ = {isa = PBXFileReference; includeInIndex = 1; path = PixelShader.metal; sourceTree = "<group>"; };
 		E8AD29A66612881F9A29C90FBADF95E0 /* MetalImage-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "MetalImage-Info.plist"; sourceTree = "<group>"; };
 		E902183F69B7EBA399C6A773B6B40DBB /* NSBundle+MetalImageBundle.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSBundle+MetalImageBundle.m"; path = "MetalImage/Category/NSBundle+MetalImageBundle.m"; sourceTree = "<group>"; };
 		F338F03A4268653166A0FB678AE629E6 /* MetalImageSource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MetalImageSource.m; path = MetalImage/Source/MetalImageSource.m; sourceTree = "<group>"; };
@@ -242,17 +240,6 @@
 			name = Category;
 			sourceTree = "<group>";
 		};
-		1981E8E1E4EFAD05FC4EE583710BCD8A /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				56E855F86EAC2FDAE23D97AADFD4EAC0 /* Basic.metal */,
-				3BD570470398B15DA36A50B181996A73 /* ConvolutionShader.metal */,
-				E860D1887A5A9971F4AC4627762CB8BB /* PixelShader.metal */,
-			);
-			name = Library;
-			path = MetalImage/Library;
-			sourceTree = "<group>";
-		};
 		1AC7E99370355045DA54470C8D817843 /* Affine Transformation */ = {
 			isa = PBXGroup;
 			children = (
@@ -263,15 +250,6 @@
 			);
 			name = "Affine Transformation";
 			path = "MetalImage/ExtensionFilter/Affine Transformation";
-			sourceTree = "<group>";
-		};
-		2750E00F74E4A8C3D24B7C3591C605BA /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				1981E8E1E4EFAD05FC4EE583710BCD8A /* Library */,
-				EF85CE76984B91075CE997315E71D43B /* Resource */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		2EFA226BDF2498A40103204D8263104B /* Targets Support Files */ = {
@@ -368,6 +346,17 @@
 			path = "iOS/Pods/Target Support Files/MetalImage";
 			sourceTree = "<group>";
 		};
+		9CE944FE940D35F5CE3F73148FC59288 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				2A86B6E921BE67834DDF3531B684E966 /* 4*4_origin.png */,
+				3A6B9B755136AE34CF0D60F92833EABD /* 8*8_effect.png */,
+				7B29384FD1BF35B020F593932DD38F35 /* 8*8_origin.png */,
+			);
+			name = Resource;
+			path = MetalImage/Resource;
+			sourceTree = "<group>";
+		};
 		A9C2C50AC47F130B4369F3691F965CB8 /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -375,7 +364,7 @@
 				413348835A03A3CFE53D23172B82743A /* Basic */,
 				16A8901036C46FDC5D45FE0BC87CC11A /* Category */,
 				01C9238622A054A29CD37C2A40CD15FB /* Filter */,
-				2750E00F74E4A8C3D24B7C3591C605BA /* Resources */,
+				B41E5298DA3DD504F3DEE1CAE9AF8248 /* Resources */,
 				AB338B38CA755A02101A1969254FD219 /* Source */,
 				6581EBFEB3BA6FDCA6BF6CD93AC2A53B /* Target */,
 			);
@@ -393,6 +382,26 @@
 				F338F03A4268653166A0FB678AE629E6 /* MetalImageSource.m */,
 			);
 			name = Source;
+			sourceTree = "<group>";
+		};
+		B228EACC4B454A5C8B1992C45635EEF6 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				CCED75E76808F7262D7EDDF7E0E5C670 /* Basic.metal */,
+				35507692D4076BC491F3A70EE853C7E8 /* ConvolutionShader.metal */,
+				E0D47233334B4E0B609898739502E562 /* PixelShader.metal */,
+			);
+			name = Library;
+			path = MetalImage/Library;
+			sourceTree = "<group>";
+		};
+		B41E5298DA3DD504F3DEE1CAE9AF8248 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B228EACC4B454A5C8B1992C45635EEF6 /* Library */,
+				9CE944FE940D35F5CE3F73148FC59288 /* Resource */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		B63765EAD299C5DFC6A62D289DB9F1CF /* Composite */ = {
@@ -463,18 +472,6 @@
 				1BEE67AD89958001EEE9FF52DBD1DFC2 /* Pods_MetalImageDemo.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		EF85CE76984B91075CE997315E71D43B /* Resource */ = {
-			isa = PBXGroup;
-			children = (
-				6CCF2700863109A491A21F06497739FE /* 16_effect.png */,
-				0C22163C2D497FCB26CB56956D4FF962 /* 16_origin.png */,
-				DBBFD83B5E46770686FCE64A7CD64715 /* 64_effect.png */,
-				BDBE7420BFB9A7EEBE365622BB267DE0 /* 64_origin.png */,
-			);
-			name = Resource;
-			path = MetalImage/Resource;
 			sourceTree = "<group>";
 		};
 		FC5D4E78795CB7C7DC0946394B992733 /* Pixel */ = {
@@ -549,7 +546,7 @@
 			buildPhases = (
 				2D5DC8497C728DE8075E9A46712E18ED /* Sources */,
 				CBC11640481F9088B4466F0E64DE01D0 /* Frameworks */,
-				DD4D8C261AACB79D9913B4C1D5A38EAC /* Resources */,
+				40E9B17A92CD9412B7783A23D83AA23A /* Resources */,
 			);
 			buildRules = (
 			);
@@ -635,24 +632,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		40E9B17A92CD9412B7783A23D83AA23A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				544C5C247CDAE2ABFE6BF085E88C0D8C /* 4*4_origin.png in Resources */,
+				30DC226AC2525D10338E24B11EAA3372 /* 8*8_effect.png in Resources */,
+				50B5E10D38A8079AB43E64EE56BC5444 /* 8*8_origin.png in Resources */,
+				E11E83BAEEF63C9B8639B6BF9681B798 /* Basic.metal in Resources */,
+				9049D103EA687233E96F2F9A7A408F61 /* ConvolutionShader.metal in Resources */,
+				9D9C1B059C41DE12E9D61602EE69203F /* PixelShader.metal in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D8E7F45623445925C63359B65A8102E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DD4D8C261AACB79D9913B4C1D5A38EAC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2447C28A5BA1F16C22469FBC73714C86 /* 16_effect.png in Resources */,
-				FDE370CC5E9C9F30F5B73AD25E3CC7E7 /* 16_origin.png in Resources */,
-				BE705F0CE4FD120A1A0D85DA21BA3019 /* 64_effect.png in Resources */,
-				40D05C90607527F7AE5044DABD283953 /* 64_origin.png in Resources */,
-				2C40247F416EF057B27D166033DE9E91 /* Basic.metal in Resources */,
-				876D414CB504FC00A5F055AC18330961 /* ConvolutionShader.metal in Resources */,
-				2CC13C8625315F70308204D355071434 /* PixelShader.metal in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -94,13 +94,47 @@ fragment float4 hueFragment(SingleInputVertexIO fragmentInput [[stage_in]],
 }
 
 #pragma mark - 颜色查找表
+struct LutInfo {
+    unsigned int maxColorValue;   // lut每个分量的有多少种颜色最大取值
+    unsigned int latticeCount;    // 每排晶格数量
+    unsigned int width;           // lut图片宽度
+    unsigned int height;          // lut图片高度
+};
 fragment float4 lookUpTableFragment(SingleInputVertexIO fragmentInput [[stage_in]],
-                                    constant float &sampleStep [[buffer(2)]],
-                                    constant float &intensity [[buffer(3)]],
+                                    constant float &intensity [[buffer(2)]],
+                                    constant LutInfo &lutInfo [[buffer(3)]],
                                     texture2d<float> inputTexture [[texture(0)]],
                                     texture2d<float> lutTexture [[texture(1)]]) {
     constexpr sampler quadSampler;
-    float4 textureColor = inputTexture.sample(quadSampler, fragmentInput.textureCoordinate);
+    float4 px = inputTexture.sample(quadSampler, fragmentInput.textureCoordinate);
     
-    return textureColor;
+    // B通道对应LUT上的数值
+    float blueColor = px.b * lutInfo.maxColorValue;
+    
+    // 计算临近两个B通道所在的方形LUT单元格（从左到右从，上到下排列）
+    float2 quad_l, quad_h;
+    quad_l.y = floor(floor(blueColor) / lutInfo.latticeCount);
+    quad_l.x = floor(blueColor) - quad_l.y * lutInfo.latticeCount;
+    quad_h.y = floor(ceil(blueColor) / lutInfo.latticeCount);
+    quad_h.x = ceil(blueColor) - (quad_h.y * lutInfo.latticeCount);
+    
+    // 单位像素上的中心偏移量
+    float px_length = 1.0 / lutInfo.width;
+    float cell_length = 1.0 / lutInfo.latticeCount;
+    
+    // 根据RG、B偏移量计算LUT上对应的(x,y)
+    float2 lut_pos_l, lut_pos_h;
+    lut_pos_l.x = (quad_l.x * cell_length) + px_length / 2.0 + ((cell_length - px_length) * px.r);
+    lut_pos_l.y = (quad_l.y * cell_length) + px_length / 2.0 + ((cell_length - px_length) * px.g);
+    lut_pos_h.x = (quad_h.x * cell_length) + px_length / 2.0 + ((cell_length - px_length) * px.r);
+    lut_pos_h.y = (quad_h.y * cell_length) + px_length / 2.0 + ((cell_length - px_length) * px.g);
+    
+    // 获取映射的LUT颜色
+    float4 graded_color_l = lutTexture.sample(quadSampler, lut_pos_l);
+    float4 graded_color_h = lutTexture.sample(quadSampler, lut_pos_h);
+    float4 graded_color = mix(graded_color_l, graded_color_h, fract(blueColor));
+    
+    // 根据intensity定制效果程度
+    float4 newColor = mix(px, float4(graded_color.rgb, px.w), intensity);
+    return newColor;
 }

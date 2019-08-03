@@ -230,32 +230,6 @@
     return image;
 }
 
-+ (id<MTLTexture>)textureFromImage:(UIImage *)image device:(id<MTLDevice>)device {
-    CGSize imageSize = image.size;
-    if (!imageSize.width || !imageSize.height) {
-        return nil;
-    }
-    
-    CGImageRef imageRef = image.CGImage;
-    CGDataProviderRef dataProvider = CGImageGetDataProvider(imageRef);
-    
-    MTLPixelFormat format = MTLPixelFormatBGRA8Unorm;
-    MTLTextureDescriptor *textureDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:format
-                                                                                           width:imageSize.width
-                                                                                          height:imageSize.height
-                                                                                       mipmapped:NO];
-    id<MTLTexture> texture = [device newTextureWithDescriptor:textureDesc];
-    
-    CFDataRef data = CGDataProviderCopyData(dataProvider);
-    [texture replaceRegion:MTLRegionMake2D(0, 0, imageSize.width, imageSize.height)
-               mipmapLevel:0
-                 withBytes:CFDataGetBytePtr(data)
-               bytesPerRow:4 * imageSize.width];
-    CFRelease(data);
-    
-    return texture;
-}
-
 + (void)textureCVPixelBufferProcess:(id<MTLTexture>)texture process:(void(^)(CVPixelBufferRef pixelBuffer))process {
     if (!texture) {
         return ;
