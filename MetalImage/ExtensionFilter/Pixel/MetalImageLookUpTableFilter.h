@@ -9,8 +9,8 @@
 #import "MetalImageTexture.h"
 
 typedef NS_ENUM(NSUInteger, MetalImageLUTFilterType) {
-    MetalImageLUTFilterType8_8, // 晶格数为8*8，使用右上角坐标系
-    MetalImageLUTFilterType4_4  // 晶格数为4*4，使用右上角坐标系
+    MetalImageLUTFilterType8_8, // 晶格数为8*8，使用左上角坐标系
+    MetalImageLUTFilterType4_4  // 晶格数为4*4，使用左上角坐标系
 };
 
 NS_ASSUME_NONNULL_BEGIN

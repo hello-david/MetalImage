@@ -26,7 +26,6 @@
 #import "MetalImageTarget.h"
 #import "MetalImageView.h"
 #import "MetalImageCropFilter.h"
-#import "MetalImageTransformFilter.h"
 #import "MetalImageiOSBlurFilter.h"
 #import "MetalImageConvolutionFilter.h"
 #import "MetalImageGaussianBlurFilter.h"
